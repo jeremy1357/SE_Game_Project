@@ -1,5 +1,6 @@
 #include <iostream>
 #include "SDLWindow.h"
+#include <glm/glm.hpp>
 
 // To allow these includes to work you must specify the include and lib
 // pathway. Already set so dont change
