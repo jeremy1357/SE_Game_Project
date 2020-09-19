@@ -8,7 +8,10 @@ We will be using these guidelines for coding. Great resource https://isocpp.gith
 
 ## Visual Studio Installation
 1.	Install Visual Studio Community 2019 from its website
-a.	IF YOU ALREADY HAVE VISUAL STUDIO INSTALLED, READ -> Go to the Windows search pane in your taskbar -> Type "Apps & features" -> Search for Visual Studio -> Click on Visual Studio -> Click on the "Modify" button -> Click "Yes". This will bring up the window for part 2. See below.
+	a.	IF YOU ALREADY HAVE VISUAL STUDIO INSTALLED, READ 
+	-> Go to the Windows search pane in your taskbar -> Type "Apps & features" -> 
+	Search for Visual Studio -> Click on Visual Studio -> Click on the "Modify" button -> 
+	Click "Yes". This will bring up the window for part 2. See below.
 2.	Select the checkbox for "Desktop development with C++" -> Click "Modify" on bottom right
 3.	Click install
 
