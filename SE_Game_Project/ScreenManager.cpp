@@ -1,5 +1,8 @@
 #include "ScreenManager.hpp"
 #include <iostream>
+#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl.h"
 
 void ScreenManager::runProgram()
 {
@@ -93,6 +96,10 @@ void ScreenManager::render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+		
 	// Verify that the currentScreen points to a valid memory address
 	// If so, call that screens update function to perform specific update functionality
 	// Ex) Can call the gameplay render function which renders NPCs
@@ -101,6 +108,8 @@ void ScreenManager::render()
 		m_currentScreen->onRender();
 	}
 
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	m_window.update();
 
