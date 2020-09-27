@@ -18,4 +18,3 @@ private:
 	float m_aspectRatio = 1.0f;
 	SDL_Window* m_window = nullptr;
 };
-
