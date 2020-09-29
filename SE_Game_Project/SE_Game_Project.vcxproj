@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CharacterManager.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CharacterManager.h" />
     <ClInclude Include="ColorRGBA8.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="imconfig.h" />
