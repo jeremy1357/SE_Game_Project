@@ -1,3 +1,4 @@
+//Corey Deeves
 #include "FPS_Timer.h"
 
 duration<double> uptime()
