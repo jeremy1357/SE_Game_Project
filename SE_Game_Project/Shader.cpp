@@ -1,7 +1,7 @@
-#include "ShaderManager.h"
+#include "Shader.h"
 #include <iostream>
 
-
+/*
 const char VERT_SOURCE[] =
 	"#version 410 \
 	layout(location = 0) in vec2 vertex_position; \
@@ -26,29 +26,33 @@ const char FRAG_SOURCE[] =
 		color = vec4(1, 0, 0, 1.0f); \
 		//color = texture(tex, fragment_uv); \
 	}";
+*/
 
-ShaderManager::ShaderManager() {
+Shader::Shader() {
 	// Empty
 }
 
-void ShaderManager::init() {
+void Shader::init(const char vertexSource[], const char fragmentSource[]) {
 	m_programID = glCreateProgram();
 	if (m_programID == 0) {
 		std::cout << "Failed to create a shader. Exiting program." << std::endl;
 		exit(1);
 	}
 	// Create handles to the shaders
-	GLuint vertexShaderHandle = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragmentShaderHandle = glCreateShader(GL_FRAGMENT_SHADER);
+	m_vertexShaderHandle = glCreateShader(GL_VERTEX_SHADER);
+	m_fragmentShaderHandle = glCreateShader(GL_FRAGMENT_SHADER);
 	// Load vertex shader
-	compile_shader(VERT_SOURCE, vertexShaderHandle);
-	compile_shader(FRAG_SOURCE, fragmentShaderHandle);
-	glAttachShader(m_programID, vertexShaderHandle);
-	glAttachShader(m_programID, fragmentShaderHandle);
-	link_shaders(vertexShaderHandle, fragmentShaderHandle);
+	std::cout << "Compiling vertex shader." << std::endl;
+	compile_shader(vertexSource, m_vertexShaderHandle);
+	std::cout << "Compiling fragment shader." << std::endl;
+	compile_shader(fragmentSource, m_fragmentShaderHandle);
+
 }
 
-void ShaderManager::link_shaders(GLuint vertexID, GLuint fragmentID) {
+void Shader::link_shaders() {
+	glAttachShader(m_programID, m_vertexShaderHandle);
+	glAttachShader(m_programID, m_fragmentShaderHandle);
+
 	glLinkProgram(m_programID);
 
 	GLint is_linked = 0;
@@ -62,27 +66,27 @@ void ShaderManager::link_shaders(GLuint vertexID, GLuint fragmentID) {
 		std::vector<char> errorLog(maxLength);
 		glGetProgramInfoLog(m_programID, maxLength, &maxLength, errorLog.data());
 		glDeleteProgram(m_programID);
-		glDeleteProgram(vertexID);
-		glDeleteProgram(fragmentID);
+		glDeleteProgram(m_vertexShaderHandle);
+		glDeleteProgram(m_fragmentShaderHandle);
 		for (int i = 0; i < errorLog.size(); i++) {
 			std::cout << errorLog[i];
 		}
 	}
 
-	glDetachShader(m_programID, vertexID);
-	glDetachShader(m_programID, fragmentID);
+	glDetachShader(m_programID, m_vertexShaderHandle);
+	glDetachShader(m_programID, m_fragmentShaderHandle);
 	m_programLinked = true;
 	std::cout << "Shader linked successfully." << std::endl;
 }
 
-void ShaderManager::add_attributes(const std::initializer_list<std::string> & attributes)
+void Shader::add_attributes(const std::initializer_list<std::string> & attributes)
 {
 	for (auto& it : attributes) {
 		glBindAttribLocation(m_programID, m_attributeCount++, it.c_str());
 	}
 }
 
-void ShaderManager::bind()
+void Shader::bind()
 {
 	glUseProgram(m_programID);
 	m_isActive = true;
@@ -95,7 +99,7 @@ void ShaderManager::bind()
 	//}
 }
 
-void ShaderManager::unbind()
+void Shader::unbind()
 {
 	m_isActive = false;
 	for (int i = 0; i < m_attributeCount; i++) {
@@ -108,7 +112,7 @@ void ShaderManager::unbind()
 	glUseProgram(0);
 }
 
-void ShaderManager::add_uniform(const std::string & uniformName)
+void Shader::add_uniform(const std::string & uniformName)
 {
  	if (m_programLinked) {
  		auto it = m_uniformMap.find(uniformName);
@@ -122,7 +126,7 @@ void ShaderManager::add_uniform(const std::string & uniformName)
  	}
 }
 
-GLint ShaderManager::get_uniform(const std::string & uniformName)
+GLint Shader::get_uniform(const std::string & uniformName)
 {
 	std::unordered_map<std::string, GLint>::iterator it;
 	it = m_uniformMap.find(uniformName);
@@ -145,42 +149,28 @@ GLint ShaderManager::get_uniform(const std::string & uniformName)
 	}
 }
 
-void ShaderManager::set_uniform(
+void Shader::set_uniform(
 	const std::string & uniformName,
 	glm::vec2 value) 
 {
 	glUniform2f(get_uniform(uniformName), value.x, value.y);
 }
 
-void ShaderManager::set_uniform(
+void Shader::set_uniform(
 	const std::string & uniformName, 
 	glm::vec3 value) 
 {
 	glUniform3f(get_uniform(uniformName), value.x, value.y, value.z);
 }
 
-void ShaderManager::set_uniform(
+void Shader::set_uniform(
 	const std::string & uniformName, 
 	int value) 
 {
 	glUniform1i(get_uniform(uniformName), value);
 }
 
-void ShaderManager::set_uniform(
-	const std::string & uniformName, 
-	const ColorRGBA8& color)
-{
-	glm::vec3 toVector(color.r, color.g, color.b);
-	glm::vec3 copyOf = glm::normalize(toVector);
-	if (m_isActive) {
-		glUniform3f(get_uniform(uniformName), copyOf.x, copyOf.y, copyOf.z);
-	}
-	else {
-		std::cout << "Shader not active\n";
-	}
-}
-
-void ShaderManager::set_uniform(
+void Shader::set_uniform(
 	const std::string & uniformName, 
 	const glm::mat4 & matrix)
 {
@@ -201,7 +191,7 @@ void ShaderManager::set_uniform(
 //	}
 //}
 
-void ShaderManager::compile_shader(const char* source, const GLuint shaderid)
+void Shader::compile_shader(const char* source, const GLuint shaderid)
 {
 	glShaderSource(shaderid, 1, &source, nullptr);
 	glCompileShader(shaderid);

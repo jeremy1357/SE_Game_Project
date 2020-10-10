@@ -11,6 +11,8 @@ public:
 	~SDLWindow();
 	int init(int width = 1024, int height = 768);
 	void update();
+	int get_width() { return m_width; }
+	int get_height() { return m_height; }
 
 private:
 	int m_width = 0;

@@ -4,16 +4,22 @@
 #pragma once
 #include <stdint.h>
 
-struct ColorRGBA8 
+struct ColorRGBA32
 {
-	ColorRGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+	ColorRGBA32() {
+		this->r = 255;
+		this->g = 255;
+		this->b = 255;
+		this->a = 255;
+	}
+	ColorRGBA32(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
 		this->r = r;
 		this->g = g;
 		this->b = b;
 		this->a = a;
 	}
 
-	void operator=(const ColorRGBA8& rhs) {
+	void operator=(const ColorRGBA32& rhs) {
 		this->r = rhs.r;
 		this->g = rhs.g;
 		this->b = rhs.b;

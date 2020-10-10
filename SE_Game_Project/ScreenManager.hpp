@@ -25,11 +25,12 @@ public:
 	void disable();
 
 	//Screen* getCurrentScreen();
-private:
+	SDLWindow m_window;
+
+protected:
 	Screen* m_currentScreen = nullptr;
 	std::unordered_map<int, Screen*> m_screens;
 	bool m_isProgramRunning = false;
-	SDLWindow m_window;
 	// TODO: Add the input manager
 
 };

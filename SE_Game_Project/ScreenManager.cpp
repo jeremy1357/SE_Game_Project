@@ -7,8 +7,6 @@
 void ScreenManager::runProgram()
 {
 	this->enable();
-	this->init();
-
 	while (m_isProgramRunning) {
 		// FPS Timer START would go HERE
 
@@ -37,7 +35,7 @@ void ScreenManager::addScreen(Screen* screen, bool shouldInitializeScreen)
 
 		// Initialize the screen if wanted
 		if (shouldInitializeScreen && it->second->m_screenState == ScreenState::NONE) {
-			it->second->init();
+			it->second->on_init();
 		}
 	}
 
@@ -48,16 +46,16 @@ void ScreenManager::setScreen(int screenID)
 	// Call the current screens onExit function to do any specific 
 	// requirements it may have
 	if (m_currentScreen != nullptr) {
-		m_currentScreen->onExit();
+		m_currentScreen->on_exit();
 	}
 
 	// Find the new screen based off the ID passed in
 	std::unordered_map<int, Screen*>::const_iterator it = m_screens.find(screenID);
 	if (it != m_screens.end()) {
 		if (it->second->m_screenState == ScreenState::NONE) {
-			it->second->init();
+			it->second->on_init();
 		}
-		it->second->onEntry();
+		it->second->on_entry();
 		m_currentScreen = it->second;
 	}
 	else {
@@ -80,10 +78,10 @@ void ScreenManager::update()
 	for (auto& it : m_screens) {
 		switch (it.second->m_screenState) {
 		case ScreenState::ACTIVE:
-			it.second->onUpdate();
+			it.second->on_update();
 			break;
 		case ScreenState::BACKGROUND:
-			it.second->onUpdate();
+			it.second->on_update();
 		default:
 			break;
 		}
@@ -93,6 +91,7 @@ void ScreenManager::update()
 void ScreenManager::render()
 {
 	// This stuff must be done every render. Ignore
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -105,7 +104,7 @@ void ScreenManager::render()
 	// Ex) Can call the gameplay render function which renders NPCs
 	// ETC....
 	if (m_currentScreen != nullptr) {
-		m_currentScreen->onRender();
+		m_currentScreen->on_render();
 	}
 
 	//ImGui::Render();

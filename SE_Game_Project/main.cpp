@@ -21,7 +21,8 @@ enum ScreenKeys {
 int main(int argc, char** argv) 
 {
 	std::cout << "This is the start of game!\n";
-
+	// Initialize screen manager
+	gameManager.init();
 	// We add different "screens" to the game here
 	// These are SMART pointers. Handles some of the
 	// downfalls of normal raw pointers. Less dangerous

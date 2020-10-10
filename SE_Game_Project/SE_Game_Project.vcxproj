@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterManager.cpp" />
     <ClCompile Include="FPS_Timer.cpp" />
     <ClCompile Include="GameScreen.cpp" />
@@ -157,15 +158,20 @@
     <ClCompile Include="imgui_impl_sdl.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuScreen.cpp" />
+    <ClCompile Include="picoPNG.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
-    <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SpriteRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterManager.h" />
-    <ClInclude Include="ColorRGBA8.h" />
+    <ClInclude Include="ColorRGBA32.h" />
     <ClInclude Include="FPS_Timer.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="imconfig.h" />
@@ -177,10 +183,15 @@
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="MenuScreen.h" />
+    <ClInclude Include="picoPNG.h" />
     <ClInclude Include="Screen.hpp" />
     <ClInclude Include="ScreenManager.hpp" />
     <ClInclude Include="SDLWindow.h" />
-    <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="SpriteRenderer.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
