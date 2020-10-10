@@ -159,7 +159,6 @@
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
-    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorRGBA8.h" />
@@ -176,7 +175,6 @@
     <ClInclude Include="ScreenManager.hpp" />
     <ClInclude Include="SDLWindow.h" />
     <ClInclude Include="ShaderManager.h" />
-    <ClInclude Include="Test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

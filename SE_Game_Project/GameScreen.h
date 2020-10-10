@@ -21,4 +21,3 @@ private:
 	// EX) SomeManager aGoodName;
 
 };
-

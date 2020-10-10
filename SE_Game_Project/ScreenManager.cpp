@@ -96,9 +96,9 @@ void ScreenManager::render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
+	//ImGui_ImplOpenGL3_NewFrame();
+	//ImGui_ImplGlfw_NewFrame();
+	//ImGui::NewFrame();
 		
 	// Verify that the currentScreen points to a valid memory address
 	// If so, call that screens update function to perform specific update functionality
@@ -108,8 +108,8 @@ void ScreenManager::render()
 		m_currentScreen->onRender();
 	}
 
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//ImGui::Render();
+	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	m_window.update();
 

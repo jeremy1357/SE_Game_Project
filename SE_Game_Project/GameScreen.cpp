@@ -1,5 +1,6 @@
 #include "GameScreen.h"
 
+
 GameScreen::GameScreen(int uniqueScreenID)
 {
 	m_screenID = uniqueScreenID;
@@ -26,6 +27,7 @@ void GameScreen::onExit()
 
 void GameScreen::onRender()
 {
+	
 	// Put code here for rendering
 }
 
