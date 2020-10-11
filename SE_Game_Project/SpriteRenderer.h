@@ -1,5 +1,5 @@
 // Created by Jeremy Bowler
-// October 10 19, 2020
+// October 10, 2020
 
 #pragma once
 #include <glm/glm.hpp>
@@ -7,25 +7,37 @@
 #include "Shader.h"
 #include "Vertex.h"
 #include "Camera.h"
+#include "TextureCache.h"
+#include <string>
+
+// POD Plain-Old-Data
+struct SpriteBatch {
+	std::vector<Vertex> vertices;
+	std::vector<GLuint> indices;
+	GLuint textureID;
+};
 
 class SpriteRenderer
 {
 public:
 	SpriteRenderer();
-	void on_init(Camera& camera);
+	void on_init(Camera& camera, TextureCache& textureCache);
 	void on_update();
-	void on_render(glm::vec2 playerPosition);
+	void on_render();
+	void add_sprite_to_batch(glm::vec2 position, glm::vec2 dimensions, std::string textureName);
 
 private:
-	float vertices[9] = {
-	-0.5f, -0.5f, 0.0f,
-	 0.5f, -0.5f, 0.0f,
-	 0.0f,  0.5f, 0.0f
-	};
-	Camera m_camera;
-	Vertex testVertices[6];
+	std::vector<SpriteBatch> m_spriteBatches;
+
+	Camera* m_camera;
+	TextureCache* m_textureCache;
+
+	//Vertex testVertices[4];
+	//GLuint m_indices[6];
+
 	Shader m_shader;
 	GLuint m_playerVBO;
 	GLuint m_playerVAO;
+	GLuint m_spriteEBO;
 };
 

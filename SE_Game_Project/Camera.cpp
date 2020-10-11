@@ -10,7 +10,7 @@ Camera::~Camera() {
 	// Empty
 }
 
-void Camera::init_camera(const int screenWidth, const int screenHeight) {
+void Camera::init_camera(int screenWidth, int screenHeight) {
 	m_orthoMatrix = glm::ortho(0.0f, (float)screenWidth, 0.0f, (float)screenHeight);
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;

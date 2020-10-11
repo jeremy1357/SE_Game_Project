@@ -8,7 +8,7 @@
 #include "SpriteRenderer.h"
 #include "CharacterManager.h"
 #include "GameCollision.h"
-
+#include "TextureCache.h"
 class GameScreen : public Screen
 {
 public:
@@ -26,4 +26,5 @@ private:
 	// EX) SomeManager aGoodName;
 	SpriteRenderer m_spriteRenderer;
 	Camera m_camera;
+	TextureCache m_textureCache;
 };
