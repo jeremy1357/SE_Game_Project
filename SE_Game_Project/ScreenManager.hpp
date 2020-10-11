@@ -4,9 +4,7 @@
 #pragma once
 #include "Screen.hpp"
 #include "SDLWindow.h"
-
 #include <unordered_map>
-
 #include <GL/glew.h>
 
 class Screen;
@@ -17,7 +15,6 @@ public:
 	void runProgram();
 	void addScreen(Screen* screen, bool shouldInitializeScreen);
 	void setScreen(int screenID);
-
 	void update();
 	// This calls the main rendering functions and the
 	// screens rendering function
@@ -27,14 +24,13 @@ public:
 	void enable();
 	void disable();
 
-
 	//Screen* getCurrentScreen();
+	SDLWindow m_window;
 
-private:
+protected:
 	Screen* m_currentScreen = nullptr;
 	std::unordered_map<int, Screen*> m_screens;
 	bool m_isProgramRunning = false;
-	SDLWindow m_window;
 	// TODO: Add the input manager
 
 };

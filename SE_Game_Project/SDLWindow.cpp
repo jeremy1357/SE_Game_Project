@@ -51,6 +51,7 @@ int SDLWindow::init(int width, int height)
 	m_height = height;
 	m_width = width;
 	m_aspectRatio = (float)m_width / (float)m_height;
+	glViewport(0, 0, m_width, m_height);
 
 	// Set VSync to off
 	SDL_GL_SetSwapInterval(0);
@@ -64,18 +65,18 @@ int SDLWindow::init(int width, int height)
 
 void SDLWindow::update()
 {
-	int tempX, tempY;
-	SDL_GetWindowSize(m_window, &tempX, &tempY);
+	//int tempX, tempY;
+	//SDL_GetWindowSize(m_window, &tempX, &tempY);
 
-	// If this is true, the window was resized
-	if (m_height != tempY || m_width != tempX) {
-		m_width = tempX;
-		m_height = tempY;
-		glViewport(0, 0, m_width, m_height);
+	//// If this is true, the window was resized
+	//if (m_height != tempY || m_width != tempX) {
+	//	m_width = tempX;
+	//	m_height = tempY;
+	//	glViewport(0, 0, m_width, m_height);
 
-		// Update the aspect ratio with the new window dimensions
-		m_aspectRatio = (float)m_width / (float)m_height;
-	}
+	//	// Update the aspect ratio with the new window dimensions
+	//	m_aspectRatio = (float)m_width / (float)m_height;
+	//}
 	SDL_GL_SwapWindow(m_window);
 
 }
