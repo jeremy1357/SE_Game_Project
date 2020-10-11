@@ -97,7 +97,7 @@ void ScreenManager::render()
 	glLoadIdentity();
 
 	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
+	//ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 		
 	// Verify that the currentScreen points to a valid memory address
