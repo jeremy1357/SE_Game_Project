@@ -96,7 +96,7 @@ void ScreenManager::render()
 	glLoadIdentity();
 
 	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_window.m_window);
+	ImGui_ImplSDL2_NewFrame(m_window.get_window_handle());
 	ImGui::NewFrame();
 		
 	// Verify that the currentScreen points to a valid memory address
@@ -117,9 +117,13 @@ void ScreenManager::render()
 // ADD ANY INITIALIZATION CODE TO THIS FUNCTION
 void ScreenManager::init()
 {
+	// KEEP THIS. This is a common source where we can easily get the
+	// project directory.
 	char buf[256];
 	GetCurrentDirectoryA(256, buf);
 	m_projectDirectory = std::string(buf) + '\\';
+	std::cout << "Project directory: " << m_projectDirectory << std::endl;
+
 
 	// Create our window with default resolution
 	int error = m_window.init();
@@ -134,7 +138,8 @@ void ScreenManager::init()
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO& io = ImGui::GetIO(); 
+	(void)io;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
@@ -143,7 +148,7 @@ void ScreenManager::init()
 	//ImGui::StyleColorsClassic();
 
 	// Setup Platform/Renderer bindings
-	ImGui_ImplSDL2_InitForOpenGL(m_window.m_window, m_window.glContext);
+	ImGui_ImplSDL2_InitForOpenGL(m_window.get_window_handle(), m_window.glContext);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
 	// Load Fonts

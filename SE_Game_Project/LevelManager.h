@@ -13,8 +13,8 @@ public:
 	void render();
 
 private:
-	glm::vec2 tileSize = glm::vec2(30.0f, 30.0f);
-	std::vector<std::vector<char>> m_map;
+	glm::vec2 m_tileSize = glm::vec2(30.0f, 30.0f);
+	std::vector<std::vector<char>> m_mapData;
 	std::string m_projectDirectory = "";
 	SpriteRenderer* m_renderer = nullptr;
 };
