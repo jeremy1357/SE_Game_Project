@@ -27,12 +27,12 @@ GLuint TextureCache::get_texture_id(std::string texturePath)
 
 	std::unordered_map<std::string, Texture>::iterator it;
 	it = m_textureCache.find(textureName);
+
 	// If true has not found the texture and will add it
 	if (it == m_textureCache.end())
 	{
 		Texture newTexture;
 		load_texture_from_PNG(projectDirectory + texturePath, newTexture.textureID);
-		//new_texture.name = texturePath;
 
 		m_textureCache.insert(std::make_pair(texturePath, newTexture));
 		return newTexture.textureID;
@@ -80,7 +80,7 @@ bool TextureCache::load_texture_from_PNG(std::string texturePath, GLuint& textur
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	float aniso = 0.0f;
 	glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &aniso);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso);
