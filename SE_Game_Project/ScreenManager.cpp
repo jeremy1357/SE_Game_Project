@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
+#include <windows.h>
 
 void ScreenManager::runProgram()
 {
@@ -41,8 +42,7 @@ void ScreenManager::addScreen(Screen* screen, bool shouldInitializeScreen)
 
 }
 
-void ScreenManager::setScreen(int screenID)
-{
+void ScreenManager::setScreen(int screenID) {
 	// Call the current screens onExit function to do any specific 
 	// requirements it may have
 	if (m_currentScreen != nullptr) {
@@ -91,7 +91,7 @@ void ScreenManager::update()
 void ScreenManager::render()
 {
 	// This stuff must be done every render. Ignore
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -117,6 +117,10 @@ void ScreenManager::render()
 // ADD ANY INITIALIZATION CODE TO THIS FUNCTION
 void ScreenManager::init()
 {
+	char buf[256];
+	GetCurrentDirectoryA(256, buf);
+	m_projectDirectory = std::string(buf) + '\\';
+
 	// Create our window with default resolution
 	int error = m_window.init();
 	if (error != 0) {
@@ -156,6 +160,8 @@ void ScreenManager::init()
 	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
 	//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\Windows\Fonts\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 	//IM_ASSERT(font != NULL);
+
+
 
 }
 

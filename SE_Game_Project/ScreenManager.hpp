@@ -6,6 +6,7 @@
 #include "SDLWindow.h"
 #include <unordered_map>
 #include <GL/glew.h>
+#include <string.h>
 
 class Screen;
 
@@ -24,10 +25,14 @@ public:
 	void enable();
 	void disable();
 
+	std::string get_project_directory() const { return m_projectDirectory; }
+
 	//Screen* getCurrentScreen();
 	SDLWindow m_window;
 
+
 protected:
+	std::string m_projectDirectory = "";
 	Screen* m_currentScreen = nullptr;
 	std::unordered_map<int, Screen*> m_screens;
 	bool m_isProgramRunning = false;
