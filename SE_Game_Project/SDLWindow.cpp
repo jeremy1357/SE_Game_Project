@@ -30,7 +30,7 @@ int SDLWindow::init(int width, int height)
 		std::cout << "SDL window created succesfully." << std::endl;
 	}
 
-	SDL_GLContext glContext = SDL_GL_CreateContext(m_window);
+	glContext = SDL_GL_CreateContext(m_window);
 	if (glContext == nullptr) {
 		std::cout << "Failed to create SDL_GLContext. Error = " << SDL_GetError() << std::endl;
 		return SDL_GLCONTEXT_FAILURE;
