@@ -1,8 +1,6 @@
-#ifndef CharacterManager_H
-#define CharacterManager_H
-#endif
+
 #pragma once
-#include<iostream>
+
 #include <string>
 
 using namespace std;
@@ -18,9 +16,10 @@ class CharacterManager
 		void Damage(int amount);
 		string GetName();
 		void SetName(string n);
-	private:
-		int health;
-		string name;
+		bool is_player_alive();
+
+		int m_health;
+		string m_name;
 
 };
 
