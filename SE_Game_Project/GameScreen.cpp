@@ -1,7 +1,6 @@
 #include "GameScreen.h"
 #include "imgui.h"
 
-
 GameScreen::GameScreen(int uniqueScreenID)
 {
 	m_screenID = uniqueScreenID;
@@ -31,15 +30,19 @@ void GameScreen::on_exit()
 
 void GameScreen::on_render()
 {
-	m_spriteRenderer.add_sprite_to_batch(glm::vec2(0.0f), glm::vec2(50.0f), "grass.PNG");
-	//m_spriteRenderer.add_sprite_to_batch(glm::vec2(200.0f), glm::vec2(50.0f), 0);
-	//m_spriteRenderer.add_sprite_to_batch(glm::vec2(-100.0f), glm::vec2(25.0f), 0);
+	m_spriteRenderer.add_sprite_to_batch(glm::vec2(0.0f), glm::vec2(25.0f), "grass.PNG", 45.0f);
+	m_spriteRenderer.add_sprite_to_batch(glm::vec2(200.0f), glm::vec2(25.0f), "grass.PNG", 75.0f);
+	m_spriteRenderer.add_sprite_to_batch(glm::vec2(-100.0f), glm::vec2(25.0f), "dark_crate_five.PNG", 15.0f);
+	m_spriteRenderer.add_sprite_to_batch(glm::vec2(-100.0f), glm::vec2(25.0f), "dark_crate_five.PNG", 0.0f);
+	m_spriteRenderer.add_sprite_to_batch(glm::vec2(-400.0f), glm::vec2(25.0f, 30.0f), "dark_crate_five.PNG", 45.0f);
 
-	//m_spriteRenderer.on_render();
-	//ImGui::Text("Hello, world %d", 123);
-	//float f = 0.5;
-	//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-	ImGui::ShowDemoWindow();
+	m_spriteRenderer.on_render();
+
+	ImGui::Text("Hello, world %d", 123);
+	float f = 0.0;
+	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+
+	// Put code here for rendering
 }
 
 void GameScreen::on_update()

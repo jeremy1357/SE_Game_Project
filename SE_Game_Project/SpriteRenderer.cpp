@@ -137,7 +137,7 @@ void SpriteRenderer::on_render()
 }
 
 void SpriteRenderer::add_sprite_to_batch(glm::vec2 position, 
-	glm::vec2 dimensions, std::string textureName)
+	glm::vec2 dimensions, std::string textureName, float dirAngle)
 {
 	GLuint textureID = m_textureCache->get_texture_id(textureName);
 	int batchIndex = -1;
@@ -174,12 +174,17 @@ void SpriteRenderer::add_sprite_to_batch(glm::vec2 position,
 	glm::vec2 trUV = glm::vec2(1.0, 1.0);
 	glm::vec2 blUV = glm::vec2(0.0, 0.0);
 	glm::vec2 brUV = glm::vec2(1.0, 0.0);
-
+	
 	// Add in the new vertices and indices
 	it->vertices.push_back(Vertex(tl, tlUV));
+	it->vertices.back().rotate(dirAngle, position);
 	it->vertices.push_back(Vertex(tr, trUV));
+	it->vertices.back().rotate(dirAngle, position);
 	it->vertices.push_back(Vertex(bl, blUV));
+	it->vertices.back().rotate(dirAngle, position);
 	it->vertices.push_back(Vertex(br, brUV));
+	it->vertices.back().rotate(dirAngle, position);
+
 	GLuint startingIndex = 0;
 	if (it->indices.size() != 0) {
 		startingIndex = it->indices.back() + 1;

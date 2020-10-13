@@ -24,7 +24,7 @@ public:
 	void on_init(Camera& camera, TextureCache& textureCache);
 	void on_update();
 	void on_render();
-	void add_sprite_to_batch(glm::vec2 position, glm::vec2 dimensions, std::string textureName);
+	void add_sprite_to_batch(glm::vec2 position, glm::vec2 dimensions, std::string textureName, float dirAngle);
 
 private:
 	std::vector<SpriteBatch> m_spriteBatches;
