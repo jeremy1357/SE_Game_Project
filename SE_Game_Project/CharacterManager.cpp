@@ -42,7 +42,7 @@ void CharacterManager::SetName(string n)
 bool CharacterManager::is_player_alive()
 {
 	if (m_health < 0)
-		return false;
+		return status == false;
 	else
-		return true;
+		return status == true;
 }

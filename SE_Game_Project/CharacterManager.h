@@ -5,6 +5,13 @@
 
 using namespace std;
 
+
+struct Player {
+	string m_name;
+	int m_health;
+	bool status;
+};
+
 class CharacterManager
 {
 	public:
@@ -18,6 +25,7 @@ class CharacterManager
 		void SetName(string n);
 		bool is_player_alive();
 
+		bool status;
 		int m_health;
 		string m_name;
 
