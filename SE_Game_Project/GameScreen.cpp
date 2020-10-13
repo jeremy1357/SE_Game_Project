@@ -1,4 +1,5 @@
 #include "GameScreen.h"
+#include "imgui.h"
 
 
 GameScreen::GameScreen(int uniqueScreenID)
@@ -34,8 +35,11 @@ void GameScreen::on_render()
 	//m_spriteRenderer.add_sprite_to_batch(glm::vec2(200.0f), glm::vec2(50.0f), 0);
 	//m_spriteRenderer.add_sprite_to_batch(glm::vec2(-100.0f), glm::vec2(25.0f), 0);
 
-	m_spriteRenderer.on_render();
-	// Put code here for rendering
+	//m_spriteRenderer.on_render();
+	//ImGui::Text("Hello, world %d", 123);
+	//float f = 0.5;
+	//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+	ImGui::ShowDemoWindow();
 }
 
 void GameScreen::on_update()
