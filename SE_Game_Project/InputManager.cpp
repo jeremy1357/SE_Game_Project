@@ -8,10 +8,10 @@
 
 InputManager::InputManager() {
 	//Constructor
-	LeftMB = 0;
-	RightMB = 0;
-	MPosX = 0;
-	MPosY = 0;
+	m_LeftMB = 0;
+	m_RightMB = 0;
+	m_MPosX = 0;
+	m_MPosY = 0;
 
 	//CurrentKeystate = SDL_GetKeyboardState(NULL);
 }
