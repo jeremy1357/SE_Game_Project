@@ -1,97 +1,66 @@
 /*Dylan Beauchemin*/
 /*September 29, 2020*/
 #include <SDL/SDL.h>
+#include <map>
 #include "InputManager.h"
 
 
 
 InputManager::InputManager() {
 	//Constructor
-	LeftMB = 0; RightMB = 0;
-	WKey = 0; AKey = 0; SKey = 0; DKey = 0;
-	MPosX = 0; MPosY = 0;;
+	LeftMB = 0;
+	RightMB = 0;
+	MPosX = 0;
+	MPosY = 0;
+
+	//CurrentKeystate = SDL_GetKeyboardState(NULL);
 }
 
 InputManager::~InputManager() {
 
 }
 
-void InputManager::Update() {
+void InputManager::m_Update() {
 	//SDL Events Loop - When no events, goes to 0
 	//October 6, 2020
-	while (SDL_PollEvent(&InputEvent)) {
-		switch (InputEvent.type) {
+	while (SDL_PollEvent(&m_InputEvent)) {
+		switch (m_InputEvent.type) {
 		case SDL_MOUSEBUTTONDOWN:
-			SetMouseClick(InputEvent.button);
+			m_SetMouseClick(m_InputEvent.button);
 			break;
 		case SDL_MOUSEBUTTONUP:
-			UnMouseClick(InputEvent.button);
+			m_UnMouseClick(m_InputEvent.button);
 		case SDL_KEYDOWN:
-			SetKeyboardState(InputEvent.key);
+			m_Keys[m_InputEvent.key.keysym.scancode] = true;
 		case SDL_KEYUP:
-			UnKeyboardState(InputEvent.key);
+			m_Keys[m_InputEvent.key.keysym.scancode] = false;
 		default:
 			break;
 		}
 	}
 	//Mouse position updated at the addresses of MPos
-	SDL_GetRelativeMouseState(&MPosX, &MPosY);
+	SDL_GetRelativeMouseState(&m_MPosX, &m_MPosY);
 }
 
-void InputManager::SetKeyboardState(SDL_KeyboardEvent& Keys) {
-	//If I got this right, it should catch the scancodes of relevant keys and set the bool for retrieval
-	//Scancodes are hardware and should work regardless of keyboard
-	switch (Keys.keysym.scancode) {
-	case SDL_SCANCODE_W:
-		WKey = 1;
-		break;
-	case SDL_SCANCODE_A:
-		AKey = 1;
-		break;
-	case SDL_SCANCODE_S:
-		SKey = 1;
-		break;
-	case SDL_SCANCODE_D:
-		DKey = 1;
-		break;
-	default:
-		break;
-	}
+bool InputManager::m_GetKey(int Key){
+	if (m_Keys[Key])
+		return true;
+	else
+		return false;
 }
 
-void InputManager::UnKeyboardState(SDL_KeyboardEvent& Keys)
-{
-	//Reverse of before
-	switch (Keys.keysym.scancode) {
-	case SDL_SCANCODE_W:
-		WKey = 0;
-		break;
-	case SDL_SCANCODE_A:
-		AKey = 0;
-		break;
-	case SDL_SCANCODE_S:
-		SKey = 0;
-		break;
-	case SDL_SCANCODE_D:
-		DKey = 0;
-		break;
-	default:
-		break;
-	}
-}
-
-void InputManager::SetMouseClick(SDL_MouseButtonEvent& Button) {
+void InputManager::m_SetMouseClick(SDL_MouseButtonEvent& Button) {
 	//Checking both left and right buttons to ensure 
 	if (Button.button == SDL_BUTTON_LEFT)
-		LeftMB = 1;
+		m_LeftMB = 1;
 	if (Button.button == SDL_BUTTON_RIGHT)
-		RightMB = 1;
+		m_RightMB = 1;
 }
 
-void InputManager::UnMouseClick(SDL_MouseButtonEvent& Button)
+void InputManager::m_UnMouseClick(SDL_MouseButtonEvent& Button)
 {
 	if (Button.button == SDL_BUTTON_LEFT)
-		LeftMB = 0;
+		m_LeftMB = 0;
 	if (Button.button == SDL_BUTTON_RIGHT)
-		RightMB = 0;
+		m_RightMB = 0;
 }
