@@ -2,20 +2,21 @@
 /*Dylan Beauchemin*/
 /*September 29, 2020*/
 #include <SDL/SDL.h>
+#include <map>
 
-class InputManager
-{
+class InputManager{
 public:
-	bool LeftMB, RightMB, WKey, AKey, SKey, DKey;
-	int MPosX, MPosY;
+	bool m_LeftMB, m_RightMB;
+	int m_MPosX, m_MPosY;
 	InputManager();
 	~InputManager();
-	void Update();
+	void m_Update();
+	bool m_GetKey(int Key);
 private:
-	SDL_Event InputEvent;
-	void SetKeyboardState(SDL_KeyboardEvent& Keys);
-	void UnKeyboardState(SDL_KeyboardEvent& Keys);
-	void SetMouseClick(SDL_MouseButtonEvent& Button);
-	void UnMouseClick(SDL_MouseButtonEvent& Button);
+	SDL_Event m_InputEvent;
+	std::map<int, bool> m_Keys;
+	//const Uint8* CurrentKeystate;
+	void m_SetMouseClick(SDL_MouseButtonEvent& Button);
+	void m_UnMouseClick(SDL_MouseButtonEvent& Button);
 };
 
