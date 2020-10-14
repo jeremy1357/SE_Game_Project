@@ -34,11 +34,11 @@ SpriteRenderer::SpriteRenderer()
 {
 }
 
-void SpriteRenderer::on_init(Camera& camera, TextureCache& textureCache)
+void SpriteRenderer::on_init(Camera& camera, TextureCache& textureCache, const std::string& projectDirectory)
 {
 	m_camera = &camera;
 	m_textureCache = &textureCache;
-
+	m_resourceDirectory = projectDirectory + "Resources\\Textures\\";
 	// TODO: Shader initialization code here!
 	m_shader.init(SPRITE_VERTEX_SHADER, SPRITE_FRAGMENT_SHADER);
 	m_shader.add_attributes({ "vertexPosition", "vertexColor", "vertexUV" });
@@ -91,11 +91,7 @@ void SpriteRenderer::on_update()
 
 void SpriteRenderer::on_render()
 {
-
-
 	m_shader.set_uniform("tex", 0);
-	//m_shader.set_uniform("cameraRight", cameraRight);
-	//m_shader.set_uniform("cameraUp", cameraUp);
 
 	// Bind shader
 	m_shader.bind();
@@ -126,12 +122,6 @@ void SpriteRenderer::on_render()
 
 	m_shader.unbind();
 
-
-	// Bind texture
-
-
-	// Unbind shader
-
 	// At the end of each render. Clear batches
 	m_spriteBatches.clear();
 }
@@ -139,7 +129,7 @@ void SpriteRenderer::on_render()
 void SpriteRenderer::add_sprite_to_batch(glm::vec2 position, 
 	glm::vec2 dimensions, std::string textureName, float dirAngle)
 {
-	GLuint textureID = m_textureCache->get_texture_id(textureName);
+	GLuint textureID = m_textureCache->get_texture_id(m_resourceDirectory + textureName);
 	int batchIndex = -1;
 	// Check to see if any stored batches matches this sprites texture ID
 	// If not, create a new batch

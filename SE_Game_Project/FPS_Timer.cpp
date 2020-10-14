@@ -1,32 +1,24 @@
 #include "FPS_Timer.h"
+#include <iostream>
+#include <chrono>
 
-duration<double> uptime()
+//Need to test and see if the fps being measured is milliseconds or in frames per second
+
+duration<double> FPS_Timer::Start_fps()	//This function begins the timer for the FPS
 {
-	if (first_tp == steady_clock::time_point{})
-		return duration<double>{ 0 };
-
-	return steady_clock::now() - first_tp;
+	first_tp = steady_clock::time_point{};	//reset the first timer point to keep fps consistent
+	return duration<double> {0};
 }
 
-double fps()
+duration<double> FPS_Timer::End_fps()	//This Funciton ends the timer and calculates how long the the updates were
 {
-	const double uptime_sec = uptime().count();
+	if (first_tp == steady_clock::time_point{})	//if the first time point is not 0, then the time elapsed is the new time - old time
+		return duration<double> {0};
 
-	if (uptime_sec == 0)
-		return 0;
+	duration<double> m_fps_timer =  steady_clock::now() - first_tp;	//gets the amount of milliseconds that have passed
 
-	return fps_counter / uptime_sec;
-}
-
-void run_fps()
-{
-	std::cout << "Start FPS: " << fps() << '\n';
-	first_tp = std::chrono::steady_clock::now();
-
-	while (1)
+	if (m_fps_timer.count() < 17)	//if the time is less than 17 milliseconds, then sleep to get the fps up to ~60
 	{
-		std::cout << "FPS: " << fps() << '\n';
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
-		fps_counter++;
+		std::this_thread::sleep_for(milliseconds{ 10 }); //10 is a place holder for now to keep the function going
 	}
 }

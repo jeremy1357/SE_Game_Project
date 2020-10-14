@@ -13,10 +13,12 @@ public:
 	void update();
 	int get_width() { return m_width; }
 	int get_height() { return m_height; }
-	SDL_Window* m_window = nullptr;
+	SDL_Window* get_window_handle() { return m_windowHandle; }
 	SDL_GLContext glContext;
 
 private:
+	SDL_Window* m_windowHandle = nullptr;
+
 	int m_width = 0;
 	int m_height = 0;
 	float m_aspectRatio = 1.0f;

@@ -21,20 +21,16 @@ class SpriteRenderer
 {
 public:
 	SpriteRenderer();
-	void on_init(Camera& camera, TextureCache& textureCache);
+	void on_init(Camera& camera, TextureCache& textureCache, const std::string& projectDirectory);
 	void on_update();
 	void on_render();
 	void add_sprite_to_batch(glm::vec2 position, glm::vec2 dimensions, std::string textureName, float dirAngle);
 
 private:
+	std::string m_resourceDirectory = "";
 	std::vector<SpriteBatch> m_spriteBatches;
-
 	Camera* m_camera;
 	TextureCache* m_textureCache;
-
-	//Vertex testVertices[4];
-	//GLuint m_indices[6];
-
 	Shader m_shader;
 	GLuint m_playerVBO;
 	GLuint m_playerVAO;
