@@ -47,7 +47,7 @@ void SpriteRenderer::on_init(Camera& camera, TextureCache& textureCache, const s
 	glBindBuffer(GL_ARRAY_BUFFER, m_playerVBO);
 
 
-	// Each vertex object contains three atrributes.
+	// Each vertex object contains three attributes.
 	// 1) Position -> glm::vec2
 	// 2) ColorRGBA32 -> uint8_t rgba[4]
 	// 3) UV -> glm::vec2
@@ -291,7 +291,7 @@ void SpriteRenderer::add_sprite_to_batch(
 	br.x += dimensions.x;
 	br.y -= dimensions.y;
 
-	int index = it->vertices.size();
+	uint32_t index = it->vertices.size();
 	it->vertices.resize(index + 4);
 	// Add in the new vertices. Rotate each vertex
 	it->vertices[index++] = VertexSimple(tl, tlUV);

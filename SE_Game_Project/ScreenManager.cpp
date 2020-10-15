@@ -74,7 +74,7 @@ void ScreenManager::update()
 	m_inputManager.m_Update();
 	// Verify that the currentScreen points to a valid memory address
 	// If so, call that screens update function to perform specific update functionality
-	// Ex) Can call the gameplay screen which updates NPCs
+	// Ex) Can call the game play screen which updates NPCs
 	// ETC....
 	for (auto& it : m_screens) {
 		switch (it.second->m_screenState) {

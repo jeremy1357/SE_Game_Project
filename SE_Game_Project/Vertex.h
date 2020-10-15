@@ -7,7 +7,7 @@
 #include <math.h>
 
 struct Vertex {
-	Vertex(glm::vec2 position, glm::vec2 uv) {
+	Vertex(const glm::vec2& position, const glm::vec2& uv) {
 		this->position = position;
 		this->uv = uv;
 	}
