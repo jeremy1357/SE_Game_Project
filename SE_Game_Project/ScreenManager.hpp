@@ -4,6 +4,9 @@
 #pragma once
 #include "Screen.hpp"
 #include "SDLWindow.h"
+#include "FPS_Timer.h"
+#include "InputManager.h"
+
 #include <unordered_map>
 #include <GL/glew.h>
 #include <string.h>
@@ -37,6 +40,7 @@ protected:
 	std::unordered_map<int, Screen*> m_screens;
 	bool m_isProgramRunning = false;
 	// TODO: Add the input manager
-
+	FPS_Timer m_timer;
+	InputManager m_inputManager;
 };
 
