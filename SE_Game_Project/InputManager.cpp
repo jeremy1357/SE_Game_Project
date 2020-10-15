@@ -1,66 +1,67 @@
 /*Dylan Beauchemin*/
 /*September 29, 2020*/
-#include <SDL/SDL.h>
-#include <map>
+
 #include "InputManager.h"
 
-
-
 InputManager::InputManager() {
-	//Constructor
-	m_LeftMB = 0;
-	m_RightMB = 0;
-	m_MPosX = 0;
-	m_MPosY = 0;
+	// Constructor
+	m_leftMB = 0;
+	m_rightMB = 0;
+	m_mPosX = 0;
+	m_mPosY = 0;
 
-	//CurrentKeystate = SDL_GetKeyboardState(NULL);
+	//CurrentKeystate = SDL_GetKeyboardState(NULL); //ignore this
 }
 
 InputManager::~InputManager() {
 
 }
 
-void InputManager::m_Update() {
-	//SDL Events Loop - When no events, goes to 0
-	//October 6, 2020
-	while (SDL_PollEvent(&m_InputEvent)) {
-		switch (m_InputEvent.type) {
+void InputManager::Update() {
+	// SDL Events Loop - When no events, goes to 0
+	// October 6, 2020
+	while (SDL_PollEvent(&m_inputEvent)) {
+		switch (m_inputEvent.type) {
+			// using SDL keycodes
+			// https://wiki.libsdl.org/SDL_Keycode
 		case SDL_MOUSEBUTTONDOWN:
-			m_SetMouseClick(m_InputEvent.button);
+			SetMouseClick(m_inputEvent.button);
 			break;
 		case SDL_MOUSEBUTTONUP:
-			m_UnMouseClick(m_InputEvent.button);
+			UnMouseClick(m_inputEvent.button);
 		case SDL_KEYDOWN:
-			m_Keys[m_InputEvent.key.keysym.scancode] = true;
+			m_keys[m_inputEvent.key.keysym.sym] = true;
 		case SDL_KEYUP:
-			m_Keys[m_InputEvent.key.keysym.scancode] = false;
+			m_keys[m_inputEvent.key.keysym.sym] = false;
 		default:
 			break;
 		}
 	}
-	//Mouse position updated at the addresses of MPos
-	SDL_GetRelativeMouseState(&m_MPosX, &m_MPosY);
+	// Mouse position updated at the addresses of MPos
+	SDL_GetRelativeMouseState(&m_mPosX, &m_mPosY);
 }
 
-bool InputManager::m_GetKey(int Key){
-	if (m_Keys[Key])
+bool InputManager::GetKey(int key){
+	// Inputs should be keycodes
+	if (m_keys[key])
 		return true;
 	else
 		return false;
+	// Checks keymap to see if keys are pressed
 }
 
-void InputManager::m_SetMouseClick(SDL_MouseButtonEvent& Button) {
-	//Checking both left and right buttons to ensure 
-	if (Button.button == SDL_BUTTON_LEFT)
-		m_LeftMB = 1;
-	if (Button.button == SDL_BUTTON_RIGHT)
-		m_RightMB = 1;
+void InputManager::SetMouseClick(SDL_MouseButtonEvent& button) {
+	// Checking both left and right buttons
+	if (button.button == SDL_BUTTON_LEFT)
+		m_leftMB = 1;
+	if (button.button == SDL_BUTTON_RIGHT)
+		m_rightMB = 1;
 }
 
-void InputManager::m_UnMouseClick(SDL_MouseButtonEvent& Button)
+void InputManager::UnMouseClick(SDL_MouseButtonEvent& button)
 {
-	if (Button.button == SDL_BUTTON_LEFT)
-		m_LeftMB = 0;
-	if (Button.button == SDL_BUTTON_RIGHT)
-		m_RightMB = 0;
+	if (button.button == SDL_BUTTON_LEFT)
+		m_leftMB = 0;
+	if (button.button == SDL_BUTTON_RIGHT)
+		m_rightMB = 0;
 }
