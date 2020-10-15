@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterManager.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="FPS_Timer.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterManager.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ColorRGBA32.h" />
     <ClInclude Include="FPS_Timer.h" />
     <ClInclude Include="GameScreen.h" />
