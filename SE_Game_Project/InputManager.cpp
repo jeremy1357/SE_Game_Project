@@ -17,7 +17,7 @@ InputManager::~InputManager() {
 
 }
 
-void InputManager::Update() {
+void InputManager::update() {
 	// SDL Events Loop - When no events, goes to 0
 	// October 6, 2020
 	while (SDL_PollEvent(&m_inputEvent)) {
@@ -25,10 +25,10 @@ void InputManager::Update() {
 			// using SDL keycodes
 			// https://wiki.libsdl.org/SDL_Keycode
 		case SDL_MOUSEBUTTONDOWN:
-			SetMouseClick(m_inputEvent.button);
+			set_mouse_click(m_inputEvent.button);
 			break;
 		case SDL_MOUSEBUTTONUP:
-			UnMouseClick(m_inputEvent.button);
+			un_mouse_click(m_inputEvent.button);
 		case SDL_KEYDOWN:
 			m_keys[m_inputEvent.key.keysym.sym] = true;
 		case SDL_KEYUP:
@@ -41,7 +41,7 @@ void InputManager::Update() {
 	SDL_GetRelativeMouseState(&m_mPosX, &m_mPosY);
 }
 
-bool InputManager::GetKey(int key){
+bool InputManager::get_key(int key){
 	// Inputs should be keycodes
 	if (m_keys[key])
 		return true;
@@ -50,7 +50,7 @@ bool InputManager::GetKey(int key){
 	// Checks keymap to see if keys are pressed
 }
 
-void InputManager::SetMouseClick(SDL_MouseButtonEvent& button) {
+void InputManager::set_mouse_click(SDL_MouseButtonEvent& button) {
 	// Checking both left and right buttons
 	if (button.button == SDL_BUTTON_LEFT)
 		m_leftMB = 1;
@@ -58,7 +58,7 @@ void InputManager::SetMouseClick(SDL_MouseButtonEvent& button) {
 		m_rightMB = 1;
 }
 
-void InputManager::UnMouseClick(SDL_MouseButtonEvent& button)
+void InputManager::un_mouse_click(SDL_MouseButtonEvent& button)
 {
 	if (button.button == SDL_BUTTON_LEFT)
 		m_leftMB = 0;
