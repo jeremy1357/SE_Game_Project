@@ -78,7 +78,7 @@
     <ClCompile Include="TextureCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
+    <ClCompile Include="SettingsScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,7 +155,7 @@
     <ClInclude Include="TextureCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
+    <ClInclude Include="SettingsScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

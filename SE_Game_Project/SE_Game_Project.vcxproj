@@ -166,6 +166,7 @@
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
+    <ClCompile Include="SettingsScreen.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="TextureCache.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Screen.hpp" />
     <ClInclude Include="ScreenManager.hpp" />
     <ClInclude Include="SDLWindow.h" />
+    <ClInclude Include="SettingsScreen.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="TextureCache.h" />

@@ -12,10 +12,12 @@ void MenuScreen::on_init()
 
 void MenuScreen::on_entry()
 {
+	m_screenState = ScreenState::ACTIVE;
 }
 
 void MenuScreen::on_exit()
 {
+	m_screenState = ScreenState::INACTIVE;
 }
 
 void MenuScreen::on_render()

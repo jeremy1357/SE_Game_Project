@@ -10,9 +10,10 @@ void ScreenManager::runProgram()
 	this->enable();
 	while (m_isProgramRunning) {
 		// FPS Timer START would go HERE
-
+		//m_timer.Start_fps();
 		update();
 		render();
+		//m_timer.End_fps();
 
 		// FPS Timer END would go HERE
 
@@ -70,10 +71,10 @@ void ScreenManager::update()
 	// the entire game here.
 	// Ex) The input manager update function should be called here
 	// Since every screen depends on it
-
+	m_inputManager.m_Update();
 	// Verify that the currentScreen points to a valid memory address
 	// If so, call that screens update function to perform specific update functionality
-	// Ex) Can call the gameplay screen which updates NPCs
+	// Ex) Can call the game play screen which updates NPCs
 	// ETC....
 	for (auto& it : m_screens) {
 		switch (it.second->m_screenState) {
@@ -93,6 +94,7 @@ void ScreenManager::render()
 	// This stuff must be done every render. Ignore
 	glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	glLoadIdentity();
 
 	ImGui_ImplOpenGL3_NewFrame();
