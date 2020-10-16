@@ -3,6 +3,9 @@
 #include <iostream>
 
 #include "GameScreen.h"
+#include "MenuScreen.h"
+#include "SettingsScreen.h"
+
 #include "ScreenManager.hpp"
 #include <glm/glm.hpp>
 
@@ -14,7 +17,9 @@ ScreenManager gameManager;
 // If we do, add the unique screen ID here,
 // Example, SETTINGS = 1
 enum ScreenKeys {
-	GAME = 0
+	GAME = 0,
+	MENU = 1,
+	SETTINGS = 2
 };
 
 
@@ -30,13 +35,20 @@ int main(int argc, char** argv)
 	// by the system. NOT US
 	// LEARN THIS
 	std::unique_ptr<GameScreen> gameScreen = nullptr;
+	std::unique_ptr<MenuScreen> menuScreen = nullptr;
+	std::unique_ptr<SettingsScreen> settingsScreen = nullptr;
+
 	// We then create a unique ptr of GameScreen and call its
 	// constructor with a numeric ID which will ONLY be associated
 	// the gameplay screen. I made an enum to visualize this easier
 	gameScreen = std::make_unique<GameScreen>(ScreenKeys::GAME);
+	menuScreen = std::make_unique<MenuScreen>(ScreenKeys::MENU);
+	settingsScreen = std::make_unique<SettingsScreen>(ScreenKeys::SETTINGS);
 
 	// Now give our GameScreen object to the screen manager so it can manage it
 	gameManager.addScreen(gameScreen.get(), false);
+	gameManager.addScreen(menuScreen.get(), false);
+	gameManager.addScreen(settingsScreen.get(), false);
 
 
 	// This sets our current screen to the gameplay screen

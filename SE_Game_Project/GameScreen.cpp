@@ -37,6 +37,7 @@ void GameScreen::on_render()
 	//m_spriteRenderer.add_sprite_to_batch(glm::vec2(-100.0f), glm::vec2(25.0f), "Ground_01.PNG", 0.0f);
 	//m_spriteRenderer.add_sprite_to_batch(glm::vec2(-400.0f), glm::vec2(25.0f, 30.0f), "Ground_01.PNG", 45.0f);
 	m_levelManager.render(glm::vec2(0.0, 0.0), glm::vec2(0.0f));
+	m_spriteRenderer.add_sprite_to_batch(glm::vec2(0.0f), glm::vec2(25.0f), "player.png", 45.0f);
 
 	m_spriteRenderer.on_render();
 
@@ -55,7 +56,7 @@ void GameScreen::on_update()
 	// EX) updateParticleManager();
 
 	m_spriteRenderer.on_update();
-	m_camera.update_camera(glm::vec2(1500.0f, 1500.0f));
+	m_camera.update_camera(glm::vec2(0.0f, 0.0f));
 
 	if (m_screenManager->m_inputManager.get_key(SDLK_w)) {
 		std::cout << "Hello world" << std::endl;

@@ -2,6 +2,8 @@
 // October 10 19, 2020
 
 #pragma once
+#define _USE_MATH_DEFINES
+
 #include <glm/glm.hpp>
 #include "ColorRGBA32.h"
 #include <math.h>
@@ -44,18 +46,17 @@ struct VertexSimple {
 	}
 
 	void rotate(float angle, glm::vec2 centerPoint) {
-		float xx = sin(angle);
-		float yy = cos(angle);
+		float s = sin(angle * M_PI / 180.0);
+		float c = cos(angle * M_PI / 180.0);
 
-		centerPoint.x -= position.x;
-		centerPoint.y -= position.y;
+		position -= centerPoint;
 
 		glm::vec2 temp;
-		temp.x = position.x * yy - position.y * xx;
-		temp.y = position.x * xx + position.y * yy;
+		temp.x = position.x * c - position.y * s;
+		temp.y = position.x * s + position.y * c;
 
-		position.x += temp.x + centerPoint.x;
-		position.y += temp.y + centerPoint.y;
+		position.x = temp.x + centerPoint.x;
+		position.y = temp.y + centerPoint.y;
 
 	}
 

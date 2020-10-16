@@ -166,14 +166,15 @@ void SpriteRenderer::on_render()
 	glm::mat4 projectionMatrix = m_camera->m_cameraMatrix;
 	m_shader.set_uniform("cameraMatrix", projectionMatrix);
 	glBindVertexArray(m_playerVAO);
-	glActiveTexture(GL_TEXTURE0);
 
 	for (size_t i = 0; i < offsetStarts.size(); i++) {
+		glActiveTexture(GL_TEXTURE0);
+
 		glBindTexture(GL_TEXTURE_2D, m_spriteBatches[i].textureID);
 		glDrawRangeElements(GL_TRIANGLES, offsetStarts[i], allIndices.size(), offsetSizes[i], GL_UNSIGNED_INT, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 	}
-	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glBindVertexArray(0);
 
@@ -219,34 +220,32 @@ void SpriteRenderer::add_sprite_to_batch(
 	else {
 		it = m_spriteBatches.begin() + batchIndex;
 	}
+
 	glm::vec2 tl = position;
+	glm::vec2 tr = position;
+	glm::vec2 bl = position;
+	glm::vec2 br = position;
+
 	tl.x -= dimensions.x;
 	tl.y += dimensions.y;
-	glm::vec2 tr = position;
 	tr.x += dimensions.x;
 	tr.y += dimensions.y;
-	glm::vec2 bl = position;
 	bl.x -= dimensions.x;
 	bl.y -= dimensions.y;
-	glm::vec2 br = position;
 	br.x += dimensions.x;
 	br.y -= dimensions.y;
-	// These are constant. Dont change
-	glm::vec2 tlUV = glm::vec2(0.0, 1.0);
-	glm::vec2 trUV = glm::vec2(1.0, 1.0);
-	glm::vec2 blUV = glm::vec2(0.0, 0.0);
-	glm::vec2 brUV = glm::vec2(1.0, 0.0);
 
+	uint32_t index = it->vertices.size();
+	it->vertices.resize(index + 4);
 	// Add in the new vertices. Rotate each vertex
-	it->vertices.push_back(VertexSimple(tl, tlUV));
-	it->vertices.back().rotate(dirAngle, position);
-	it->vertices.push_back(VertexSimple(tr, trUV));
-	it->vertices.back().rotate(dirAngle, position);
-	it->vertices.push_back(VertexSimple(bl, blUV));
-	it->vertices.back().rotate(dirAngle, position);
-	it->vertices.push_back(VertexSimple(br, brUV));
-	it->vertices.back().rotate(dirAngle, position);
-
+	it->vertices[index] = VertexSimple(tl, tlUV);
+	it->vertices[index++].rotate(dirAngle, position);
+	it->vertices[index] = VertexSimple(tr, trUV);
+	it->vertices[index++].rotate(dirAngle, position);
+	it->vertices[index] = VertexSimple(bl, blUV);
+	it->vertices[index++].rotate(dirAngle, position);
+	it->vertices[index] = VertexSimple(br, brUV);
+	it->vertices[index].rotate(dirAngle, position);
 
 
 }

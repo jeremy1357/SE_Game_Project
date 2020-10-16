@@ -101,7 +101,7 @@ void LevelManager::update() {
 
 GLuint LevelManager::get_texture_ID(const char& key)
 {
-	std::map<char, GLuint>::iterator it = m_textureLookup.find('#');
+	std::map<char, GLuint>::iterator it = m_textureLookup.find(key);
 	if (it != m_textureLookup.end()) {
 		return it->second;
 	}
