@@ -15,6 +15,7 @@ struct SpriteBatch {
 	std::vector<VertexSimple> vertices;
 	std::vector<GLuint> indices;
 	GLuint textureID;
+	GLuint numSquares = 0;
 };
 
 class SpriteRenderer
@@ -42,15 +43,17 @@ private:
 	std::string m_resourceDirectory = "";
 	std::vector<SpriteBatch> m_dynamicBatches;
 	std::vector<SpriteBatch> m_staticBatches;
+	std::vector<GLuint> allIndices;
+	std::vector<VertexSimple> staticVertices;
 
 	bool m_doesStaticBatchesNeedRender = true;
 	Camera* m_camera;
 	TextureCache* m_textureCache;
 	Shader m_shader;
 
-	GLuint m_dynamicVBO;
-	GLuint m_dynamicVAO;
-	GLuint m_dynamicEBO;
+	//GLuint m_dynamicVBO;
+	//GLuint m_dynamicVAO;
+	//GLuint m_dynamicEBO;
 
 	GLuint m_staticVBO;
 	GLuint m_staticVAO;
