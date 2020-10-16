@@ -12,15 +12,7 @@
 
 ScreenManager gameManager;
 
-// As of right now, only screen is the gameplay screen
-// In the future we may have a main menu, settings, etc...
-// If we do, add the unique screen ID here,
-// Example, SETTINGS = 1
-enum ScreenKeys {
-	GAME = 0,
-	MENU = 1,
-	SETTINGS = 2
-};
+
 
 
 int main(int argc, char** argv) 
@@ -53,7 +45,7 @@ int main(int argc, char** argv)
 
 	// This sets our current screen to the game play screen
 	// In the future, change to main menu
-	gameManager.setScreen(ScreenKeys::GAME);
+	gameManager.setScreen(ScreenKeys::MENU);
 
 
 	// Now give off control the manager to run everything else
@@ -61,13 +53,6 @@ int main(int argc, char** argv)
 	// Dylan and Corey may need to add stuff to the ScreenManager
 	gameManager.runProgram();
 
-
-	// This is a dirty way to stop the terminal from closing automatically
-	// after we click exit on the game. Useful for seeing any prints to the
-	// terminal before shutdown
-	// Bascially a hold statement
-	char a;
-	std::cin >> a;
 
 	return 0;
 }

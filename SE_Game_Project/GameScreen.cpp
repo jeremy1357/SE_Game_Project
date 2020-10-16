@@ -40,6 +40,12 @@ void GameScreen::on_render()
 	m_spriteRenderer.add_sprite_to_batch(glm::vec2(0.0f), glm::vec2(25.0f), "player.png", 45.0f);
 	m_spriteRenderer.on_render();
 
+	if (ImGui::Button("Main Menu")) {
+		m_screenManager->setScreen(ScreenKeys::MENU);
+	}
+
+
+
 }
 
 void GameScreen::on_update()

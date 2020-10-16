@@ -11,6 +11,16 @@
 #include <GL/glew.h>
 #include <string.h>
 
+// As of right now, only screen is the gameplay screen
+// In the future we may have a main menu, settings, etc...
+// If we do, add the unique screen ID here,
+// Example, SETTINGS = 1
+enum ScreenKeys {
+	GAME = 0,
+	MENU = 1,
+	SETTINGS = 2
+};
+
 class Screen;
 
 class ScreenManager
@@ -34,11 +44,12 @@ public:
 	FPS_Timer m_timer;
 	InputManager m_inputManager;
 
+	bool m_isProgramRunning = false;
 protected:
 	std::string m_projectDirectory = "";
 	Screen* m_currentScreen = nullptr;
 	std::unordered_map<int, Screen*> m_screens;
-	bool m_isProgramRunning = false;
+	
 	// TODO: Add the input manager
 };
 
