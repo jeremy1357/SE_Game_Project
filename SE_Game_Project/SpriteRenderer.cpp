@@ -22,7 +22,7 @@ const char* SPRITE_FRAGMENT_SHADER = {
 	"uniform sampler2D tex;\n"
 	"void main()\n"
 	"{ \n"
-		"FragColor = texture(tex, fragmentUV); \n"
+		"FragColor = texture(tex, -fragmentUV); \n"
 	"} \n"};
 
 
@@ -74,92 +74,77 @@ void SpriteRenderer::on_update()
 
 void SpriteRenderer::on_render()
 {
-	std::vector<VertexSimple> allVertices;
-	std::vector<GLuint> textureIDs;
-	std::vector<GLuint> offsetStarts;
-	std::vector<GLuint> offsetSizes;
+
+
+	//std::vector<VertexSimple> allVertices;
+	//std::vector<GLuint> textureIDs;
+	//std::vector<GLuint> offsetStarts;
+	//std::vector<GLuint> offsetSizes;
+
+
+	//for (size_t i = 0; i < m_spriteBatches.size(); i++) {
+	//	GLuint start = 0;
+	//	if (i != 0) {
+	//		for (size_t x = 0; x < offsetStarts.size(); x++) {
+	//			start += m_spriteBatches[x].vertices.size() * 6;
+	//		}
+	//	}
+	//	allVertices.insert(allVertices.end(), m_spriteBatches[i].vertices.begin(), m_spriteBatches[i].vertices.end());
+	//	offsetStarts.push_back(start);
+	//	offsetSizes.push_back(m_spriteBatches[i].vertices.size() * 6);
+
+	//	textureIDs.push_back(m_spriteBatches[i].textureID);
+	//}
+
+
+	//std::vector<GLuint> allIndices;
+	//// Resize now for performance
+	//allIndices.resize(allVertices.size() * 6);
+
+	//GLuint startingIndex = 0;
+
+	//for (size_t i = 0; i < allIndices.size(); i+= 6) {
+	//	// Store vertex indices 
+	//	allIndices[i] = startingIndex;
+	//	allIndices[i + 1] = (startingIndex + 1);
+	//	allIndices[i + 2] = (startingIndex + 2);
+	//	allIndices[i + 3] = (startingIndex + 2);
+	//	allIndices[i + 4] = (startingIndex + 1);
+	//	allIndices[i + 5] = (startingIndex + 3);
+	//	startingIndex += 4;
+	//}
+	//glBindVertexArray(m_playerVAO);
+	//glBindBuffer(GL_ARRAY_BUFFER, m_playerVBO);
+	//GLuint vertexDataSize = allVertices.size() * sizeof(VertexSimple);
+	//glBufferData(GL_ARRAY_BUFFER, vertexDataSize, &allVertices[0], GL_DYNAMIC_DRAW);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+	//GLuint elementDataSize = allIndices.size() * sizeof(GLuint);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_spriteEBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, &allIndices[0], GL_DYNAMIC_DRAW);
+
+	//glBindVertexArray(0);
+
 
 
 	for (size_t i = 0; i < m_spriteBatches.size(); i++) {
-		GLuint start = 0;
-		if (i != 0) {
-			for (size_t x = 0; x < offsetStarts.size(); x++) {
-				start += m_spriteBatches[x].vertices.size() * 6;
-			}
+		m_spriteBatches[i].indices.resize(m_spriteBatches[i].vertices.size() * 6);
+		GLuint startIndex = 0;
+		for (size_t x = 0; x < m_spriteBatches[i].indices.size(); x += 6) {
+			// Store vertex indices 
+			m_spriteBatches[i].indices[x] = startIndex;
+			m_spriteBatches[i].indices[x + 1] = (startIndex + 1);
+			m_spriteBatches[i].indices[x + 2] = (startIndex + 2);
+			m_spriteBatches[i].indices[x + 3] = (startIndex + 2);
+			m_spriteBatches[i].indices[x + 4] = (startIndex + 1);
+			m_spriteBatches[i].indices[x + 5] = (startIndex + 3);
+			startIndex += 4;
 		}
-		allVertices.insert(allVertices.end(), m_spriteBatches[i].vertices.begin(), m_spriteBatches[i].vertices.end());
-		offsetStarts.push_back(start);
-		offsetSizes.push_back(m_spriteBatches[i].vertices.size() * 6);
-
-		textureIDs.push_back(m_spriteBatches[i].textureID);
 	}
 
 
-	std::vector<GLuint> allIndices;
-	// Resize now for performance
-	allIndices.resize(allVertices.size() * 6);
-
-	GLuint startingIndex = 0;
-
-	for (size_t i = 0; i < allVertices.size(); i+= 6) {
-		// Store vertex indices 
-		allIndices[i] = startingIndex;
-		allIndices[i + 1] = (startingIndex + 1);
-		allIndices[i + 2] = (startingIndex + 2);
-		allIndices[i + 3] = (startingIndex + 2);
-		allIndices[i + 4] = (startingIndex + 1);
-		allIndices[i + 5] = (startingIndex + 3);
-		startingIndex += 4;
-	}
-	glBindVertexArray(m_playerVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_playerVBO);
-	GLuint vertexDataSize = allVertices.size() * sizeof(VertexSimple);
-	glBufferData(GL_ARRAY_BUFFER, vertexDataSize, &allVertices[0], GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-
-	GLuint elementDataSize = allIndices.size() * sizeof(GLuint);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_spriteEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, &allIndices[0], GL_DYNAMIC_DRAW);
-
-	glBindVertexArray(0);
-
-	//// Bind shader
-	//m_shader.bind();
-	//m_shader.set_uniform("tex", 0);
-
-	//glm::mat4 projectionMatrix = m_camera->m_cameraMatrix;
-	//m_shader.set_uniform("cameraMatrix", projectionMatrix);
-	//glBindVertexArray(m_playerVAO);
-
-	//for (int i = 0; i < m_spriteBatches.size(); i++) {
-
-	//	glActiveTexture(GL_TEXTURE0);
-	//	glBindTexture(GL_TEXTURE_2D, m_spriteBatches[i].textureID);
-
-	//	glBindBuffer(GL_ARRAY_BUFFER, m_playerVBO);
-	//	GLuint vertexDataSize = m_spriteBatches[i].vertices.size() * sizeof(VertexSimple);
-	//	glBufferData(GL_ARRAY_BUFFER, vertexDataSize, &m_spriteBatches[i].vertices[0], GL_DYNAMIC_DRAW);
-	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-
-	//	GLuint elementDataSize = m_spriteBatches[i].indices.size() * sizeof(GLuint);
-	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_spriteEBO);
-	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, &m_spriteBatches[i].indices[0], GL_DYNAMIC_DRAW);
-
-	//	glDrawElements(GL_TRIANGLES, m_spriteBatches[i].indices.size(), GL_UNSIGNED_INT, 0);
-	//	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//}
-	//glBindVertexArray(0);
-
-	//m_shader.unbind();
-
-	//// At the end of each render. Clear batches
-	//m_spriteBatches.clear();
-
-
-		// Bind shader
+	// Bind shader
 	m_shader.bind();
 	m_shader.set_uniform("tex", 0);
 
@@ -167,21 +152,62 @@ void SpriteRenderer::on_render()
 	m_shader.set_uniform("cameraMatrix", projectionMatrix);
 	glBindVertexArray(m_playerVAO);
 
-	for (size_t i = 0; i < offsetStarts.size(); i++) {
-		glActiveTexture(GL_TEXTURE0);
+	for (int i = 0; i < m_spriteBatches.size(); i++) {
 
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_spriteBatches[i].textureID);
-		glDrawRangeElements(GL_TRIANGLES, offsetStarts[i], allIndices.size(), offsetSizes[i], GL_UNSIGNED_INT, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, m_playerVBO);
+		GLuint vertexDataSize = m_spriteBatches[i].vertices.size() * sizeof(VertexSimple);
+		glBufferData(GL_ARRAY_BUFFER, vertexDataSize, &m_spriteBatches[i].vertices[0], GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+		GLuint elementDataSize = m_spriteBatches[i].indices.size() * sizeof(GLuint);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_spriteEBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, &m_spriteBatches[i].indices[0], GL_DYNAMIC_DRAW);
+
+		glDrawElements(GL_TRIANGLES, m_spriteBatches[i].indices.size(), GL_UNSIGNED_INT, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 	}
-
 	glBindVertexArray(0);
 
 	m_shader.unbind();
 
 	// At the end of each render. Clear batches
 	m_spriteBatches.clear();
+
+
+		// Bind shader
+
+	//glm::mat4 projectionMatrix = m_camera->m_cameraMatrix;
+	//m_shader.set_uniform("cameraMatrix", projectionMatrix);
+	////glBindVertexArray(m_playerVAO);
+	//m_shader.set_uniform("tex", 0);
+
+
+	//for (int i = 0; i < offsetStarts.size(); i++) {
+
+	//	glActiveTexture(GL_TEXTURE0);
+
+	//	GLuint tID = textureIDs[i];
+	//	GLuint numIndicesToUse = offsetStarts[i] + offsetSizes[i];
+	//	glBindTexture(GL_TEXTURE_2D, tID);
+	//	//glDrawRangeElements(GL_TRIANGLES, offsetStarts[i], numIndicesToUse, offsetSizes[i], GL_UNSIGNED_INT, 0);
+	//	glDrawRangeElements(GL_TRIANGLES, 0, allIndices.size(), offsetSizes[i], GL_UNSIGNED_INT, 0);
+
+	//	glBindTexture(GL_TEXTURE_2D, 0);
+
+
+	//}
+	//glBindVertexArray(0);
+
+
+	//m_shader.unbind();
+
+	// At the end of each render. Clear batches
+	//m_spriteBatches.clear();
 }
 
 void SpriteRenderer::add_sprite_to_batch(

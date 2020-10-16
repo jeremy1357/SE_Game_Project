@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 
 	// We then create a unique ptr of GameScreen and call its
 	// constructor with a numeric ID which will ONLY be associated
-	// the gameplay screen. I made an enum to visualize this easier
+	// the game play screen. I made an enum to visualize this easier
 	gameScreen = std::make_unique<GameScreen>(ScreenKeys::GAME);
 	menuScreen = std::make_unique<MenuScreen>(ScreenKeys::MENU);
 	settingsScreen = std::make_unique<SettingsScreen>(ScreenKeys::SETTINGS);
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 	gameManager.addScreen(settingsScreen.get(), false);
 
 
-	// This sets our current screen to the gameplay screen
+	// This sets our current screen to the game play screen
 	// In the future, change to main menu
 	gameManager.setScreen(ScreenKeys::GAME);
 

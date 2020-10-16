@@ -13,7 +13,7 @@
 // POD Plain-Old-Data
 struct SpriteBatch {
 	std::vector<VertexSimple> vertices;
-	//std::vector<GLuint> indices;
+	std::vector<GLuint> indices;
 	GLuint textureID;
 };
 
@@ -50,10 +50,10 @@ private:
 	GLuint m_spriteEBO;
 
 	// These are constant. Dont change
-	glm::vec2 tlUV = glm::vec2(0.0, 1.0);
-	glm::vec2 trUV = glm::vec2(1.0, 1.0);
-	glm::vec2 blUV = glm::vec2(0.0, 0.0);
-	glm::vec2 brUV = glm::vec2(1.0, 0.0);
+	const glm::vec2 tlUV = glm::vec2(0.0, 1.0);
+	const glm::vec2 trUV = glm::vec2(1.0, 1.0);
+	const glm::vec2 blUV = glm::vec2(0.0, 0.0);
+	const glm::vec2 brUV = glm::vec2(1.0, 0.0);
 
 
 };
