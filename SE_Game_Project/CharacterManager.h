@@ -3,6 +3,7 @@
 
 #include <string>
 #include<glm/glm.hpp>
+#include "InputManager.h"
 
 using namespace std;
 
@@ -21,16 +22,20 @@ class CharacterManager
 	public:
 		CharacterManager();
 		~CharacterManager();
-
-		int GetHealth();
-		void Damage(int amount);
 		string GetName();
-		void SetName(string n);
-		bool is_player_alive();
+		int GetHealth();
 
+		void Damage(int amount);
+		void SetName(string n);
+		void init(InputManager& inputManager);
 		void update();
 
-		Player m_Player;
+		bool is_player_alive();
+
+		Player m_player;
+
+	private:
+		InputManager* m_inputManager = nullptr;
 
 };
 

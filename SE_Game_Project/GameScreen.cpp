@@ -47,12 +47,19 @@ void GameScreen::on_render()
 	//m_levelManager.render(glm::vec2(0.0, 0.0), glm::vec2(0.0f));
 	//m_spriteRenderer.add_sprite_to_batch(glm::vec2(0.0f), glm::vec2(25.0f), "player.png", 45.0f);
 	m_spriteRenderer.on_render();
-
+	
+	ImGui::SetNextWindowBgAlpha(0.35f);
+	
+	
 	if (ImGui::Button("Main Menu")) {
 		m_screenManager->setScreen(ScreenKeys::MENU);
 	}
 
-	ImGui::Text("FPS", m_screenManager->m_timer.m_fps);
+	ImGui::Text("FPS: %fp", m_screenManager->m_timer.m_fps);
+	ImGui::Text("Player Health: %i", m_characterManager.m_Player.health);
+	ImGui::Text("Player Money: %i", m_characterManager.m_Player.money);
+	//ImGui::Text("Zombie Wave: );
+
 
 }
 

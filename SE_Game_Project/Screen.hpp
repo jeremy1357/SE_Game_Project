@@ -4,6 +4,7 @@
 #pragma once
 #include "SDLWindow.h"
 #include "ScreenManager.hpp"
+#include "CharacterManager.h"
 
 enum class ScreenState {
 	BACKGROUND,
@@ -29,6 +30,7 @@ public:
 	// this screen object. Useful if we need to access a 
 	// screen manager variable within a screen
 	ScreenManager* m_screenManager = nullptr;
+	CharacterManager m_characterManager;
 	ScreenState m_screenState = ScreenState::NONE;
 	int m_screenID;
 };
