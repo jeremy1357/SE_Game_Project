@@ -49,7 +49,7 @@ void GameScreen::on_render()
 		m_screenManager->setScreen(ScreenKeys::MENU);
 	}
 
-	ImGui::Text("FPS", m_fps_timer->m_fps);
+	ImGui::Text("FPS", m_screenManager->m_timer.m_fps);
 
 }
 
