@@ -127,21 +127,36 @@ void SpriteRenderer::on_render()
 	//glBindVertexArray(0);
 
 
-
-	for (size_t i = 0; i < m_spriteBatches.size(); i++) {
-		m_spriteBatches[i].indices.resize(m_spriteBatches[i].vertices.size() * 6);
+	for (auto& batch : m_spriteBatches) {
+		batch.indices.resize(batch.vertices.size() * 6);
 		GLuint startIndex = 0;
-		for (size_t x = 0; x < m_spriteBatches[i].indices.size(); x += 6) {
+		for (size_t x = 0; x < batch.indices.size(); x += 6) {
 			// Store vertex indices 
-			m_spriteBatches[i].indices[x] = startIndex;
-			m_spriteBatches[i].indices[x + 1] = (startIndex + 1);
-			m_spriteBatches[i].indices[x + 2] = (startIndex + 2);
-			m_spriteBatches[i].indices[x + 3] = (startIndex + 2);
-			m_spriteBatches[i].indices[x + 4] = (startIndex + 1);
-			m_spriteBatches[i].indices[x + 5] = (startIndex + 3);
+			batch.indices[x] = startIndex;
+			batch.indices[x + 1] = (startIndex + 1);
+			batch.indices[x + 2] = (startIndex + 2);
+			batch.indices[x + 3] = (startIndex + 2);
+			batch.indices[x + 4] = (startIndex + 1);
+			batch.indices[x + 5] = (startIndex + 3);
 			startIndex += 4;
 		}
 	}
+
+
+	//for (size_t i = 0; i < m_spriteBatches.size(); i++) {
+	//	m_spriteBatches[i].indices.resize(m_spriteBatches[i].vertices.size() * 6);
+	//	GLuint startIndex = 0;
+	//	for (size_t x = 0; x < m_spriteBatches[i].indices.size(); x += 6) {
+	//		// Store vertex indices 
+	//		m_spriteBatches[i].indices[x] = startIndex;
+	//		m_spriteBatches[i].indices[x + 1] = (startIndex + 1);
+	//		m_spriteBatches[i].indices[x + 2] = (startIndex + 2);
+	//		m_spriteBatches[i].indices[x + 3] = (startIndex + 2);
+	//		m_spriteBatches[i].indices[x + 4] = (startIndex + 1);
+	//		m_spriteBatches[i].indices[x + 5] = (startIndex + 3);
+	//		startIndex += 4;
+	//	}
+	//}
 
 
 	// Bind shader
@@ -152,25 +167,34 @@ void SpriteRenderer::on_render()
 	m_shader.set_uniform("cameraMatrix", projectionMatrix);
 	glBindVertexArray(m_playerVAO);
 
-	for (int i = 0; i < m_spriteBatches.size(); i++) {
 
+	for (auto& batch : m_spriteBatches) {
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_spriteBatches[i].textureID);
+		glBindTexture(GL_TEXTURE_2D, batch.textureID);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_playerVBO);
-		GLuint vertexDataSize = m_spriteBatches[i].vertices.size() * sizeof(VertexSimple);
-		glBufferData(GL_ARRAY_BUFFER, vertexDataSize, &m_spriteBatches[i].vertices[0], GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		GLuint vertexDataSize = batch.vertices.size() * sizeof(VertexSimple);
+		glBufferData(GL_ARRAY_BUFFER, vertexDataSize, nullptr, GL_DYNAMIC_DRAW);
+		glBufferSubData(GL_ARRAY_BUFFER,
+			0, vertexDataSize,
+			batch.vertices.data());
 
 
-		GLuint elementDataSize = m_spriteBatches[i].indices.size() * sizeof(GLuint);
+
+
+		GLuint elementDataSize = batch.indices.size() * sizeof(GLuint);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_spriteEBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, &m_spriteBatches[i].indices[0], GL_DYNAMIC_DRAW);
+		//glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, batch.indices.data(), GL_DYNAMIC_DRAW);
 
-		glDrawElements(GL_TRIANGLES, m_spriteBatches[i].indices.size(), GL_UNSIGNED_INT, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, nullptr, GL_DYNAMIC_DRAW);
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,
+			0, elementDataSize,
+			batch.indices.data());
 
+		glDrawElements(GL_TRIANGLES, batch.indices.size(), GL_UNSIGNED_INT, 0);
 	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	glBindVertexArray(0);
 
 	m_shader.unbind();
@@ -278,7 +302,6 @@ void SpriteRenderer::add_sprite_to_batch(
 
 void SpriteRenderer::add_sprite_to_batch(
 	const glm::vec2& position, 
-	const glm::vec2& dimensions, 
 	const GLuint& textureID)
 {
 	int batchIndex = -1;
@@ -299,19 +322,15 @@ void SpriteRenderer::add_sprite_to_batch(
 	else {
 		it = m_spriteBatches.begin() + batchIndex;
 	}
-	glm::vec2 tl = position;
-	glm::vec2 tr = position;
-	glm::vec2 bl = position;
-	glm::vec2 br = position;
+	glm::vec2 offset = position * tileDimensions;
+	glm::vec2 tl = offset;
+	glm::vec2 tr = offset;
+	glm::vec2 bl = offset;
+	glm::vec2 br = offset;
 
-	tl.x -= dimensions.x;
-	tl.y += dimensions.y;
-	tr.x += dimensions.x;
-	tr.y += dimensions.y;
-	bl.x -= dimensions.x;
-	bl.y -= dimensions.y;
-	br.x += dimensions.x;
-	br.y -= dimensions.y;
+	tl.y += tileDimensions.y;
+	tr += tileDimensions;
+	br.x += tileDimensions.x;
 
 	uint32_t index = it->vertices.size();
 	it->vertices.resize(index + 4);
@@ -319,6 +338,6 @@ void SpriteRenderer::add_sprite_to_batch(
 	it->vertices[index++] = VertexSimple(tl, tlUV);
 	it->vertices[index++] = VertexSimple(tr, trUV);
 	it->vertices[index++] = VertexSimple(bl, blUV);
-	it->vertices[index] = VertexSimple(br, brUV);
+	it->vertices[index]   = VertexSimple(br, brUV);
 
 }

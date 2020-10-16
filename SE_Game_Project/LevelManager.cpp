@@ -1,5 +1,6 @@
 #include "LevelManager.h"
 #include <fstream>
+#include <iostream>
 
 
 LevelManager::LevelManager() {
@@ -65,6 +66,27 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 		return;
 	}
 
+	glm::vec2 tileCenter(0.0f, 0.0f);
+	for (auto& x : m_mapData) {
+		for (auto& y : x) {
+			switch (y) {
+			case '#':
+				m_renderer->add_sprite_to_batch(tileCenter, get_texture_ID('#'));
+				break;
+			case '-':
+				m_renderer->add_sprite_to_batch(tileCenter, get_texture_ID('-'));
+				break;
+
+			default:
+				break;
+				// Maybe add a texture showing ERROR
+			}
+			tileCenter.y += 1.0f;
+		}
+		tileCenter.x += 1.0f;
+		tileCenter.y = 0.0f;
+	}
+
 	// Go through the 2D vector and render each tile. 
 	// Go of the logic that a tile in location of 0 0 (in the vector)
 	// should be rendered at position x=0, y=0.
@@ -72,27 +94,25 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 	// x = 5 * (width of tile) and y = 7 * (height of tile)
 	// The offset variables account for the size of each tile to correctly
 	// align the tile.
-	for (size_t x = 0; x < m_mapData.size(); x++) {
-		for (size_t y = 0; y < m_mapData[x].size(); y++) {
-			float xOffset = (float)x * (m_tileSize.x * 2.0f);
-			float yOffset = (float)y * (m_tileSize.y * 2.0f);
-			glm::vec2 tileCenter = glm::vec2(xOffset, yOffset);
-			
-			// Determine what the current character is and render its associated texture
-			switch (m_mapData[x][y]) {
-			case '#':
-				m_renderer->add_sprite_to_batch(tileCenter, m_tileSize, get_texture_ID('#'));
-				break;
-			case '-':
-				m_renderer->add_sprite_to_batch(tileCenter, m_tileSize, get_texture_ID('-'));
-				break;
+	//for (size_t x = 0; x < m_mapData.size(); x++) {
+	//	for (size_t y = 0; y < m_mapData[x].size(); y++) {
+	//		glm::vec2 tileCenter = glm::vec2(x, y);
+	//		
+	//		// Determine what the current character is and render its associated texture
+	//		switch (m_mapData[x][y]) {
+	//		case '#':
+	//			m_renderer->add_sprite_to_batch(tileCenter, get_texture_ID('#'));
+	//			break;
+	//		case '-':
+	//			m_renderer->add_sprite_to_batch(tileCenter, get_texture_ID('-'));
+	//			break;
 
-			default:
-				break;
-				// Maybe add a texture showing ERROR
-			}
-		}
-	}
+	//		default:
+	//			break;
+	//			// Maybe add a texture showing ERROR
+	//		}
+	//	}
+	//}
 }
 
 void LevelManager::update() {

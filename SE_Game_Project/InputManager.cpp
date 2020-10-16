@@ -42,7 +42,7 @@ void InputManager::update() {
 		}
 	}
 	// Mouse position updated at the addresses of MPos
-	SDL_GetRelativeMouseState(&m_mPosX, &m_mPosY);
+	SDL_GetMouseState(&m_mPosX, &m_mPosY);
 }
 
 bool InputManager::get_key(int key){

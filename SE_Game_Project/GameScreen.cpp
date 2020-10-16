@@ -57,7 +57,8 @@ void GameScreen::on_update()
 	m_camera.update_camera(glm::vec2(0.0f, 0.0f));
 
 	if (m_screenManager->m_inputManager.get_key(SDLK_w)) {
-		std::cout << "Hello world" << std::endl;
+		std::cout << "Mouse X: " << m_screenManager->m_inputManager.m_mPosX << std::endl;
+		std::cout << "Mouse Y: " << m_screenManager->m_inputManager.m_mPosY << std::endl;
 	}
 	
 
