@@ -18,6 +18,7 @@ InputManager::~InputManager() {
 }
 
 void InputManager::update() {
+
 	// SDL Events Loop - When no events, goes to 0
 	// October 6, 2020
 	while (SDL_PollEvent(&m_inputEvent)) {
@@ -29,10 +30,13 @@ void InputManager::update() {
 			break;
 		case SDL_MOUSEBUTTONUP:
 			un_mouse_click(m_inputEvent.button);
+			break;
 		case SDL_KEYDOWN:
 			m_keys[m_inputEvent.key.keysym.sym] = true;
+			break;
 		case SDL_KEYUP:
 			m_keys[m_inputEvent.key.keysym.sym] = false;
+			break;
 		default:
 			break;
 		}

@@ -22,6 +22,8 @@ void MenuScreen::on_exit()
 
 void MenuScreen::on_render()
 {
+	// ImGui code here
+	// Probably need to create member variables
 
 }
 

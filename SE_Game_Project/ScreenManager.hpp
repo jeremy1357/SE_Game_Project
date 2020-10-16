@@ -30,9 +30,9 @@ public:
 
 	std::string get_project_directory() const { return m_projectDirectory; }
 
-	//Screen* getCurrentScreen();
 	SDLWindow m_window;
-
+	FPS_Timer m_timer;
+	InputManager m_inputManager;
 
 protected:
 	std::string m_projectDirectory = "";
@@ -40,7 +40,5 @@ protected:
 	std::unordered_map<int, Screen*> m_screens;
 	bool m_isProgramRunning = false;
 	// TODO: Add the input manager
-	FPS_Timer m_timer;
-	InputManager m_inputManager;
 };
 

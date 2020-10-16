@@ -40,11 +40,13 @@ void GameScreen::on_render()
 
 	m_spriteRenderer.on_render();
 
+
+	// ImGui code here
+	// Probably need to create member variables
 	ImGui::Text("Hello, world %d", 123);
 	float f = 0.0;
 	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 
-	// Put code here for rendering
 }
 
 void GameScreen::on_update()
@@ -54,6 +56,10 @@ void GameScreen::on_update()
 
 	m_spriteRenderer.on_update();
 	m_camera.update_camera(glm::vec2(1500.0f, 1500.0f));
+
+	if (m_screenManager->m_inputManager.get_key(SDLK_w)) {
+		std::cout << "Hello world" << std::endl;
+	}
 	
 
 }

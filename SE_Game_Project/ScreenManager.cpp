@@ -71,7 +71,7 @@ void ScreenManager::update()
 	// the entire game here.
 	// Ex) The input manager update function should be called here
 	// Since every screen depends on it
-	m_inputManager.m_Update();
+	m_inputManager.update();
 	// Verify that the currentScreen points to a valid memory address
 	// If so, call that screens update function to perform specific update functionality
 	// Ex) Can call the game play screen which updates NPCs

@@ -19,6 +19,8 @@ void SettingsScreen::on_exit()
 
 void SettingsScreen::on_render()
 {
+	// ImGui code here
+	// Probably need to create member variables
 }
 
 void SettingsScreen::on_update()

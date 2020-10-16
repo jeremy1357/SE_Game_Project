@@ -281,13 +281,10 @@ void SpriteRenderer::add_sprite_to_batch(
 
 	tl.x -= dimensions.x;
 	tl.y += dimensions.y;
-
 	tr.x += dimensions.x;
 	tr.y += dimensions.y;
-
 	bl.x -= dimensions.x;
 	bl.y -= dimensions.y;
-
 	br.x += dimensions.x;
 	br.y -= dimensions.y;
 
