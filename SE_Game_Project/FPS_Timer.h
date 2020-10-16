@@ -12,5 +12,6 @@ public:
 
 	steady_clock::time_point first_tp;
 	steady_clock::time_point end_tp;
-	duration<double> m_fps;
+	float m_fps;
+	duration<double> m_fps_timer;
 };
