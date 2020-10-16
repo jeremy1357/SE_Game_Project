@@ -2,7 +2,6 @@
 #include "picoPNG.h"
 #include <iostream>
 #include <fstream>
-#include <windows.h>
 
 TextureCache::TextureCache()
 {
@@ -16,23 +15,19 @@ TextureCache::~TextureCache()
 	}
 }
 
-GLuint TextureCache::get_texture_id(std::string texturePath)
+GLuint TextureCache::get_texture_id(const std::string& texturePath)
 {
-	char buf[256];
-	GetCurrentDirectoryA(256, buf);
-	std::string projectDirectory = std::string(buf) + '\\';
-	projectDirectory += "Resources\\Textures\\";
 	size_t found = texturePath.find_last_of("/") + 1;
 	std::string textureName = texturePath.substr(found);
 
-	std::unordered_map<std::string, Texture>::iterator it;
+	std::map<std::string, Texture>::iterator it;
 	it = m_textureCache.find(textureName);
 
 	// If true has not found the texture and will add it
 	if (it == m_textureCache.end())
 	{
 		Texture newTexture;
-		load_texture_from_PNG(projectDirectory + texturePath, newTexture.textureID);
+		load_texture_from_PNG(texturePath, newTexture.textureID);
 
 		m_textureCache.insert(std::make_pair(texturePath, newTexture));
 		return newTexture.textureID;

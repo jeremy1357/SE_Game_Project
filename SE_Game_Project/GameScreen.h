@@ -9,6 +9,8 @@
 #include "CharacterManager.h"
 #include "GameCollision.h"
 #include "TextureCache.h"
+#include "LevelManager.h"
+
 class GameScreen : public Screen
 {
 public:
@@ -27,4 +29,7 @@ private:
 	SpriteRenderer m_spriteRenderer;
 	Camera m_camera;
 	TextureCache m_textureCache;
+	LevelManager m_levelManager;
+	//ParticleManager m_particleManager;
+
 };

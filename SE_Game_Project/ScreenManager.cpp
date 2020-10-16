@@ -3,15 +3,17 @@
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
+#include <windows.h>
 
 void ScreenManager::runProgram()
 {
 	this->enable();
 	while (m_isProgramRunning) {
 		// FPS Timer START would go HERE
-
+		//m_timer.Start_fps();
 		update();
 		render();
+		//m_timer.End_fps();
 
 		// FPS Timer END would go HERE
 
@@ -41,8 +43,7 @@ void ScreenManager::addScreen(Screen* screen, bool shouldInitializeScreen)
 
 }
 
-void ScreenManager::setScreen(int screenID)
-{
+void ScreenManager::setScreen(int screenID) {
 	// Call the current screens onExit function to do any specific 
 	// requirements it may have
 	if (m_currentScreen != nullptr) {
@@ -70,10 +71,10 @@ void ScreenManager::update()
 	// the entire game here.
 	// Ex) The input manager update function should be called here
 	// Since every screen depends on it
-
+	m_inputManager.update();
 	// Verify that the currentScreen points to a valid memory address
 	// If so, call that screens update function to perform specific update functionality
-	// Ex) Can call the gameplay screen which updates NPCs
+	// Ex) Can call the game play screen which updates NPCs
 	// ETC....
 	for (auto& it : m_screens) {
 		switch (it.second->m_screenState) {
@@ -91,12 +92,13 @@ void ScreenManager::update()
 void ScreenManager::render()
 {
 	// This stuff must be done every render. Ignore
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	glLoadIdentity();
 
 	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_window.m_window);
+	ImGui_ImplSDL2_NewFrame(m_window.get_window_handle());
 	ImGui::NewFrame();
 		
 	// Verify that the currentScreen points to a valid memory address
@@ -117,6 +119,14 @@ void ScreenManager::render()
 // ADD ANY INITIALIZATION CODE TO THIS FUNCTION
 void ScreenManager::init()
 {
+	// KEEP THIS. This is a common source where we can easily get the
+	// project directory.
+	char buf[256];
+	GetCurrentDirectoryA(256, buf);
+	m_projectDirectory = std::string(buf) + '\\';
+	std::cout << "Project directory: " << m_projectDirectory << std::endl;
+
+
 	// Create our window with default resolution
 	int error = m_window.init();
 	if (error != 0) {
@@ -130,7 +140,8 @@ void ScreenManager::init()
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO& io = ImGui::GetIO(); 
+	(void)io;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
@@ -139,7 +150,7 @@ void ScreenManager::init()
 	//ImGui::StyleColorsClassic();
 
 	// Setup Platform/Renderer bindings
-	ImGui_ImplSDL2_InitForOpenGL(m_window.m_window, m_window.glContext);
+	ImGui_ImplSDL2_InitForOpenGL(m_window.get_window_handle(), m_window.glContext);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
 	// Load Fonts
@@ -156,6 +167,8 @@ void ScreenManager::init()
 	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
 	//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\Windows\Fonts\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 	//IM_ASSERT(font != NULL);
+
+
 
 }
 

@@ -1,18 +1,16 @@
 #pragma once
 #include <chrono>
-#include <iostream>
 #include <thread>
 
 using namespace std::chrono;
-steady_clock::time_point first_tp;
-unsigned int m_fps;
-unsigned long fps_counter = 0;
 
 class FPS_Timer
 {
-public:	
-	duration<double> uptime();
-	double fps();
-	void run_fps();
-};
+public:
+	void start_FPS();
+	void end_FPS();
 
+	steady_clock::time_point first_tp;
+	steady_clock::time_point end_tp;
+	duration<double> m_fps;
+};

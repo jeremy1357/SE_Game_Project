@@ -4,8 +4,12 @@
 #pragma once
 #include "Screen.hpp"
 #include "SDLWindow.h"
+#include "FPS_Timer.h"
+#include "InputManager.h"
+
 #include <unordered_map>
 #include <GL/glew.h>
+#include <string.h>
 
 class Screen;
 
@@ -24,14 +28,17 @@ public:
 	void enable();
 	void disable();
 
-	//Screen* getCurrentScreen();
+	std::string get_project_directory() const { return m_projectDirectory; }
+
 	SDLWindow m_window;
+	FPS_Timer m_timer;
+	InputManager m_inputManager;
 
 protected:
+	std::string m_projectDirectory = "";
 	Screen* m_currentScreen = nullptr;
 	std::unordered_map<int, Screen*> m_screens;
 	bool m_isProgramRunning = false;
 	// TODO: Add the input manager
-
 };
 

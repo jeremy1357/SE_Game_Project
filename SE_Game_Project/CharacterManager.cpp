@@ -5,14 +5,9 @@
 
 CharacterManager::CharacterManager()
 {
-	this->m_health = 100;
+	this->m_Player.health = 100;
 }
 
-CharacterManager::CharacterManager(string n)
-{
-	this->m_health = 100;
-	this->m_name = n;
-}
 
 CharacterManager::~CharacterManager()
 {
@@ -21,28 +16,33 @@ CharacterManager::~CharacterManager()
 
 int CharacterManager::GetHealth()
 {
-	return this->m_health;
+	return this->m_Player.health;
 }
 
 void CharacterManager::Damage(int amount)
 {
-	this->m_health -= amount;
+	this->m_Player.health -= amount;
 }
 
 string CharacterManager::GetName()
 {
-	return this->m_name;
+	return this->m_Player.name;
 }
 
-void CharacterManager::SetName(string n)
+void CharacterManager::SetName(string name)
 {
-	this->m_name = n;
+	this->m_Player.name = name;
 }
 
 bool CharacterManager::is_player_alive()
 {
-	if (m_health < 0)
-		return false;
+	if (m_Player.health < 0)
+		return m_Player.isAlive == false;
 	else
-		return true;
+		return m_Player.isAlive == true;
+}
+
+void CharacterManager::update()
+{
+
 }
