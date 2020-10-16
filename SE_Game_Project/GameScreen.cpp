@@ -41,13 +41,6 @@ void GameScreen::on_render()
 
 	m_spriteRenderer.on_render();
 
-
-	// ImGui code here
-	// Probably need to create member variables
-	ImGui::Text("Hello, world %d", 123);
-	float f = 0.0;
-	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-
 }
 
 void GameScreen::on_update()
