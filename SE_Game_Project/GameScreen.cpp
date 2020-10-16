@@ -41,6 +41,12 @@ void GameScreen::on_render()
 
 	m_spriteRenderer.on_render();
 
+	if (ImGui::Button("Main Menu")) {
+		m_screenManager->setScreen(ScreenKeys::MENU);
+	}
+
+
+
 }
 
 void GameScreen::on_update()

@@ -1,5 +1,7 @@
 #include "MenuScreen.h"
 #include "imgui.h"
+#include "ScreenManager.hpp"
+
 
 MenuScreen::MenuScreen(int uniqueScreenID)
 {
@@ -26,10 +28,23 @@ void MenuScreen::on_render()
 	// ImGui code here
 	// Probably need to create member variables
 	ImGui::Begin("Main Menu");
-	ImGui::Button("Play Game");
-	ImGui::Button("Top Scorers");
-	ImGui::Button("Settings");
-	ImGui::Button("Exit Game");
+
+	if (ImGui::Button("Play Game")) {
+		m_screenManager->setScreen(ScreenKeys::GAME);
+	}
+
+	if (ImGui::Button("Top Scorers")) {
+		//m_screenManager->setScreen(ScreenKeys::GAME);
+	}
+
+	if (ImGui::Button("Settings")) {
+		m_screenManager->setScreen(ScreenKeys::SETTINGS);
+	}
+
+	if (ImGui::Button("Exit Game")) {
+		m_screenManager->m_isProgramRunning = false;
+	}
+
 	ImGui::End();
 
 }
