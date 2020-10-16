@@ -2,12 +2,14 @@
 // October 10 19, 2020
 
 #pragma once
+#define _USE_MATH_DEFINES
+
 #include <glm/glm.hpp>
 #include "ColorRGBA32.h"
 #include <math.h>
 
 struct Vertex {
-	Vertex(glm::vec2 position, glm::vec2 uv) {
+	Vertex(const glm::vec2& position, const glm::vec2& uv) {
 		this->position = position;
 		this->uv = uv;
 	}
@@ -30,5 +32,34 @@ struct Vertex {
 
 	glm::vec2 position;
 	ColorRGBA32 color;
+	glm::vec2 uv;
+};
+
+struct VertexSimple {
+	VertexSimple() {
+		this->position = glm::vec2(0.0);
+		this->uv = glm::vec2(0.0);
+	}
+	VertexSimple(const glm::vec2& position, const glm::vec2& uv) {
+		this->position = position;
+		this->uv = uv;
+	}
+
+	void rotate(float angle, glm::vec2 centerPoint) {
+		float s = sin(angle * M_PI / 180.0);
+		float c = cos(angle * M_PI / 180.0);
+
+		position -= centerPoint;
+
+		glm::vec2 temp;
+		temp.x = position.x * c - position.y * s;
+		temp.y = position.x * s + position.y * c;
+
+		position.x = temp.x + centerPoint.x;
+		position.y = temp.y + centerPoint.y;
+
+	}
+
+	glm::vec2 position;
 	glm::vec2 uv;
 };

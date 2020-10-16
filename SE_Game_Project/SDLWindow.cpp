@@ -19,7 +19,7 @@ SDLWindow::~SDLWindow()
 int SDLWindow::init(int width, int height)
 {
 	m_windowHandle = SDL_CreateWindow("Software Engineering Project", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+		SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 	// Check if window was created successfully. If not return 1
 	if (m_windowHandle == nullptr) {

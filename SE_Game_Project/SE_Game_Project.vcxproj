@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterManager.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="FPS_Timer.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
+    <ClCompile Include="SettingsScreen.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="TextureCache.cpp" />
@@ -172,6 +174,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterManager.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ColorRGBA32.h" />
     <ClInclude Include="FPS_Timer.h" />
     <ClInclude Include="GameScreen.h" />
@@ -190,6 +193,7 @@
     <ClInclude Include="Screen.hpp" />
     <ClInclude Include="ScreenManager.hpp" />
     <ClInclude Include="SDLWindow.h" />
+    <ClInclude Include="SettingsScreen.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="TextureCache.h" />

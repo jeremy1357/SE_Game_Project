@@ -15,13 +15,12 @@ TextureCache::~TextureCache()
 	}
 }
 
-GLuint TextureCache::get_texture_id(std::string texturePath)
+GLuint TextureCache::get_texture_id(const std::string& texturePath)
 {
-	
 	size_t found = texturePath.find_last_of("/") + 1;
 	std::string textureName = texturePath.substr(found);
 
-	std::unordered_map<std::string, Texture>::iterator it;
+	std::map<std::string, Texture>::iterator it;
 	it = m_textureCache.find(textureName);
 
 	// If true has not found the texture and will add it

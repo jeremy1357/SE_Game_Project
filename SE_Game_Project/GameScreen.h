@@ -30,5 +30,6 @@ private:
 	Camera m_camera;
 	TextureCache m_textureCache;
 	LevelManager m_levelManager;
+	//ParticleManager m_particleManager;
 
 };
