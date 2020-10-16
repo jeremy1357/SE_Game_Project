@@ -56,8 +56,8 @@ void GameScreen::on_render()
 	}
 
 	ImGui::Text("FPS: %fp", m_screenManager->m_timer.m_fps);
-	ImGui::Text("Player Health: %i", m_characterManager.m_Player.health);
-	ImGui::Text("Player Money: %i", m_characterManager.m_Player.money);
+	ImGui::Text("Player Health: %i", m_characterManager.m_player.health);
+	ImGui::Text("Player Money: %i", m_characterManager.m_player.money);
 	//ImGui::Text("Zombie Wave: );
 
 
