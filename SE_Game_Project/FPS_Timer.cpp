@@ -14,10 +14,10 @@ void FPS_Timer::end_FPS()	//This Funciton ends the timer and calculates how long
 {
 	end_tp = steady_clock::now();	//gets the time from the first first timer point and the end timer point.
 	m_fps_timer = std::chrono::duration_cast<std::chrono::milliseconds>(end_tp - first_tp);
-	std::chrono::milliseconds target(17);
+	std::chrono::milliseconds target(16);
 	const duration<double> sleep = target - m_fps_timer;
 
-	if (m_fps_timer.count() < 17)	//if the time is less than 17 milliseconds, then sleep to get to 17 milliseconds (~60 fps)
+	if (m_fps_timer.count() < double(16))	//if the time is less than 17 milliseconds, then sleep to get to 17 milliseconds (~60 fps)
 	{
 		std::this_thread::sleep_for(sleep); 
 	}

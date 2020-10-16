@@ -61,30 +61,33 @@ void LevelManager::init(
 }
 
 void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) {
-	// Verify that the renderer has been properly initialized with a non-nullptr value
-	if (m_renderer == nullptr) {
-		return;
-	}
-
-	glm::vec2 tileCenter(0.0f, 0.0f);
-	for (auto& x : m_mapData) {
-		for (auto& y : x) {
-			switch (y) {
-			case '#':
-				m_renderer->add_sprite_to_batch(tileCenter, get_texture_ID('#'));
-				break;
-			case '-':
-				m_renderer->add_sprite_to_batch(tileCenter, get_texture_ID('-'));
-				break;
-
-			default:
-				break;
-				// Maybe add a texture showing ERROR
-			}
-			tileCenter.y += 1.0f;
+	if (m_needsRender) {
+		//m_needsRender = false;
+		// Verify that the renderer has been properly initialized with a non-nullptr value
+		if (m_renderer == nullptr) {
+			return;
 		}
-		tileCenter.x += 1.0f;
-		tileCenter.y = 0.0f;
+
+		glm::vec2 tileCenter(0.0f, 0.0f);
+		for (auto& x : m_mapData) {
+			for (auto& y : x) {
+				switch (y) {
+				case '#':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('#'));
+					break;
+				case '-':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('-'));
+					break;
+
+				default:
+					break;
+					// Maybe add a texture showing ERROR
+				}
+				tileCenter.y += 1.0f;
+			}
+			tileCenter.x += 1.0f;
+			tileCenter.y = 0.0f;
+		}
 	}
 
 	// Go through the 2D vector and render each tile. 

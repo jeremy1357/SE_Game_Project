@@ -10,10 +10,10 @@ void ScreenManager::runProgram()
 	this->enable();
 	while (m_isProgramRunning) {
 		// FPS Timer START would go HERE
-		//m_timer.Start_fps();
+		m_timer.start_FPS();
 		update();
 		render();
-		//m_timer.End_fps();
+		m_timer.end_FPS();
 
 		// FPS Timer END would go HERE
 

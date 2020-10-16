@@ -34,19 +34,28 @@ public:
 		const glm::vec2& dimensions,
 		const GLuint& textureID,
 		const float& dirAngle);
-	void add_sprite_to_batch(
+	void add_static_sprite_to_batch(
 		const glm::vec2& position,
 		const GLuint& textureID);
 
 private:
 	std::string m_resourceDirectory = "";
-	std::vector<SpriteBatch> m_spriteBatches;
+	std::vector<SpriteBatch> m_dynamicBatches;
+	std::vector<SpriteBatch> m_staticBatches;
+
+	bool m_doesStaticBatchesNeedRender = true;
 	Camera* m_camera;
 	TextureCache* m_textureCache;
 	Shader m_shader;
-	GLuint m_playerVBO;
-	GLuint m_playerVAO;
-	GLuint m_spriteEBO;
+
+	GLuint m_dynamicVBO;
+	GLuint m_dynamicVAO;
+	GLuint m_dynamicEBO;
+
+	GLuint m_staticVBO;
+	GLuint m_staticVAO;
+	GLuint m_staticEBO;
+
 	const glm::vec2 tileDimensions = glm::vec2(50.0f, 50.0f);
 	// These are constant. Dont change
 	const glm::vec2 tlUV = glm::vec2(0.0, 1.0);
