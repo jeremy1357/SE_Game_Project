@@ -62,7 +62,7 @@ void LevelManager::init(
 
 void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) {
 	if (m_needsRender) {
-		//m_needsRender = false;
+		m_needsRender = false;
 		// Verify that the renderer has been properly initialized with a non-nullptr value
 		if (m_renderer == nullptr) {
 			return;

@@ -16,6 +16,7 @@ struct SpriteBatch {
 	std::vector<GLuint> indices;
 	GLuint textureID;
 	GLuint numSquares = 0;
+	GLuint indexOffset = 0;
 };
 
 class SpriteRenderer
@@ -26,12 +27,12 @@ public:
 	void on_update();
 	void on_render();
 	void add_sprite_to_batch(
-		const glm::vec2& position, 
+		const glm::vec2& position,
 		const glm::vec2& dimensions,
 		const std::string& textureName,
 		const float& dirAngle);
 	void add_sprite_to_batch(
-		const glm::vec2& position, 
+		const glm::vec2& position,
 		const glm::vec2& dimensions,
 		const GLuint& textureID,
 		const float& dirAngle);
@@ -43,18 +44,16 @@ private:
 	std::string m_resourceDirectory = "";
 	std::vector<SpriteBatch> m_dynamicBatches;
 	std::vector<SpriteBatch> m_staticBatches;
-	std::vector<GLuint> allIndices;
-	std::vector<VertexSimple> staticVertices;
+
 
 	bool m_doesStaticBatchesNeedRender = true;
 	Camera* m_camera;
 	TextureCache* m_textureCache;
 	Shader m_shader;
 
-	//GLuint m_dynamicVBO;
-	//GLuint m_dynamicVAO;
-	//GLuint m_dynamicEBO;
-
+	GLuint m_dynamicVBO;
+	GLuint m_dynamicVAO;
+	GLuint m_dynamicEBO;
 	GLuint m_staticVBO;
 	GLuint m_staticVAO;
 	GLuint m_staticEBO;
@@ -65,7 +64,5 @@ private:
 	const glm::vec2 trUV = glm::vec2(1.0, 1.0);
 	const glm::vec2 blUV = glm::vec2(0.0, 0.0);
 	const glm::vec2 brUV = glm::vec2(1.0, 0.0);
-
-
 };
 
