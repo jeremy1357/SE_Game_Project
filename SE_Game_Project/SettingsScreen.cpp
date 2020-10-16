@@ -31,6 +31,7 @@ void SettingsScreen::on_render()
 	ImGui::SliderInt("FPS", &sliderInt, 30, 500);
 	
 
+
 }
 
 void SettingsScreen::on_update()

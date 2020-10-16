@@ -1,6 +1,7 @@
 #include "GameScreen.h"
 #include "imgui.h"
 
+
 GameScreen::GameScreen(int uniqueScreenID)
 {
 	m_screenID = uniqueScreenID;
@@ -48,7 +49,7 @@ void GameScreen::on_render()
 		m_screenManager->setScreen(ScreenKeys::MENU);
 	}
 
-
+	ImGui::Text("FPS", m_fps_timer->m_fps);
 
 }
 
