@@ -18,7 +18,6 @@ private:
 	GLuint get_texture_ID(const char& key);
 
 	TextureCache* m_textureCache = nullptr;
-	glm::vec2 m_tileSize = glm::vec2(30.0f, 30.0f);
 	std::vector<std::vector<char>> m_mapData;
 	std::string m_projectDirectory = "";
 	SpriteRenderer* m_renderer = nullptr;

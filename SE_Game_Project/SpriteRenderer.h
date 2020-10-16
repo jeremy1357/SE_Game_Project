@@ -36,7 +36,6 @@ public:
 		const float& dirAngle);
 	void add_sprite_to_batch(
 		const glm::vec2& position,
-		const glm::vec2& dimensions,
 		const GLuint& textureID);
 
 private:
@@ -48,7 +47,7 @@ private:
 	GLuint m_playerVBO;
 	GLuint m_playerVAO;
 	GLuint m_spriteEBO;
-
+	const glm::vec2 tileDimensions = glm::vec2(50.0f, 50.0f);
 	// These are constant. Dont change
 	const glm::vec2 tlUV = glm::vec2(0.0, 1.0);
 	const glm::vec2 trUV = glm::vec2(1.0, 1.0);
