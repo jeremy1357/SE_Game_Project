@@ -1,4 +1,5 @@
 #include "MenuScreen.h"
+#include "imgui.h"
 
 MenuScreen::MenuScreen(int uniqueScreenID)
 {
@@ -24,6 +25,12 @@ void MenuScreen::on_render()
 {
 	// ImGui code here
 	// Probably need to create member variables
+	ImGui::Begin("Main Menu");
+	ImGui::Button("Play Game");
+	ImGui::Button("Top Scorers");
+	ImGui::Button("Settings");
+	ImGui::Button("Exit Game");
+	ImGui::End();
 
 }
 
