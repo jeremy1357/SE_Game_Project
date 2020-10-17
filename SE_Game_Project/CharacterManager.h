@@ -40,5 +40,6 @@ class CharacterManager
 		InputManager* m_inputManager = nullptr;
 		LevelManager* m_levelManager = nullptr;
 		std::vector<char> blacklistedChar;
+		bool collisionCheck(char parameter);
 };
 
