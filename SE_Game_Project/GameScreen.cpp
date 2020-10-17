@@ -14,7 +14,7 @@ void GameScreen::on_init()
 	m_camera.init_camera(m_screenManager->m_window.get_width(), m_screenManager->m_window.get_height());
 	m_spriteRenderer.on_init(m_camera, m_textureCache, m_screenManager->get_project_directory());
 	m_levelManager.init(m_screenManager->get_project_directory(), m_spriteRenderer, m_textureCache);
-	m_characterManager.init(m_screenManager->m_inputManager);
+	m_characterManager.init(m_screenManager->m_inputManager, m_levelManager);
 }
 
 void GameScreen::on_entry()
