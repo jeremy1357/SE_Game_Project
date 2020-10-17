@@ -32,6 +32,9 @@ void GameScreen::on_render()
 {
 	m_levelManager.render(glm::vec2(0.0, 0.0), glm::vec2(0.0f));
 	m_spriteRenderer.add_sprite_to_batch(m_characterManager.m_player.position, glm::vec2(25.0f), "player.png", m_camera.playerCursorAngle);
+	m_spriteRenderer.add_light_to_batch(glm::vec2(100.0f, 100.0f), glm::vec2(250.0f), ColorRGBA32(255, 255, 255, 255));
+	m_spriteRenderer.add_light_to_batch(glm::vec2(1000.0f, 3000.0f), glm::vec2(150.0f), ColorRGBA32(0, 255, 125, 255));
+
 	m_spriteRenderer.on_render();
 	
 

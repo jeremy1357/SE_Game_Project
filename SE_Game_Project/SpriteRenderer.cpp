@@ -26,6 +26,38 @@ const char* SPRITE_FRAGMENT_SHADER = {
 	"} \n"};
 
 
+
+const char* LIGHT_VERTEX_SHADER = {
+	"#version 330 core \n"
+	"layout (location = 0) in vec2 vertexPosition; \n"
+	"layout (location = 1) in vec2 vertexUV;	\n"
+	"layout (location = 2) in vec4 vertexColor;	\n"
+	"out vec2 fragmentUV; \n"
+	"out vec4 fragmentColor; \n"
+	"uniform mat4 cameraMatrix; \n"
+	"void main() \n"
+	"{ \n"
+		"gl_Position.xy = (cameraMatrix * vec4(vertexPosition, 0.0f, 1.0f)).xy;\n"
+		"gl_Position.z = 0.0f;\n"
+		"gl_Position.w = 1.0f;\n"
+		"fragmentUV = vertexUV; \n"
+		"fragmentColor = vertexColor; \n"
+	"} \n"
+};
+
+const char* LIGHT_FRAGMENT_SHADER = {
+	"#version 330 core\n"
+	"in vec2 fragmentUV;\n"
+	"in vec4 fragmentColor;\n"
+	"out vec4 FragColor;\n"
+	"uniform sampler2D tex;\n"
+	"void main()\n"
+	"{ \n"
+		"FragColor = texture(tex, -fragmentUV) * fragmentColor; \n"
+	"} \n" };
+
+
+
 SpriteRenderer::SpriteRenderer()
 {
 }
@@ -35,9 +67,15 @@ void SpriteRenderer::on_init(Camera& camera, TextureCache& textureCache, const s
 	m_camera = &camera;
 	m_textureCache = &textureCache;
 	m_resourceDirectory = projectDirectory + "Resources\\Textures\\";
+
 	m_shader.init(SPRITE_VERTEX_SHADER, SPRITE_FRAGMENT_SHADER);
 	m_shader.add_attributes({ "vertexPosition", "vertexUV" });
 	m_shader.link_shaders();
+	m_lightShader.init(LIGHT_VERTEX_SHADER, LIGHT_FRAGMENT_SHADER);
+	m_lightShader.add_attributes({ "vertexPosition", "vertexUV", "vertexColor" });
+	m_lightShader.link_shaders();
+
+	m_lightBatch.textureID = m_textureCache->get_texture_id(m_resourceDirectory + "light0.png");
 
 	glGenVertexArrays(1, &m_staticVAO);
 	glGenBuffers(1, &m_staticVBO);
@@ -65,6 +103,23 @@ void SpriteRenderer::on_init(Camera& camera, TextureCache& textureCache, const s
 		sizeof(VertexSimple), (void*)offsetof(VertexSimple, position));
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
 		sizeof(VertexSimple), (void*)offsetof(VertexSimple, uv));
+	glBindVertexArray(0);
+
+	glGenVertexArrays(1, &m_lightVAO);
+	glGenBuffers(1, &m_lightVBO);
+	glGenBuffers(1, &m_lightEBO);
+	glBindVertexArray(m_lightVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_lightVBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_lightEBO);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,
+		sizeof(Vertex), (void*)offsetof(Vertex, position));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+		sizeof(Vertex), (void*)offsetof(Vertex, uv));
+	glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE,
+		sizeof(Vertex), (void*)offsetof(Vertex, color));
 	glBindVertexArray(0);
 
 }
@@ -173,9 +228,52 @@ void SpriteRenderer::on_render()
 	glBindVertexArray(0);
 
 	m_shader.unbind();
-
 	// At the end of each render. Clear batches
 	m_dynamicBatches.clear();
+
+
+
+	m_lightShader.bind();
+	m_lightShader.set_uniform("tex", 0);
+	m_lightShader.set_uniform("cameraMatrix", projectionMatrix);
+
+	glBindVertexArray(m_lightVAO);
+
+	std::vector<GLuint> lightIndices;
+	lightIndices.resize(m_lightBatch.numSquares * 6);
+
+	GLuint lightIndex = 0;
+	for (size_t x = 0; x < lightIndices.size(); x += 6) {
+		// Store vertex indices 
+		lightIndices[x] = lightIndex;
+		lightIndices[x + 1] = (lightIndex + 1);
+		lightIndices[x + 2] = (lightIndex + 2);
+		lightIndices[x + 3] = (lightIndex + 2);
+		lightIndices[x + 4] = (lightIndex + 1);
+		lightIndices[x + 5] = (lightIndex + 3);
+		lightIndex += 4;
+	}
+
+
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_lightVBO);
+	GLuint vertexDataSize = m_lightBatch.vertices.size() * sizeof(Vertex);
+	glBufferData(GL_ARRAY_BUFFER, vertexDataSize, nullptr, GL_DYNAMIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, vertexDataSize, m_lightBatch.vertices.data());
+
+	GLuint elementDataSize = lightIndices.size() * sizeof(GLuint);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_lightEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, nullptr, GL_DYNAMIC_DRAW);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, elementDataSize, lightIndices.data());
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_lightBatch.textureID);
+	glDrawElements(GL_TRIANGLES, lightIndices.size(), GL_UNSIGNED_INT, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+	m_lightBatch.vertices.clear();
+	m_lightShader.unbind();
 
 }
 
@@ -286,4 +384,39 @@ void SpriteRenderer::add_static_sprite_to_batch(
 	it->vertices[index]   = VertexSimple(br, brUV);
 	m_doesStaticBatchesNeedRender = true;
 	it->numSquares++;
+
+
+}
+
+void SpriteRenderer::add_light_to_batch(
+	const glm::vec2& position, 
+	const glm::vec2& dimensions,
+	const ColorRGBA32& color)
+{
+	glm::vec2 tl = position;
+	glm::vec2 tr = position;
+	glm::vec2 bl = position;
+	glm::vec2 br = position;
+
+	tl.y += dimensions.y;
+	tr += dimensions;
+	br.x += dimensions.x;
+
+	uint32_t index = m_lightBatch.vertices.size();
+	m_lightBatch.vertices.resize(index + 4);
+	// Add in the new vertices. Rotate each vertex
+	m_lightBatch.vertices[index] = Vertex(tl, tlUV);
+	m_lightBatch.vertices[index++].color = color;
+
+	m_lightBatch.vertices[index] = Vertex(tr, trUV);
+	m_lightBatch.vertices[index++].color = color;
+
+	m_lightBatch.vertices[index] = Vertex(bl, blUV);
+	m_lightBatch.vertices[index++].color = color;
+
+	m_lightBatch.vertices[index] = Vertex(br, brUV);
+	m_lightBatch.vertices[index].color = color;
+
+	m_lightBatch.numSquares++;
+
 }
