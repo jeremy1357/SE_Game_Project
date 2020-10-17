@@ -31,7 +31,7 @@ void GameScreen::on_exit()
 void GameScreen::on_render()
 {
 	m_levelManager.render(glm::vec2(0.0, 0.0), glm::vec2(0.0f));
-	m_spriteRenderer.add_sprite_to_batch(m_characterManager.m_player.position, glm::vec2(25.0f), "player.png", 45.0f);
+	m_spriteRenderer.add_sprite_to_batch(m_characterManager.m_player.position, glm::vec2(25.0f), "player.png", m_camera.playerCursorAngle);
 	m_spriteRenderer.on_render();
 	
 
@@ -46,21 +46,31 @@ void GameScreen::on_render()
 	ImGui::Text("FPS: %fp", m_screenManager->m_timer.m_fps);
 	ImGui::Text("Player Health: %i", m_characterManager.m_player.health);
 	ImGui::Text("Player Money: %i", m_characterManager.m_player.money);
+	// Added by Jeremy for debugging
+	glm::vec2 worldCursorCoordinates = m_camera.get_world_cursor_position();
+	ImGui::Text("CURSOR: X: [%i]  Y: [%i]", (int)worldCursorCoordinates.x, (int)worldCursorCoordinates.y);
+	ImGui::Text("PLAYER: X: [%i]  Y: [%i]", (int)m_characterManager.m_player.position.x, (int)m_characterManager.m_player.position.y);
+
 	//ImGui::Text("Zombie Wave: );
 
 }
 
 void GameScreen::on_update()
 {
-	// Put code here for updating
-	// EX) updateParticleManager();
-
 	m_spriteRenderer.on_update();
-	m_camera.update_camera(m_characterManager.m_player.position);
+	glm::vec2 cursorPos(
+		m_screenManager->m_inputManager.m_mPosX, 
+		m_screenManager->m_inputManager.m_mPosY);
+
+	m_camera.update_camera(
+		m_characterManager.m_player.position, 
+		cursorPos, 
+		m_screenManager->m_window.get_width(),
+		m_screenManager->m_window.get_height());
 	m_characterManager.update();
 
 
-	if (m_screenManager->m_inputManager.get_key(SDLK_w)) {
+	if (m_screenManager->m_inputManager.get_key(SDLK_q)) {
 		std::cout << "Mouse X: " << m_screenManager->m_inputManager.m_mPosX << std::endl;
 		std::cout << "Mouse Y: " << m_screenManager->m_inputManager.m_mPosY << std::endl;
 		std::cout << "FPS: " << m_screenManager->m_timer.m_fps << std::endl;

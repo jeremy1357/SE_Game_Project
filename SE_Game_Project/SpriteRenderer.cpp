@@ -97,7 +97,7 @@ void SpriteRenderer::on_render()
 				}
 			}
 			xx += 1;
-			batch.indexOffset = startIndex;
+			batch.indexOffset = offsetIndex;
 			for (size_t x = 0; x < batch.numSquares; x++) {
 				// Store vertex indices 
 				staticIndices.push_back(startIndex);

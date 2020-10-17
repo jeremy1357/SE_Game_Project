@@ -58,7 +58,7 @@ private:
 	GLuint m_staticVAO;
 	GLuint m_staticEBO;
 
-	const glm::vec2 tileDimensions = glm::vec2(50.0f, 50.0f);
+	const glm::vec2 tileDimensions = glm::vec2(75.0f, 75.0f);
 	// These are constant. Dont change
 	const glm::vec2 tlUV = glm::vec2(0.0, 1.0);
 	const glm::vec2 trUV = glm::vec2(1.0, 1.0);
