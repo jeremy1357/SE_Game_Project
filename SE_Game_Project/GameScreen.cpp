@@ -53,6 +53,7 @@ void GameScreen::on_render()
 	glm::vec2 worldCursorCoordinates = m_camera.get_world_cursor_position();
 	ImGui::Text("CURSOR: X: [%i]  Y: [%i]", (int)worldCursorCoordinates.x, (int)worldCursorCoordinates.y);
 	ImGui::Text("PLAYER: X: [%i]  Y: [%i]", (int)m_characterManager.m_player.position.x, (int)m_characterManager.m_player.position.y);
+	ImGui::Text("Character Hover: X: [%c]", m_levelManager.get_character(worldCursorCoordinates, true));
 
 	//ImGui::Text("Zombie Wave: );
 

@@ -118,6 +118,22 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 	//}
 }
 
+char LevelManager::get_character(glm::vec2 position, bool shouldScale)
+{
+	if (shouldScale) {
+		position /= m_tileDimensions;
+	}
+	int xPos = (int)floor(position.x);
+	int yPos = (int)floor(position.y);
+	if (m_mapData.size() > xPos && xPos >= 0) {
+		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
+			return m_mapData[xPos][yPos];
+		}
+	}
+
+	return '\0';
+}
+
 void LevelManager::update() {
 
 }

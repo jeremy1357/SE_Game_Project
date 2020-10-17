@@ -73,7 +73,7 @@ private:
 	GLuint m_lightVAO;
 	GLuint m_lightEBO;
 
-
+	// IF YOU CHANGE THIS, MUST CHANGE THE ONE IN THE LevelManager!
 	const glm::vec2 tileDimensions = glm::vec2(75.0f, 75.0f);
 	// These are constant. Dont change
 	const glm::vec2 tlUV = glm::vec2(0.0, 1.0);
