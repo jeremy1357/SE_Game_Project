@@ -46,17 +46,28 @@ void LevelManager::init(
 		m_mapData[row].push_back(mapData[i]);
 	}
 	
+	mapSize.x = m_mapData.size();
+	mapSize.y = m_mapData[0].size();
+
 
 	std::string imageDirectory = projectDirectory + "Resources\\Textures\\";
 
 	GLuint poundTexture = m_textureCache->get_texture_id(imageDirectory + "Ground_01.png");
 	GLuint grassTexture = m_textureCache->get_texture_id(imageDirectory + "Dirt_01.png");
-
+	GLuint percentTexture = m_textureCache->get_texture_id(imageDirectory + "Ground_04.png");
+	GLuint moneySignTexture = m_textureCache->get_texture_id(imageDirectory + "Dirt_02.png");
+	GLuint atTexture = m_textureCache->get_texture_id(imageDirectory + "dark_crate_five.png");
+	GLuint starTexture = m_textureCache->get_texture_id(imageDirectory + "log2.png");
+	GLuint dTexture = m_textureCache->get_texture_id(imageDirectory + "sand.png");
+	GLuint wTexture = m_textureCache->get_texture_id(imageDirectory + "LAVA.png");
 	m_textureLookup.insert(std::make_pair('#', poundTexture));
 	m_textureLookup.insert(std::make_pair('-', grassTexture));
-
-
-	char c;
+	m_textureLookup.insert(std::make_pair('%', percentTexture));
+	m_textureLookup.insert(std::make_pair('$', moneySignTexture));
+	m_textureLookup.insert(std::make_pair('@', atTexture));
+	m_textureLookup.insert(std::make_pair('*', starTexture));
+	m_textureLookup.insert(std::make_pair('d', dTexture));
+	m_textureLookup.insert(std::make_pair('w', wTexture));
 
 }
 
@@ -77,6 +88,24 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 					break;
 				case '-':
 					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('-'));
+					break;
+				case '%':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('%'));
+					break;
+				case '$':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('$'));
+					break;
+				case '@':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('@'));
+					break;
+				case '*':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('*'));
+					break;
+				case 'w':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('w'));
+					break;
+				case 'd':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('d'));
 					break;
 
 				default:
@@ -133,6 +162,23 @@ char LevelManager::get_character(glm::vec2 position, bool shouldScale)
 
 	return '\0';
 }
+
+glm::vec2 LevelManager::get_tile_center(glm::vec2 tileToGetCenterOf)
+{
+	glm::vec2 tempTile = tileToGetCenterOf / m_tileDimensions;
+	int xPos = (int)floor(tempTile.x);
+	int yPos = (int)floor(tempTile.y);
+	tileToGetCenterOf.x = xPos * m_tileDimensions.x;
+	tileToGetCenterOf.y = yPos * m_tileDimensions.y;
+
+	if (m_mapData.size() > xPos && xPos >= 0) {
+		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
+			glm::vec2 bl = tileToGetCenterOf + (m_tileDimensions / 2.0f);
+			return bl;
+		}
+	}
+}
+
 
 void LevelManager::update() {
 

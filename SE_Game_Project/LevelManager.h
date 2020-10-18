@@ -14,11 +14,12 @@ public:
 	void update();
 	void render(glm::vec2 playerPosition, glm::vec2 windowDimensions);
 	char get_character(glm::vec2 position, bool shouldScale);
-
-
+	glm::vec2 get_map_size() const { return mapSize; }
+	glm::vec2 get_tile_center(glm::vec2 tileToGetCenterOf);
 private:
 	GLuint get_texture_ID(const char& key);
 	const glm::vec2 m_tileDimensions = glm::vec2(75.0f, 75.0f);
+	glm::vec2 mapSize;
 
 	bool m_needsRender = true;
 	TextureCache* m_textureCache = nullptr;

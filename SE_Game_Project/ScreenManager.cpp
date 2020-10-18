@@ -169,7 +169,8 @@ void ScreenManager::init()
 	//IM_ASSERT(font != NULL);
 
 
-
+	m_camera.set_scale(1.2);
+	m_camera.init_camera(m_window.get_width(), m_window.get_height());
 }
 
 void ScreenManager::destroy()

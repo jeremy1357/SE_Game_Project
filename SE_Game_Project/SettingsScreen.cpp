@@ -29,6 +29,7 @@ void SettingsScreen::on_render()
 	}
 
 	ImGui::SliderInt("FPS", &sliderInt, 30, 500);
+	ImGui::SliderFloat("Camera Scale", &m_screenManager->m_camera.m_scale, 0.5, 2.0);
 
 }
 

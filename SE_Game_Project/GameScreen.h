@@ -4,7 +4,6 @@
 #pragma once
 #include "Screen.hpp"
 #include "GameCollision.h"
-#include "Camera.h"
 #include "SpriteRenderer.h"
 #include "CharacterManager.h"
 #include "GameCollision.h"
@@ -26,7 +25,6 @@ private:
 	// DECLARE YOUR OBJECTS HERE
 	// Can be used by any member function of this class
 	SpriteRenderer m_spriteRenderer;
-	Camera m_camera;
 	TextureCache m_textureCache;
 	LevelManager m_levelManager;
 	CharacterManager m_characterManager;

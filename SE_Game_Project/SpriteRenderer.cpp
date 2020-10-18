@@ -147,7 +147,7 @@ void SpriteRenderer::on_render()
 			staticVertices.insert(std::end(staticVertices), std::begin(batch.vertices), std::end(batch.vertices));
 			GLuint offsetIndex = 0;
 			if (xx != 0) {
-				for (int j = 0; j < m_staticBatches.size() - 1; j++) {
+				for (int j = 0; j < xx; j++) {
 					offsetIndex += m_staticBatches[j].numSquares * 6;
 				}
 			}
@@ -266,11 +266,14 @@ void SpriteRenderer::on_render()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_lightEBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, nullptr, GL_DYNAMIC_DRAW);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, elementDataSize, lightIndices.data());
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_lightBatch.textureID);
 	glDrawElements(GL_TRIANGLES, lightIndices.size(), GL_UNSIGNED_INT, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glBindVertexArray(0);
 	m_lightBatch.vertices.clear();
 	m_lightShader.unbind();
@@ -321,8 +324,7 @@ void SpriteRenderer::add_sprite_to_batch(
 
 	tl.x -= dimensions.x;
 	tl.y += dimensions.y;
-	tr.x += dimensions.x;
-	tr.y += dimensions.y;
+	tr += dimensions;
 	bl.x -= dimensions.x;
 	bl.y -= dimensions.y;
 	br.x += dimensions.x;

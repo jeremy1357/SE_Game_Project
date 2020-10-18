@@ -23,10 +23,11 @@ public:
 	glm::mat4 m_orthoMatrix = glm::mat4(1.0f);
 	glm::mat4 m_cameraMatrix = glm::mat4(1.0f);
 	float playerCursorAngle = 0.0f;
+	float m_scale = 1.0f;
+
 private:
 	glm::vec2 m_worldCursorPosition = glm::vec2(0.0f);
 	int m_screenWidth				= 0;
 	int	m_screenHeight				= 0;
-	float m_scale					= 1.0f;
 	bool m_needsUpdate				= true;
 };
