@@ -6,6 +6,8 @@
 #include "SDLWindow.h"
 #include "FPS_Timer.h"
 #include "InputManager.h"
+#include "Camera.h"
+#include "SoundDelegate.h"
 
 #include <unordered_map>
 #include <GL/glew.h>
@@ -43,6 +45,8 @@ public:
 	SDLWindow m_window;
 	FPS_Timer m_timer;
 	InputManager m_inputManager;
+	Camera m_camera;
+	SoundDelegate m_soundDelegate;
 
 	bool m_isProgramRunning = false;
 protected:

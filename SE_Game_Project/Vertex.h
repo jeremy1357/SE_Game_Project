@@ -9,6 +9,11 @@
 #include <math.h>
 
 struct Vertex {
+	Vertex() {
+		position = glm::vec2(0.0f);
+		uv = glm::vec2(0.0f);
+	}
+
 	Vertex(const glm::vec2& position, const glm::vec2& uv) {
 		this->position = position;
 		this->uv = uv;
@@ -31,8 +36,9 @@ struct Vertex {
 	}
 
 	glm::vec2 position;
-	ColorRGBA32 color;
 	glm::vec2 uv;
+	ColorRGBA32 color;
+
 };
 
 struct VertexSimple {

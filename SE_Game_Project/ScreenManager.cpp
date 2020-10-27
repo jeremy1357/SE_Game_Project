@@ -10,10 +10,10 @@ void ScreenManager::runProgram()
 	this->enable();
 	while (m_isProgramRunning) {
 		// FPS Timer START would go HERE
-		//m_timer.Start_fps();
+		m_timer.start_FPS();
 		update();
 		render();
-		//m_timer.End_fps();
+		m_timer.end_FPS();
 
 		// FPS Timer END would go HERE
 
@@ -167,9 +167,10 @@ void ScreenManager::init()
 	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
 	//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\Windows\Fonts\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 	//IM_ASSERT(font != NULL);
-
-
-
+	m_soundDelegate.init_sound_delegate(m_projectDirectory);
+	m_soundDelegate.load_WAV("shotgun.wav");
+	m_camera.set_scale(1.2);
+	m_camera.init_camera(m_window.get_width(), m_window.get_height());
 }
 
 void ScreenManager::destroy()

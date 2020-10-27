@@ -9,6 +9,7 @@ InputManager::InputManager() {
 	m_rightMB = 0;
 	m_mPosX = 0;
 	m_mPosY = 0;
+	m_didPlayerCloseApp = false;
 
 	//CurrentKeystate = SDL_GetKeyboardState(NULL); //ignore this
 }
@@ -32,10 +33,13 @@ void InputManager::update() {
 			un_mouse_click(m_inputEvent.button);
 			break;
 		case SDL_KEYDOWN:
-			m_keys[m_inputEvent.key.keysym.sym] = true;
+			m_currentKeys[m_inputEvent.key.keysym.sym] = true;
 			break;
 		case SDL_KEYUP:
-			m_keys[m_inputEvent.key.keysym.sym] = false;
+			m_currentKeys[m_inputEvent.key.keysym.sym] = false;
+			break;
+		case SDL_QUIT:
+			m_didPlayerCloseApp = true;
 			break;
 		default:
 			break;
@@ -47,11 +51,15 @@ void InputManager::update() {
 
 bool InputManager::get_key(int key){
 	// Inputs should be keycodes
-	if (m_keys[key])
+	if (m_currentKeys[key])
 		return true;
 	else
 		return false;
 	// Checks keymap to see if keys are pressed
+}
+
+bool InputManager::get_if_closed() {
+	return m_didPlayerCloseApp;
 }
 
 void InputManager::set_mouse_click(SDL_MouseButtonEvent& button) {
@@ -64,8 +72,11 @@ void InputManager::set_mouse_click(SDL_MouseButtonEvent& button) {
 
 void InputManager::un_mouse_click(SDL_MouseButtonEvent& button)
 {
-	if (button.button == SDL_BUTTON_LEFT)
+	if (button.button == SDL_BUTTON_LEFT) {
 		m_leftMB = 0;
-	if (button.button == SDL_BUTTON_RIGHT)
+	}
+	if (button.button == SDL_BUTTON_RIGHT) {
 		m_rightMB = 0;
+	}
 }
+

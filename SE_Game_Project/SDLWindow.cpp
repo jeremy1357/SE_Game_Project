@@ -18,6 +18,8 @@ SDLWindow::~SDLWindow()
 
 int SDLWindow::init(int width, int height)
 {
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	m_windowHandle = SDL_CreateWindow("Software Engineering Project", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
@@ -54,7 +56,9 @@ int SDLWindow::init(int width, int height)
 	glViewport(0, 0, m_width, m_height);
 
 	// Set VSync to off
-	SDL_GL_SetSwapInterval(0);
+	SDL_GL_SetSwapInterval(1);
+	glEnable(GL_MULTISAMPLE);
+
 	// Enable transparency 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
