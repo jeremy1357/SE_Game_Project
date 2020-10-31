@@ -1,9 +1,27 @@
 #include "FPS_Timer.h"
 #include <iostream>
-#include <chrono>
+#include <thread>
 using fsecond = std::chrono::duration<float>;
 
-//Need to test and see if the fps being measured is milliseconds or in frames per second
+FPS_Timer::FPS_Timer()
+{
+	max_FPS = std::chrono::milliseconds(60);
+}
+
+const duration<double> FPS_Timer::set_FPS(duration<double> set_FPS)
+{
+	if (set_FPS > max_FPS)
+	{
+		std::chrono::milliseconds temp(std::chrono::milliseconds(1000) / std::chrono::duration_cast<std::chrono::milliseconds>(set_FPS));
+		return temp;
+	}
+	else
+	{
+		std::chrono::milliseconds temp(std::chrono::milliseconds(1000) / std::chrono::duration_cast<std::chrono::milliseconds>(max_FPS));
+		return temp;
+	}
+
+}
 
 void FPS_Timer::start_FPS()	//This function begins the timer for the FPS
 {
@@ -14,12 +32,17 @@ void FPS_Timer::end_FPS()	//This Funciton ends the timer and calculates how long
 {
 	end_tp = steady_clock::now();	//gets the time from the first first timer point and the end timer point.
 	m_fps_timer = std::chrono::duration_cast<std::chrono::milliseconds>(end_tp - first_tp);
-	std::chrono::milliseconds target(16);
+	const duration<double> target = set_FPS(max_FPS);
 	const duration<double> sleep = target - m_fps_timer;
 
-	if (m_fps_timer.count() < double(16))	//if the time is less than 17 milliseconds, then sleep to get to 17 milliseconds (~60 fps)
+	if (m_fps_timer < target)
 	{
 		std::this_thread::sleep_for(sleep); 
 	}
 	m_fps = fsecond(1) / (steady_clock::now() - first_tp);
+}
+
+FPS_Timer::~FPS_Timer()
+{
+	;
 }

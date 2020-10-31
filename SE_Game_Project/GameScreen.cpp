@@ -81,6 +81,7 @@ void GameScreen::on_update()
 		std::cout << "Mouse X: " << m_screenManager->m_inputManager.m_mPosX << std::endl;
 		std::cout << "Mouse Y: " << m_screenManager->m_inputManager.m_mPosY << std::endl;
 		std::cout << "FPS: " << m_screenManager->m_timer.m_fps << std::endl;
+		m_screenManager->m_soundDelegate.play_effect(0);
 	}
 	
 
