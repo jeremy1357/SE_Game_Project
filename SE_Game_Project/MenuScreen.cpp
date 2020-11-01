@@ -27,7 +27,18 @@ void MenuScreen::on_render()
 {
 	// ImGui code here
 	// Probably need to create member variables
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	
 	ImGui::Begin("Main Menu");
+
+	//ImGui::Text("Zombies and Sprites");
+	ImGuiIO& io = ImGui::GetIO();
+	ImFont* font1 = io.Fonts->AddFontFromFileTTF("font.ttf", 30);
+
+	std::string text = "Zombie Killer";
+
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 55 * ImGui::GetStyle().ItemSpacing.x);
+	ImGui::Text("%s", text);
 
 	if (ImGui::Button("Play Game")) {
 		m_screenManager->setScreen(ScreenKeys::GAME);
