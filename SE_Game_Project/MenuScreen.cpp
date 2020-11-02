@@ -2,7 +2,6 @@
 #include "imgui.h"
 #include "ScreenManager.hpp"
 
-
 MenuScreen::MenuScreen(int uniqueScreenID)
 {
 	m_screenID = uniqueScreenID;
@@ -30,15 +29,19 @@ void MenuScreen::on_render()
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	
 	ImGui::Begin("Main Menu");
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowBorderSize = 1.0f;
+	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
+	
+	
+	
+	ImGui::Text("Zombies & Sprites");
+	ImGui::ShowDemoWindow();
 
-	//ImGui::Text("Zombies and Sprites");
-	ImGuiIO& io = ImGui::GetIO();
-	ImFont* font1 = io.Fonts->AddFontFromFileTTF("font.ttf", 30);
+	//std::string text = "Zombie Killer";
 
-	std::string text = "Zombie Killer";
-
-	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 55 * ImGui::GetStyle().ItemSpacing.x);
-	ImGui::Text("%s", text);
+	//ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 55 * ImGui::GetStyle().ItemSpacing.x);
+	//ImGui::Text("%s", text);
 
 	if (ImGui::Button("Play Game")) {
 		m_screenManager->setScreen(ScreenKeys::GAME);
