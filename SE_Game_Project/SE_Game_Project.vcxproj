@@ -163,6 +163,7 @@
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuScreen.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="picoPNG.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="MenuScreen.h" />
+    <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="picoPNG.h" />
     <ClInclude Include="Screen.hpp" />
     <ClInclude Include="ScreenManager.hpp" />
