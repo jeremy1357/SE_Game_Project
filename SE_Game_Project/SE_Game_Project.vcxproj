@@ -151,6 +151,7 @@
     <ClCompile Include="CharacterManager.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="FPS_Timer.cpp" />
+    <ClCompile Include="GameEconomy.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuScreen.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="picoPNG.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
@@ -179,6 +181,7 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ColorRGBA32.h" />
     <ClInclude Include="FPS_Timer.h" />
+    <ClInclude Include="GameEconomy.hpp" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
@@ -191,6 +194,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="MenuScreen.h" />
+    <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="picoPNG.h" />
     <ClInclude Include="Screen.hpp" />
     <ClInclude Include="ScreenManager.hpp" />
