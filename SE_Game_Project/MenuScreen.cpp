@@ -4,6 +4,7 @@
 #include "ScreenManager.hpp"
 #include "imgui_internal.h"
 
+
 MenuScreen::MenuScreen(int uniqueScreenID)
 {
 	m_screenID = uniqueScreenID;
@@ -26,15 +27,30 @@ void MenuScreen::on_exit()
 
 void MenuScreen::on_render()
 {
-	// ImGui code here
-	// Probably need to create member variables
-	ImGui::ShowDemoWindow();
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::Begin("Zombies & Sprites");
+	//Demo window for testing
+	//ImGui::ShowDemoWindow();
+
+	//Color Defines
+	#define TEXT(v) ImVec4(0.999f, 0.100f, 0.100f, v) //Text color define
+	#define BG(v)   ImVec4(0.100f, 0.100f, 0.100f, v) //Background color define
+
+	//Getting Style
 	ImGuiStyle& style = ImGui::GetStyle();
+
+	//Setting Up Colors of different things
+	style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
+	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
+	style.Colors[ImGuiCol_Button] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
+	style.Colors[ImGuiCol_Border] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
+	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
+
+	//Window Details	
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::Begin("Zombie Onslaught");
 	style.WindowBorderSize = 1.0f;
 	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
 	style.WindowMenuButtonPosition = ImGuiDir_None;
+	
 
 	ImGui::SameLine(210);
 	if (ImGui::Button("Play Game")) {
