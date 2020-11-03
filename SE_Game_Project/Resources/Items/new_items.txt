@@ -1,0 +1,4 @@
+x rifle 10 5 0
+- beer  2  3 0
+- Beans 12 2 0
+x shield 15 1 8
