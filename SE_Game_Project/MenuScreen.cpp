@@ -1,7 +1,8 @@
+#define IMGUI_DEFINE_MATH_OPERATORS
 #include "MenuScreen.h"
 #include "imgui.h"
 #include "ScreenManager.hpp"
-
+#include "imgui_internal.h"
 
 MenuScreen::MenuScreen(int uniqueScreenID)
 {
@@ -27,31 +28,33 @@ void MenuScreen::on_render()
 {
 	// ImGui code here
 	// Probably need to create member variables
+	ImGui::ShowDemoWindow();
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	
-	ImGui::Begin("Main Menu");
+	ImGui::Begin("Zombies & Sprites");
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowBorderSize = 1.0f;
+	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
+	style.WindowMenuButtonPosition = ImGuiDir_None;
 
-	//ImGui::Text("Zombies and Sprites");
-	ImGuiIO& io = ImGui::GetIO();
-	ImFont* font1 = io.Fonts->AddFontFromFileTTF("font.ttf", 30);
-
-	std::string text = "Zombie Killer";
-
-	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 55 * ImGui::GetStyle().ItemSpacing.x);
-	ImGui::Text("%s", text);
-
+	ImGui::SameLine(210);
 	if (ImGui::Button("Play Game")) {
 		m_screenManager->setScreen(ScreenKeys::GAME);
 	}
 
+	ImGui::NewLine();
+	ImGui::SameLine(210);
 	if (ImGui::Button("Top Scorers")) {
 		//m_screenManager->setScreen(ScreenKeys::GAME);
 	}
 
+	ImGui::NewLine();
+	ImGui::SameLine(210);
 	if (ImGui::Button("Settings")) {
 		m_screenManager->setScreen(ScreenKeys::SETTINGS);
 	}
 
+	ImGui::NewLine();
+	ImGui::SameLine(210);
 	if (ImGui::Button("Exit Game")) {
 		m_screenManager->m_isProgramRunning = false;
 	}
