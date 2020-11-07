@@ -139,7 +139,7 @@ void CharacterManager::tile_collision() {
 	perform_tile_collision(collisionAreas);
 }
 
-void CharacterManager::perform_tile_collision(CollisionPosition* cp) {
+void CharacterManager::perform_tile_collision(CollisionPosition *cp) {
 	for (int i = 0; i < 4; i++) {
 		if (cp[i].didCollisionOccur) {
 			glm::vec2 tileCenter = m_levelManager->get_tile_center(cp[i].position);

@@ -17,27 +17,6 @@ ZombieManager::~ZombieManager()
 
 }
 
-
-//char ZombieManager::get_zombie_char(glm::vec2 position, bool shouldScale)
-//{
-//
-//	if (shouldScale) {
-//		position /= glm::vec2(75.0f,75.0f);
-//	}
-//	int xPos = (int)floor(m_zombie.position.x);
-//	int yPos = (int)floor(m_zombie.position.y);
-//	if (m_levelManager->m_mapData.size() > xPos && xPos >= 0) {
-//		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
-//			return m_mapData[xPos][yPos];
-//		}
-//
-//	}
-//
-//	return '\0';
-//
-//
-//}
-
 glm::vec2 ZombieManager::calculate_spawnPosition()
 {
 	glm::vec2 testPT = glm::vec2 (0.0);
@@ -50,7 +29,7 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 		char result;
 		result = m_levelManager->get_character(testPT, true);
 
-		bool posCheck = collisionCheck(result);
+		bool posCheck = collision_Check(result);
 
 		if (posCheck == false)
 		{
@@ -89,7 +68,7 @@ void ZombieManager::init(LevelManager& levelManager,CharacterManager& characterM
 }
 
 
-void ZombieManager::spawn(int wave)
+void ZombieManager::spawn_Wave(int wave)
 {
 	m_zombies.clear();
 	int numZombies = 10 * (wave)+10;
@@ -103,10 +82,12 @@ void ZombieManager::spawn(int wave)
 
 
 
-bool ZombieManager::collisionCheck(char parameter)
+bool ZombieManager::collision_Check(char parameter)
 {
-	for (int i = 0; i < m_blacklistedChar.size(); i++) {
-		if (m_blacklistedChar[i] == parameter) {
+	for (int i = 0; i < m_blacklistedChar.size(); i++) 
+	{
+		if (m_blacklistedChar[i] == parameter) 
+		{
 			return true;
 		}
 	}
@@ -130,116 +111,122 @@ void ZombieManager::update()
 {
 	if (should_spawn_wave() == true)
 	{
-		spawn(wave++);
+		spawn_Wave(wave++);
 	}
 
 
-	/*const float speed = 2.0f;
-	float playerX = x.position.x;
-	float playerY = y.position.y;*/
+	const float speed = 2.0f;
+	float playerX = m_characterManager->m_player.position.x;
+	float playerY = m_characterManager->m_player.position.y;
 
 	//update the zombie position variables
 
-	//if (playerX > m_zombie.position.x)
-	//{
-//		m_zombie.position.x = m_zombie.position.x + speed + elapsedTime;
-	//}
-
-//	if (playerY > m_zombie.position.y)
-	//{
-//		m_zombie.position.y = m_zombie.position.y + speed * elapsedTime;
-//	}
-
-//	if (playerX < m_zombie.position.x)
-//	{
-//		m_zombie.position.x = m_zombie.position.x - speed + elapsedTime;
-	//}
-
-	//if (playerY < m_zombie.position.y)
-	//{
-	//	m_zombie.position.y = m_zombie.position.y - speed * elapsedTime;
-	//}
-
-	//float angle = (atan2(playerY - m_zombie.position.y, playerX - m_zombie.position.x) * 180) / 3.141;
-
-	// Need to have zombie implement angle to face player
-
-
-	/*if (m_zombie.health < 0)
+	if (playerX > m_zombies.data()->position.x)
 	{
-		m_zombie.isAlive = false;
+		m_zombies.data()->position.x = m_zombies.data()->position.x + speed;
 	}
-	else
+
+	if (playerY > m_zombies.data()->position.y)
 	{
-		const float speed = 2.0f;
-		m_zombie.isAlive = true;
+		m_zombies.data()->position.y = m_zombies.data()->position.y + speed;
+	}
+
+	if (playerX < m_zombies.data()->position.x)
+	{
+		m_zombies.data()->position.x = m_zombies.data()->position.x - speed;
+	}
+
+	if (playerY < m_zombies.data()->position.y)
+	{
+		m_zombies.data()->position.y = m_zombies.data()->position.y - speed;
+	}
+
+	float angle = (atan2(playerY - m_zombies.data()->position.y, playerX - m_zombies.data()->position.x) * 180) / 3.141;
+
+	 //Need to have zombie implement angle to face player
 
 
-		tile_collision();
-	}*/
+	for (int i = 0; i < m_zombies.size(); i++)
+	{
+		if (m_zombies[i].health < 0)
+		{
+			m_zombies[i].isAlive = false;
+		}
+		else
+		{
+			const float speed = 2.0f;
+			m_zombies[i].isAlive = true;
+			m_characterManager->tile_collision();
+		}
+	}
 }
 
-//void ZombieManager::tile_collision() {
-//
-//
-//	glm::vec2 worldSize = m_levelManager->get_map_size();
-//	CollisionPosition collisionAreas[4];
-//	collisionAreas[0].position = m_zombies.position; //TL
-//	collisionAreas[1].position = m_zombie.position; //TR
-//	collisionAreas[2].position = m_zombie.position; //BL
-//	collisionAreas[3].position = m_zombie.position; //BR
-//
-//	collisionAreas[0].position.x -= dim.x;
-//	collisionAreas[0].position.y += dim.y;
-//	collisionAreas[2].position -= dim;
-//	collisionAreas[1].position += dim;
-//	collisionAreas[3].position.x += dim.x;
-//	collisionAreas[3].position.y -= dim.y;
-//
-//
-//	char cornerCharacters[4];
-//	cornerCharacters[0] = m_levelManager->get_character(collisionAreas[0].position, true);
-//	cornerCharacters[1] = m_levelManager->get_character(collisionAreas[1].position, true);
-//	cornerCharacters[2] = m_levelManager->get_character(collisionAreas[2].position, true);
-//	cornerCharacters[3] = m_levelManager->get_character(collisionAreas[3].position, true);
-//
-//	for (int i = 0; i < 4; i++) {
-//		if (collisionCheck(cornerCharacters[i])) {
-//			collisionAreas[i].didCollisionOccur = true;
-//		}
-//	}
-//	perform_tile_collision(collisionAreas);
-//}
+void ZombieManager::tile_collision() {
 
-//void ZombieManager::perform_tile_collision(CollisionPosition* cp) {
-//	for (int i = 0; i < 4; i++) {
-//		if (cp[i].didCollisionOccur) {
-//			glm::vec2 tileCenter = m_levelManager->get_tile_center(cp[i].position);
-//			glm::vec2 vectorFromTileToZombie = m_zombie.position - tileCenter;
-//			const float radius = 25.0f;
-//			// 75 should not be a hard coded constant. CHANGE 
-//			const float distTillCollision = radius + (75.0f / 2); // 75.0f is the window of a tile.
-//			float x = distTillCollision - abs(vectorFromTileToZombie.x);
-//			float y = distTillCollision - abs(vectorFromTileToZombie.y);
-//
-//			if (x > 0 && y > 0) {
-//				if (std::max(x, 0.0f) < std::max(y, 0.0f)) {
-//					if (vectorFromTileToZombie.x < 0) {
-//						m_zombie.position.x -= x;
-//					}
-//					else {
-//						m_zombie.position.x += x;
-//					}
-//				}
-//				else {
-//					if (vectorFromTileToZombie.y < 0) {
-//						m_zombie.position.y -= y;
-//					}
-//					else {
-//						m_zombie.position.y += y;
-//					}
-//				}
-//			}
-//		}
-//	}
-//}
+	for (int i = 0; i < m_zombies.size(); i++)
+	{
+		glm::vec2 worldSize = m_levelManager->get_map_size();
+		CollisionPosition collisionAreas[4];
+		collisionAreas[0].position = m_zombies[i].position; //TL
+		collisionAreas[1].position = m_zombies[i].position; //TR
+		collisionAreas[2].position = m_zombies[i].position; //BL
+		collisionAreas[3].position = m_zombies[i].position; //BR
+
+		collisionAreas[0].position.x -= dim.x;
+		collisionAreas[0].position.y += dim.y;
+		collisionAreas[2].position -= dim;
+		collisionAreas[1].position += dim;
+		collisionAreas[3].position.x += dim.x;
+		collisionAreas[3].position.y -= dim.y;
+
+
+		char cornerCharacters[4];
+		cornerCharacters[0] = m_levelManager->get_character(collisionAreas[0].position, true);
+		cornerCharacters[1] = m_levelManager->get_character(collisionAreas[1].position, true);
+		cornerCharacters[2] = m_levelManager->get_character(collisionAreas[2].position, true);
+		cornerCharacters[3] = m_levelManager->get_character(collisionAreas[3].position, true);
+
+		for (int i = 0; i < 4; i++) {
+			if (collision_Check(cornerCharacters[i])) {
+				collisionAreas[i].didCollisionOccur = true;
+			}
+		}
+		perform_tile_collision(collisionAreas);
+	}
+}
+
+void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
+	for (int k = 0; k < m_zombies.size(); k++)
+	{
+		for (int i = 0; i < 4; i++) {
+			if (cp[i].didCollisionOccur) {
+				glm::vec2 tileCenter = m_levelManager->get_tile_center(cp[i].position);
+				glm::vec2 vectorFromTileToPlayer = m_zombies[k].position - tileCenter;
+				const float radius = 25.0f;
+				// 75 should not be a hard coded constant. CHANGE 
+				const float distTillCollision = radius + (75.0f / 2); // 75.0f is the window of a tile.
+				float x = distTillCollision - abs(vectorFromTileToPlayer.x);
+				float y = distTillCollision - abs(vectorFromTileToPlayer.y);
+
+				if (x > 0 && y > 0) {
+					if (std::max(x, 0.0f) < std::max(y, 0.0f)) {
+						if (vectorFromTileToPlayer.x < 0) {
+							m_zombies[k].position.x -= x;
+						}
+						else {
+							m_zombies[k].position.x += x;
+						}
+					}
+					else {
+						if (vectorFromTileToPlayer.y < 0) {
+							m_zombies[k].position.y -= y;
+						}
+						else {
+							m_zombies[k].position.y += y;
+						}
+					}
+				}
+			}
+		}
+	}
+}

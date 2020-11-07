@@ -25,11 +25,12 @@ public:
 
 	void update();
 	void init(LevelManager& levelManager,CharacterManager& characterManager, const std::vector<char> blacklistedTiles, int mapSizex, int mapSizey, glm::vec2 tileSize);
-	bool collisionCheck(char parameter);
-	//bool hit()			//When a bullet hits a zombie
+	bool collision_Check(char parameter);
+	void tile_collision();
 	std::vector<Zombie> m_zombies;
 
 private:
+
 
 	int m_mapSizex;
 	int m_mapSizey;
@@ -42,13 +43,13 @@ private:
 	};
 
 	bool should_spawn_wave();
-	void spawn(int wave);
+	void spawn_Wave(int wave);
 	const glm::vec2 dim = glm::vec2(25.0f);
 	LevelManager* m_levelManager = nullptr;
 	CharacterManager* m_characterManager = nullptr;
 	std::vector<char> m_blacklistedChar;
 	
-	//void perform_tile_collision(CollisionPosition* cp);
+	void perform_tile_collision(CollisionPosition* cp);
 
 
 };
