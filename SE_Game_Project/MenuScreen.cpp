@@ -39,6 +39,7 @@ void MenuScreen::on_render()
 	//Getting Style
 	ImGuiStyle& style = ImGui::GetStyle();
 
+
 	//Setting Up Colors of different things
 	style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
 	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
@@ -46,9 +47,12 @@ void MenuScreen::on_render()
 	style.Colors[ImGuiCol_Border] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
 	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
 
-	//Window Details	
+	//Window Details
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::Begin("Zombie Onslaught");
+	//ImGuiIO& io = ImGui::GetIO();
+	//io.Fonts->AddFontFromFileTTF("04b_30.ttf", 16.0f);
+	ImGui::SetWindowFontScale(1.5);
 	style.WindowBorderSize = 1.0f;
 	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
 	style.WindowMenuButtonPosition = ImGuiDir_None;

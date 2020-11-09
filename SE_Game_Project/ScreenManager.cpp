@@ -111,6 +111,8 @@ void ScreenManager::render()
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//ImGuiIO& io = ImGui::GetIO();
+	//io.Fonts->AddFontFromFileTTF("A:/Downloads/04b_30/04B_30__.TTF", 16.0f);
 
 	m_window.update();
 
