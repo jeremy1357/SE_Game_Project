@@ -21,7 +21,7 @@ void SoundDelegate::init_sound_delegate(const std::string& soundPathway)
 	}
 }
 
-void SoundDelegate::load_WAV(const std::string& name)
+void SoundDelegate::load_audio(const std::string& name)
 {
 	auto it = std::find_if(m_audioFiles.begin(), m_audioFiles.end(),
 		[name](const auto& mo) {return mo.second.name == name; });
@@ -33,7 +33,6 @@ void SoundDelegate::load_WAV(const std::string& name)
 		}
 		int prevKey = m_audioFiles.size();
 		m_audioFiles.insert(std::pair<int, AudioFile>(prevKey, AudioFile(name, sample)));
-		
 	}
 }
 
@@ -41,12 +40,49 @@ void SoundDelegate::play_effect(int key)
 {
 	const auto& res = m_audioFiles.find(key);
 	if (res->second.audioData != NULL) {
-		Mix_PlayChannel(-1, res->second.audioData, 0);
-
+		int channel = Mix_PlayChannel(-1, res->second.audioData, 0);
+		if (channel != -1) {
+			res->second.channel = channel;
+		}
 	}
 	
 }
 
-void SoundDelegate::stop_effect()
+void SoundDelegate::stop_effect(int key)
 {
+	const auto& res = m_audioFiles.find(key);
+	if (res->second.audioData != NULL) {
+		Mix_HaltChannel(res->second.channel);
+	}
 }
+
+void SoundDelegate::play_music(int key)
+{
+	const auto& res = m_audioFiles.find(key);
+	if (res->second.audioData != NULL) {
+		int channel = Mix_PlayChannel(-1, res->second.audioData, -1);
+		if (channel != -1) {
+			res->second.channel = channel;
+		}
+	}
+}
+
+void SoundDelegate::stop_music(int key)
+{
+	const auto& res = m_audioFiles.find(key);
+	if (res->second.audioData != NULL) {
+		Mix_HaltChannel(res->second.channel);
+	}
+}
+
+int SoundDelegate::get_key(const std::string& name)
+{
+	auto it = std::find_if(m_audioFiles.begin(), m_audioFiles.end(),
+		[name](const auto& mo) {
+		return mo.second.name == name; });
+	if (it != m_audioFiles.end()) {
+		return it->first;
+	}
+	return 0;
+}
+

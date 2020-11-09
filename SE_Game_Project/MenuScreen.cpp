@@ -17,11 +17,13 @@ void MenuScreen::on_init()
 
 void MenuScreen::on_entry()
 {
+	m_screenManager->m_soundDelegate.play_music(m_screenManager->m_soundDelegate.get_key("menu_music.wav"));
 	m_screenState = ScreenState::ACTIVE;
 }
 
 void MenuScreen::on_exit()
 {
+	m_screenManager->m_soundDelegate.stop_music(m_screenManager->m_soundDelegate.get_key("menu_music.wav"));
 	m_screenState = ScreenState::INACTIVE;
 }
 
