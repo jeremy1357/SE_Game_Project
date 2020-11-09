@@ -17,11 +17,13 @@ void MenuScreen::on_init()
 
 void MenuScreen::on_entry()
 {
+	m_screenManager->m_soundDelegate.play_music(m_screenManager->m_soundDelegate.get_key("ZombiesAreComing.ogg"));
 	m_screenState = ScreenState::ACTIVE;
 }
 
 void MenuScreen::on_exit()
 {
+	m_screenManager->m_soundDelegate.stop_music(m_screenManager->m_soundDelegate.get_key("ZombiesAreComing.ogg"));
 	m_screenState = ScreenState::INACTIVE;
 }
 
@@ -49,7 +51,7 @@ void MenuScreen::on_render()
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::Begin("Zombie Onslaught");
 	//ImGuiIO& io = ImGui::GetIO();
-	//io.Fonts->AddFontFromFileTTF("04b_30.ttf", 16.0f);
+	//io.Fonts->AddFontFromFileTTF(m_sc, 16.0f);
 	ImGui::SetWindowFontScale(1.5);
 	style.WindowBorderSize = 1.0f;
 	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);

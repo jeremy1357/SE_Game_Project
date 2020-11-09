@@ -11,16 +11,21 @@ struct AudioFile {
 	}
 	std::string name;
 	Mix_Chunk* audioData;
+	int channel = -1;
 };
+
 class SoundDelegate
 {
 public:
 	SoundDelegate();
 	~SoundDelegate();
 	void init_sound_delegate(const std::string& soundPathway);
-	void load_WAV(const std::string& name);
+	void load_audio(const std::string& name);
 	void play_effect(int key);
-	void stop_effect();
+	void stop_effect(int key);
+	void play_music(int key);
+	void stop_music(int key);
+	int get_key(const std::string& name);
 private:
 	std::string m_soundPathway;
 	std::map <int, AudioFile> m_audioFiles;
