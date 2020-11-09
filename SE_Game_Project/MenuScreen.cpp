@@ -58,25 +58,25 @@ void MenuScreen::on_render()
 	style.WindowMenuButtonPosition = ImGuiDir_None;
 	
 
-	ImGui::SameLine(210);
+	ImGui::SameLine(410);
 	if (ImGui::Button("Play Game")) {
 		m_screenManager->setScreen(ScreenKeys::GAME);
 	}
 
 	ImGui::NewLine();
-	ImGui::SameLine(210);
+	ImGui::SameLine(410);
 	if (ImGui::Button("Top Scorers")) {
 		//m_screenManager->setScreen(ScreenKeys::GAME);
 	}
 
 	ImGui::NewLine();
-	ImGui::SameLine(210);
+	ImGui::SameLine(410);
 	if (ImGui::Button("Settings")) {
 		m_screenManager->setScreen(ScreenKeys::SETTINGS);
 	}
 
 	ImGui::NewLine();
-	ImGui::SameLine(210);
+	ImGui::SameLine(410);
 	if (ImGui::Button("Exit Game")) {
 		m_screenManager->m_isProgramRunning = false;
 	}
