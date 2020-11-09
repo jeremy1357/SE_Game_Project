@@ -46,11 +46,12 @@ void GameScreen::on_render()
 
 
 	ImGui::SetNextWindowBgAlpha(0.35f);
+
 	if (ImGui::Button("Main Menu")) {
 		m_screenManager->setScreen(ScreenKeys::MENU);
 	}
-
-	ImGui::Text("FPS: %fp", m_screenManager->m_timer.m_fps);
+	ImGui::Begin("Zombie Onslaught");
+	ImGui::Text("FPS: %f", m_screenManager->m_timer.m_fps);
 	ImGui::Text("Player Health: %i", m_characterManager.m_player.health);
 	ImGui::Text("Player Money: %i", m_characterManager.m_player.money);
 	// Added by Jeremy for debugging
@@ -60,7 +61,7 @@ void GameScreen::on_render()
 	ImGui::Text("Character Hover: X: [%c]", m_levelManager.get_character(worldCursorCoordinates, true));
 
 	//ImGui::Text("Zombie Wave: );
-
+	ImGui::End();
 }
 
 void GameScreen::on_update()

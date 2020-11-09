@@ -24,6 +24,7 @@ void SettingsScreen::on_render()
 	// Probably need to create member variables
 	static int sliderInt = 0;
 
+	ImGui::Begin("Settings");
 	if (ImGui::Button("Main Menu")) {
 		m_screenManager->setScreen(ScreenKeys::MENU);
 	}
@@ -31,6 +32,7 @@ void SettingsScreen::on_render()
 	ImGui::SliderInt("FPS", &sliderInt, 30, 500);
 	ImGui::SliderFloat("Camera Scale", &m_screenManager->m_camera.m_scale, 0.5, 2.0);
 
+	ImGui::End();
 }
 
 void SettingsScreen::on_update()
