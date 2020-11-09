@@ -144,16 +144,19 @@ void ScreenManager::init()
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); 
 	(void)io;
+	ImGui_ImplSDL2_InitForOpenGL(m_window.get_window_handle(), m_window.glContext);
+	ImGui_ImplOpenGL3_Init("#version 130");
+	ImGui::StyleColorsDark();
+	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 28.0f);
+
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
 	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsClassic();
 
 	// Setup Platform/Renderer bindings
-	ImGui_ImplSDL2_InitForOpenGL(m_window.get_window_handle(), m_window.glContext);
-	ImGui_ImplOpenGL3_Init("#version 130");
+
 
 	// Load Fonts
 	// - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
@@ -163,7 +166,6 @@ void ScreenManager::init()
 	// - Read 'docs/FONTS.md' for more instructions and details.
 	// - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \ !
 	//io.Fonts->AddFontDefault();
-	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
 	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
 	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
 	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
@@ -171,7 +173,7 @@ void ScreenManager::init()
 	//IM_ASSERT(font != NULL);
 	m_soundDelegate.init_sound_delegate(m_projectDirectory);
 	m_soundDelegate.load_audio("shotgun.wav");
-	m_soundDelegate.load_audio("menu_music.wav");
+	m_soundDelegate.load_audio("ZombiesAreComing.ogg");
 	m_camera.set_scale(1.2);
 	m_camera.init_camera(m_window.get_width(), m_window.get_height());
 }

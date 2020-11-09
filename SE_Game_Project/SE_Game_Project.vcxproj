@@ -162,6 +162,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuEffects.cpp" />
     <ClCompile Include="MenuScreen.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="picoPNG.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="MenuEffects.h" />
     <ClInclude Include="MenuScreen.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="picoPNG.h" />
