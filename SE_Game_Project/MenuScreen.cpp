@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "ScreenManager.hpp"
 #include "imgui_internal.h"
+#include "SDLWindow.h"
 
 
 MenuScreen::MenuScreen(int uniqueScreenID)
@@ -39,7 +40,6 @@ void MenuScreen::on_render()
 	//Getting Style
 	ImGuiStyle& style = ImGui::GetStyle();
 
-
 	//Setting Up Colors of different things
 	style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
 	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
@@ -48,6 +48,10 @@ void MenuScreen::on_render()
 	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
 
 	//Window Details
+	int tempHeight = m_screenManager->m_window.get_height();
+	int tempWidth = m_screenManager->m_window.get_width();
+	int height = tempHeight / 2;
+	int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::Begin("Zombie Onslaught");
 	//ImGuiIO& io = ImGui::GetIO();
@@ -58,25 +62,25 @@ void MenuScreen::on_render()
 	style.WindowMenuButtonPosition = ImGuiDir_None;
 	
 
-	ImGui::SameLine(410);
+	ImGui::SameLine(width);
 	if (ImGui::Button("Play Game")) {
 		m_screenManager->setScreen(ScreenKeys::GAME);
 	}
 
 	ImGui::NewLine();
-	ImGui::SameLine(410);
+	ImGui::SameLine(width);
 	if (ImGui::Button("Top Scorers")) {
 		//m_screenManager->setScreen(ScreenKeys::GAME);
 	}
 
 	ImGui::NewLine();
-	ImGui::SameLine(410);
+	ImGui::SameLine(width);
 	if (ImGui::Button("Settings")) {
 		m_screenManager->setScreen(ScreenKeys::SETTINGS);
 	}
 
 	ImGui::NewLine();
-	ImGui::SameLine(410);
+	ImGui::SameLine(width);
 	if (ImGui::Button("Exit Game")) {
 		m_screenManager->m_isProgramRunning = false;
 	}
