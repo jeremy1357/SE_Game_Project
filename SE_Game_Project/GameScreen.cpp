@@ -28,6 +28,11 @@ void GameScreen::on_exit()
 void GameScreen::on_render()
 {
 	m_levelManager.render(glm::vec2(0.0, 0.0), glm::vec2(0.0f));
+
+	for (auto& it : m_characterManager.m_zombieManager.m_zombies) {
+		m_spriteRenderer.add_sprite_to_batch(it.position, glm::vec2(25.0f), "skeleton-idle_1.png", it.angle);
+	}
+
 	m_spriteRenderer.add_sprite_to_batch(m_characterManager.m_player.position, glm::vec2(25.0f), "player.png", m_screenManager->m_camera.playerCursorAngle);
 	m_spriteRenderer.add_light_to_batch(glm::vec2(810.0f, 3040.0f), glm::vec2(100.0f), ColorRGBA32(255, 180, 255, 255));
 	m_spriteRenderer.add_light_to_batch(glm::vec2(1100.0f, 4040.0f), glm::vec2(200.0f), ColorRGBA32(255, 255, 255, 255));

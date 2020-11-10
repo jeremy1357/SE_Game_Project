@@ -32,7 +32,12 @@
      squareHeight = 0.0f;
  };
 
-bool CollisionManager::check_circle_collision(Circle circle1, Circle circle2)                                 //- Circle collision
+ CollisionManager::CollisionManager(LevelManager& levelManager)
+ {
+     m_levelManager = &levelManager;
+ }
+
+ bool CollisionManager::check_circle_collision(Circle circle1, Circle circle2)                                 //- Circle collision
 {
     float distance_x = circle1.xpos - circle2.xpos;
     float distance_y = circle1.ypos - circle2.ypos;
@@ -58,5 +63,18 @@ bool CollisionManager::check_square_collision(Square square1, Square square2)   
     }
     return false;
 
+}
+
+bool CollisionManager::is_square_on_restricted_tile(const glm::vec2& center, const glm::vec2& dims)
+{
+    glm::vec2 tl(center.x - dims.x, center.y + dims.y);
+	glm::vec2 tr = center + dims;
+	glm::vec2 bl = center - dims;
+	glm::vec2 br(center.x + dims.x, center.y - dims.y);
+    if (m_levelManager->is_tile_restricted(tl)) { return true; }
+	if (m_levelManager->is_tile_restricted(tr)) { return true; }
+	if (m_levelManager->is_tile_restricted(bl)) { return true; }
+	if (m_levelManager->is_tile_restricted(br)) { return true; }
+    return false;
 }
 

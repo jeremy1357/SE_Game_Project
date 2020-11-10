@@ -48,18 +48,16 @@ void LevelManager::init(
 	
 	mapSize.x = m_mapData.size();
 	mapSize.y = m_mapData[0].size();
-
-
 	std::string imageDirectory = projectDirectory + "Resources\\Textures\\";
 
-	GLuint poundTexture = m_textureCache->get_texture_id(imageDirectory + "Ground_01.png");
-	GLuint grassTexture = m_textureCache->get_texture_id(imageDirectory + "Dirt_01.png");
-	GLuint percentTexture = m_textureCache->get_texture_id(imageDirectory + "Ground_04.png");
+	GLuint poundTexture		= m_textureCache->get_texture_id(imageDirectory + "Ground_01.png");
+	GLuint grassTexture		= m_textureCache->get_texture_id(imageDirectory + "Dirt_01.png");
+	GLuint percentTexture	= m_textureCache->get_texture_id(imageDirectory + "Ground_04.png");
 	GLuint moneySignTexture = m_textureCache->get_texture_id(imageDirectory + "Dirt_02.png");
-	GLuint atTexture = m_textureCache->get_texture_id(imageDirectory + "dark_crate_five.png");
-	GLuint starTexture = m_textureCache->get_texture_id(imageDirectory + "log2.png");
-	GLuint dTexture = m_textureCache->get_texture_id(imageDirectory + "sand.png");
-	GLuint wTexture = m_textureCache->get_texture_id(imageDirectory + "LAVA.png");
+	GLuint atTexture		= m_textureCache->get_texture_id(imageDirectory + "dark_crate_five.png");
+	GLuint starTexture		= m_textureCache->get_texture_id(imageDirectory + "log2.png");
+	GLuint dTexture			= m_textureCache->get_texture_id(imageDirectory + "sand.png");
+	GLuint wTexture			= m_textureCache->get_texture_id(imageDirectory + "LAVA.png");
 	m_textureLookup.insert(std::make_pair('#', poundTexture));
 	m_textureLookup.insert(std::make_pair('-', grassTexture));
 	m_textureLookup.insert(std::make_pair('%', percentTexture));
@@ -69,6 +67,10 @@ void LevelManager::init(
 	m_textureLookup.insert(std::make_pair('d', dTexture));
 	m_textureLookup.insert(std::make_pair('w', wTexture));
 
+
+	// Manually add in restricted tiles here. These cant me moved on
+	m_restrictedTiles.push_back('#');
+	m_restrictedTiles.push_back('%');
 }
 
 void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) {
@@ -78,7 +80,6 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 		if (m_renderer == nullptr) {
 			return;
 		}
-
 		glm::vec2 tileCenter(0.0f, 0.0f);
 		for (auto& x : m_mapData) {
 			for (auto& y : x) {
@@ -118,33 +119,6 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 			tileCenter.y = 0.0f;
 		}
 	}
-
-	// Go through the 2D vector and render each tile. 
-	// Go of the logic that a tile in location of 0 0 (in the vector)
-	// should be rendered at position x=0, y=0.
-	// If 2D vector position is at 5 7, the position would be at
-	// x = 5 * (width of tile) and y = 7 * (height of tile)
-	// The offset variables account for the size of each tile to correctly
-	// align the tile.
-	//for (size_t x = 0; x < m_mapData.size(); x++) {
-	//	for (size_t y = 0; y < m_mapData[x].size(); y++) {
-	//		glm::vec2 tileCenter = glm::vec2(x, y);
-	//		
-	//		// Determine what the current character is and render its associated texture
-	//		switch (m_mapData[x][y]) {
-	//		case '#':
-	//			m_renderer->add_sprite_to_batch(tileCenter, get_texture_ID('#'));
-	//			break;
-	//		case '-':
-	//			m_renderer->add_sprite_to_batch(tileCenter, get_texture_ID('-'));
-	//			break;
-
-	//		default:
-	//			break;
-	//			// Maybe add a texture showing ERROR
-	//		}
-	//	}
-	//}
 }
 
 char LevelManager::get_character(glm::vec2 position, bool shouldScale)
@@ -159,8 +133,33 @@ char LevelManager::get_character(glm::vec2 position, bool shouldScale)
 			return m_mapData[xPos][yPos];
 		}
 	}
-
 	return '\0';
+}
+
+bool LevelManager::is_tile_restricted(const glm::vec2& point) {
+	char tile = get_character(point, true);
+	for (int i = 0; i < m_restrictedTiles.size(); i++) {
+		if (tile == m_restrictedTiles[i]) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool LevelManager::unlock_tile(glm::vec2 point)
+{
+	const char DOOR = 'D';
+	int xPos = (int)floor(point.x);
+	int yPos = (int)floor(point.y);
+	if (m_mapData.size() > xPos && xPos >= 0) {
+		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
+			if (m_mapData[xPos][yPos] != DOOR) {
+				m_mapData[xPos][yPos] = '@';
+				m_needsRender = true;
+			}
+		}
+	}
+	return false;
 }
 
 glm::vec2 LevelManager::get_tile_center(glm::vec2 tileToGetCenterOf)
@@ -177,11 +176,6 @@ glm::vec2 LevelManager::get_tile_center(glm::vec2 tileToGetCenterOf)
 			return bl;
 		}
 	}
-}
-
-
-void LevelManager::update() {
-
 }
 
 GLuint LevelManager::get_texture_ID(const char& key)

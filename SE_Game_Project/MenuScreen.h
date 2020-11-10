@@ -1,5 +1,6 @@
 #pragma once
 #include "Screen.hpp"
+#include "MenuEffects.h"
 
 
 class MenuScreen : public Screen
@@ -13,6 +14,6 @@ public:
 	virtual void on_update() override;
 
 private:
-
+	MenuEffects m_menuEffects;
 };
 

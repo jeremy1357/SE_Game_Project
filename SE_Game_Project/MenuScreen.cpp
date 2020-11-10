@@ -14,6 +14,7 @@ MenuScreen::MenuScreen(int uniqueScreenID)
 
 void MenuScreen::on_init()
 {
+	m_menuEffects.init();
 }
 
 void MenuScreen::on_entry()
@@ -88,6 +89,8 @@ void MenuScreen::on_render()
 	}
 
 	ImGui::End();
+	glm::vec2 cursorPosition(m_screenManager->m_inputManager.m_mPosX, m_screenManager->m_inputManager.m_mPosY);
+	m_menuEffects.render(m_screenManager->m_camera, cursorPosition);
 
 }
 
