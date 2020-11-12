@@ -121,26 +121,28 @@ void ZombieManager::update()
 
 	//update the zombie position variables
 
-	if (playerX > m_zombies.data()->position.x)
+	for (int i = 0; i < m_zombies.size(); i++)
 	{
-		m_zombies.data()->position.x = m_zombies.data()->position.x + speed;
-	}
+		if (playerX > m_zombies[i].position.x)
+		{
+			m_zombies[i].position.x = m_zombies[i].position.x + speed;
+		}
 
-	if (playerY > m_zombies.data()->position.y)
-	{
-		m_zombies.data()->position.y = m_zombies.data()->position.y + speed;
-	}
+		if (playerY > m_zombies[i].position.y)
+		{
+			m_zombies[i].position.y = m_zombies[i].position.y + speed;
+		}
 
-	if (playerX < m_zombies.data()->position.x)
-	{
-		m_zombies.data()->position.x = m_zombies.data()->position.x - speed;
-	}
+		if (playerX < m_zombies[i].position.x)
+		{
+			m_zombies[i].position.x = m_zombies[i].position.x - speed;
+		}
 
-	if (playerY < m_zombies.data()->position.y)
-	{
-		m_zombies.data()->position.y = m_zombies.data()->position.y - speed;
+		if (playerY < m_zombies[i].position.y)
+		{
+			m_zombies[i].position.y = m_zombies[i].position.y - speed;
+		}
 	}
-
 	float angle = (atan2(playerY - m_zombies.data()->position.y, playerX - m_zombies.data()->position.x) * 180) / 3.141;
 
 	 //Need to have zombie implement angle to face player
