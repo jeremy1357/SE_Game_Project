@@ -74,8 +74,10 @@ void LevelManager::init(
 	m_textureLookup.insert(std::make_pair('o', nullTexture));
 	m_textureLookup.insert(std::make_pair('&', nullTexture));
 	m_textureLookup.insert(std::make_pair('=', nullTexture));
-
 	m_textureLookup.insert(std::make_pair('~',nullTexture)); // No texture yet/error texture
+	// Manually add in restricted tiles here. These cant me moved on
+	m_restrictedTiles.push_back('#');
+	m_restrictedTiles.push_back('%');
 }
 
 void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) {
