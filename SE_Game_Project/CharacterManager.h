@@ -5,6 +5,9 @@
 #include<glm/glm.hpp>
 #include "InputManager.h"
 #include "LevelManager.h"
+#include "LevelManager.h"
+#include "ZombieManager.h"
+
 #include <vector>
 
 using namespace std;
@@ -32,10 +35,11 @@ class CharacterManager
 		void init(InputManager& inputManager, LevelManager& levelManager, const glm::vec2& playerPos);
 		void update();
 		void tile_collision();
-
 		bool is_player_alive();
 
 		Player m_player;
+		ZombieManager m_zombieManager;
+
 
 	private:
 		struct CollisionPosition {

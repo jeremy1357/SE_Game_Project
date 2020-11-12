@@ -20,7 +20,7 @@ int SDLWindow::init(int width, int height)
 {
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-	m_windowHandle = SDL_CreateWindow("Software Engineering Project", SDL_WINDOWPOS_CENTERED,
+	m_windowHandle = SDL_CreateWindow("Zombie Onslaught", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 	// Check if window was created successfully. If not return 1

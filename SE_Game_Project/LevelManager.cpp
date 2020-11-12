@@ -48,13 +48,11 @@ void LevelManager::init(
 	
 	mapSize.x = m_mapData.size();
 	mapSize.y = m_mapData[0].size();
-
-
 	std::string imageDirectory = projectDirectory + "Resources\\Textures\\";
 
-	GLuint poundTexture = m_textureCache->get_texture_id(imageDirectory + "Ground_01.png");
-	GLuint grassTexture = m_textureCache->get_texture_id(imageDirectory + "Dirt_01.png");
-	GLuint percentTexture = m_textureCache->get_texture_id(imageDirectory + "Ground_04.png");
+	GLuint poundTexture		= m_textureCache->get_texture_id(imageDirectory + "Ground_01.png");
+	GLuint grassTexture		= m_textureCache->get_texture_id(imageDirectory + "Dirt_01.png");
+	GLuint percentTexture	= m_textureCache->get_texture_id(imageDirectory + "Ground_04.png");
 	GLuint moneySignTexture = m_textureCache->get_texture_id(imageDirectory + "Dirt_02.png");
 	GLuint atTexture = m_textureCache->get_texture_id(imageDirectory + "dark_crate_five.png");
 	GLuint starTexture = m_textureCache->get_texture_id(imageDirectory + "log2.png");
@@ -87,7 +85,6 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 		if (m_renderer == nullptr) {
 			return;
 		}
-
 		glm::vec2 tileCenter(0.0f, 0.0f);
 		for (auto& x : m_mapData) {
 			for (auto& y : x) {
@@ -141,8 +138,33 @@ char LevelManager::get_character(glm::vec2 position, bool shouldScale)
 			return m_mapData[xPos][yPos];
 		}
 	}
-
 	return '\0';
+}
+
+bool LevelManager::is_tile_restricted(const glm::vec2& point) {
+	char tile = get_character(point, true);
+	for (int i = 0; i < m_restrictedTiles.size(); i++) {
+		if (tile == m_restrictedTiles[i]) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool LevelManager::unlock_tile(glm::vec2 point)
+{
+	const char DOOR = 'D';
+	int xPos = (int)floor(point.x);
+	int yPos = (int)floor(point.y);
+	if (m_mapData.size() > xPos && xPos >= 0) {
+		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
+			if (m_mapData[xPos][yPos] != DOOR) {
+				m_mapData[xPos][yPos] = '@';
+				m_needsRender = true;
+			}
+		}
+	}
+	return false;
 }
 
 glm::vec2 LevelManager::get_tile_center(glm::vec2 tileToGetCenterOf)

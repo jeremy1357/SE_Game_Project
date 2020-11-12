@@ -60,13 +60,15 @@ void CharacterManager::init(
 	m_inputManager = &inputManager;
 	m_levelManager = &levelManager;
 	m_player.position = playerPos;
-	blacklistedChar.push_back('#');
-	blacklistedChar.push_back('%');
+
+	blacklistedChar = m_levelManager->get_restricted_tiles();
+	m_zombieManager.init(levelManager, *this, blacklistedChar, m_levelManager->get_map_size().x, m_levelManager->get_map_size().y, m_levelManager->get_tile_dimensions());
 
 }
 
 void CharacterManager::update()
 {
+	m_zombieManager.update();
 	if (m_player.health < 0)
 	{
 		m_player.isAlive = false;

@@ -1,12 +1,13 @@
 #pragma once
-#include "CharacterManager.h"
 #include <string>
-#include<glm/glm.hpp>
+#include <glm/glm.hpp>
 #include "LevelManager.h"
 #include <vector>
 
 using namespace std;
 
+
+class CharacterManager;
 
 struct Zombie {
 	int health = 100;

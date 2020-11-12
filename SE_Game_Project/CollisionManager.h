@@ -1,4 +1,5 @@
 #pragma once
+#include "LevelManager.h"
 
 struct Circle {
 
@@ -11,10 +12,9 @@ struct Circle {
 };
 
 struct Square {
-
-    float squarePosx = 0;      // square position 
-    float squarePosy = 0;
-    float squareWidth = 0;     // dimensions
+    float squarePosx   = 0;      // square position 
+    float squarePosy   = 0;
+    float squareWidth  = 0;     // dimensions
     float squareHeight = 0;
 
     Square(float xpos, float ypos, float width, float height);
@@ -24,10 +24,12 @@ struct Square {
 class CollisionManager
 {
 public:
-
+    CollisionManager(LevelManager& levelManager);
     bool check_circle_collision(Circle circle1, Circle circle2);
-
     bool check_square_collision(Square square1 ,Square square2);
+    bool is_square_on_restricted_tile(const glm::vec2& center, const glm::vec2& dims);
 
+private:
+    LevelManager* m_levelManager = nullptr;
 };
 

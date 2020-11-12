@@ -9,8 +9,6 @@ GameScreen::GameScreen(int uniqueScreenID)
 
 void GameScreen::on_init()
 {
-
-
 	m_spriteRenderer.on_init(m_screenManager->m_camera, m_textureCache, m_screenManager->get_project_directory());
 	m_levelManager.init(m_screenManager->get_project_directory(), m_spriteRenderer, m_textureCache);
 	m_characterManager.init(m_screenManager->m_inputManager, m_levelManager, glm::vec2(900, 3075));
@@ -20,7 +18,6 @@ void GameScreen::on_init()
 void GameScreen::on_entry()
 {
 	m_screenState = ScreenState::ACTIVE;
-
 }
 
 void GameScreen::on_exit()
@@ -31,6 +28,11 @@ void GameScreen::on_exit()
 void GameScreen::on_render()
 {
 	m_levelManager.render(glm::vec2(0.0, 0.0), glm::vec2(0.0f));
+
+	for (auto& it : m_characterManager.m_zombieManager.m_zombies) {
+		m_spriteRenderer.add_sprite_to_batch(it.position, glm::vec2(25.0f), "skeleton-idle_1.png", it.angle);
+	}
+
 	m_spriteRenderer.add_sprite_to_batch(m_characterManager.m_player.position, glm::vec2(25.0f), "player.png", m_screenManager->m_camera.playerCursorAngle);
 	m_spriteRenderer.add_light_to_batch(glm::vec2(810.0f, 3040.0f), glm::vec2(100.0f), ColorRGBA32(255, 180, 255, 255));
 	m_spriteRenderer.add_light_to_batch(glm::vec2(1100.0f, 4040.0f), glm::vec2(200.0f), ColorRGBA32(255, 255, 255, 255));
@@ -38,18 +40,10 @@ void GameScreen::on_render()
 	m_spriteRenderer.add_light_to_batch(glm::vec2(840.0f, 2130.0f), glm::vec2(150.0f), ColorRGBA32(95, 95, 95, 255));
 	m_spriteRenderer.add_light_to_batch(glm::vec2(1470.0f, 5500.0f), glm::vec2(350.0f), ColorRGBA32(0, 0, 180, 255));
 
-
 	m_spriteRenderer.on_render();
 	
-
-
-
-
 	ImGui::SetNextWindowBgAlpha(0.35f);
 
-	if (ImGui::Button("Main Menu")) {
-		m_screenManager->setScreen(ScreenKeys::MENU);
-	}
 	ImGui::Begin("Zombie Onslaught");
 	ImGui::Text("FPS: %f", m_screenManager->m_timer.m_fps);
 	ImGui::Text("Player Health: %i", m_characterManager.m_player.health);
@@ -60,6 +54,9 @@ void GameScreen::on_render()
 	ImGui::Text("PLAYER: X: [%i]  Y: [%i]", (int)m_characterManager.m_player.position.x, (int)m_characterManager.m_player.position.y);
 	ImGui::Text("Character Hover: X: [%c]", m_levelManager.get_character(worldCursorCoordinates, true));
 
+	if (ImGui::Button("Main Menu")) {
+		m_screenManager->setScreen(ScreenKeys::MENU);
+	}
 	//ImGui::Text("Zombie Wave: );
 	ImGui::End();
 }
