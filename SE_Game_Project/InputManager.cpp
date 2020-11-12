@@ -1,17 +1,16 @@
 /*Dylan Beauchemin*/
 /*September 29, 2020*/
 
+#include <iostream>
 #include "InputManager.h"
 
 InputManager::InputManager() {
 	// Constructor
-	m_leftMB = 0;
-	m_rightMB = 0;
+	//m_leftMB = 0;
+	//m_rightMB = 0;
 	m_mPosX = 0;
 	m_mPosY = 0;
 	m_didPlayerCloseApp = false;
-
-	//CurrentKeystate = SDL_GetKeyboardState(NULL); //ignore this
 }
 
 InputManager::~InputManager() {
@@ -19,18 +18,20 @@ InputManager::~InputManager() {
 }
 
 void InputManager::update() {
-
+	m_priorKeys = m_currentKeys;
 	// SDL Events Loop - When no events, goes to 0
 	// October 6, 2020
 	while (SDL_PollEvent(&m_inputEvent)) {
 		switch (m_inputEvent.type) {
 			// using SDL keycodes
 			// https://wiki.libsdl.org/SDL_Keycode
+			// and mouse events
+			// https://wiki.libsdl.org/SDL_MouseButtonEvent#Remarks
 		case SDL_MOUSEBUTTONDOWN:
-			set_mouse_click(m_inputEvent.button);
+			m_currentKeys[m_inputEvent.button.button] = true;
 			break;
 		case SDL_MOUSEBUTTONUP:
-			un_mouse_click(m_inputEvent.button);
+			m_currentKeys[m_inputEvent.button.button] = false;
 			break;
 		case SDL_KEYDOWN:
 			m_currentKeys[m_inputEvent.key.keysym.sym] = true;
@@ -50,11 +51,13 @@ void InputManager::update() {
 }
 
 bool InputManager::get_key(int key){
-	// Inputs should be keycodes
-	if (m_currentKeys[key])
+	// Inputs should be keycodes or mouse buttons
+	if (m_currentKeys[key]) {
 		return true;
-	else
+	}
+	else {
 		return false;
+	}
 	// Checks keymap to see if keys are pressed
 }
 
@@ -62,7 +65,16 @@ bool InputManager::get_if_closed() {
 	return m_didPlayerCloseApp;
 }
 
-void InputManager::set_mouse_click(SDL_MouseButtonEvent& button) {
+bool InputManager::get_keyHeld(int key) {
+	if (m_priorKeys[key]) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+/*void InputManager::set_mouse_click(SDL_MouseButtonEvent& button) {
 	// Checking both left and right buttons
 	if (button.button == SDL_BUTTON_LEFT)
 		m_leftMB = 1;
@@ -78,5 +90,5 @@ void InputManager::un_mouse_click(SDL_MouseButtonEvent& button)
 	if (button.button == SDL_BUTTON_RIGHT) {
 		m_rightMB = 0;
 	}
-}
+}*/
 

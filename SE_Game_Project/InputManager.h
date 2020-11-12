@@ -4,11 +4,12 @@
 
 #include <SDL/SDL.h>
 #include <map>
+#include "FPS_Timer.h"
 
 class InputManager{
 public:
-	bool m_leftMB;
-	bool m_rightMB;
+	//bool m_leftMB; //Depreciated; use map instead
+	//bool m_rightMB;
 	int m_mPosX;
 	int m_mPosY;
 	InputManager();
@@ -16,13 +17,14 @@ public:
 	void update();
 	bool get_key(int key);
 	bool get_if_closed();
+	bool get_keyHeld(int key);
 private:
 	SDL_Event m_inputEvent;
 	std::map<int, bool> m_currentKeys;
 	std::map<int, bool> m_priorKeys;
 	bool m_didPlayerCloseApp;
-	//const Uint8* CurrentKeystate;
-	void set_mouse_click(SDL_MouseButtonEvent& button);
-	void un_mouse_click(SDL_MouseButtonEvent& button);
+	int m_refreshRate;
+	//void set_mouse_click(SDL_MouseButtonEvent& button); //Depreciated; use map instead
+	//void un_mouse_click(SDL_MouseButtonEvent& button);
 };
 

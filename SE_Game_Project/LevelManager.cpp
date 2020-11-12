@@ -60,15 +60,22 @@ void LevelManager::init(
 	GLuint starTexture = m_textureCache->get_texture_id(imageDirectory + "log2.png");
 	GLuint dTexture = m_textureCache->get_texture_id(imageDirectory + "sand.png");
 	GLuint wTexture = m_textureCache->get_texture_id(imageDirectory + "LAVA.png");
-	m_textureLookup.insert(std::make_pair('#', poundTexture));
-	m_textureLookup.insert(std::make_pair('-', grassTexture));
-	m_textureLookup.insert(std::make_pair('%', percentTexture));
-	m_textureLookup.insert(std::make_pair('$', moneySignTexture));
-	m_textureLookup.insert(std::make_pair('@', atTexture));
-	m_textureLookup.insert(std::make_pair('*', starTexture));
-	m_textureLookup.insert(std::make_pair('d', dTexture));
-	m_textureLookup.insert(std::make_pair('w', wTexture));
+	//For missing textures - placeholder mostly
+	GLuint nullTexture = m_textureCache->get_texture_id(imageDirectory + "missing.png");
 
+	m_textureLookup.insert(std::make_pair('#', poundTexture)); // Cobbles
+	m_textureLookup.insert(std::make_pair('-', grassTexture)); // Dirt 1; ironically not grass
+	m_textureLookup.insert(std::make_pair('%', percentTexture)); // Mossy Cobbles
+	m_textureLookup.insert(std::make_pair('$', moneySignTexture)); // Dirt 2
+	m_textureLookup.insert(std::make_pair('@', atTexture)); // Crate
+	m_textureLookup.insert(std::make_pair('*', starTexture)); // Wood log
+	m_textureLookup.insert(std::make_pair('d', dTexture)); // Sand
+	m_textureLookup.insert(std::make_pair('w', wTexture)); // Lava
+	m_textureLookup.insert(std::make_pair('o', nullTexture)); // Snow?
+	m_textureLookup.insert(std::make_pair('&', nullTexture)); // Snow Edge
+	m_textureLookup.insert(std::make_pair('=', nullTexture));
+
+	m_textureLookup.insert(std::make_pair('n',nullTexture));
 }
 
 void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) {
