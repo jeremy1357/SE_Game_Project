@@ -35,7 +35,7 @@ private:
 
 	int m_mapSizex;
 	int m_mapSizey;
-	glm::vec2 tileSize;
+	glm::vec2 m_tileSize = glm::vec2(75.0f, 75.0f);
 	glm::vec2 calculate_spawnPosition();
 	float m_speed;
 	struct CollisionPosition {

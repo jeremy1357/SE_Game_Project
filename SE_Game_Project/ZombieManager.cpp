@@ -20,11 +20,12 @@ ZombieManager::~ZombieManager()
 glm::vec2 ZombieManager::calculate_spawnPosition()
 {
 	glm::vec2 testPT = glm::vec2 (0.0);
+	srand(time(0));
 
 	for (int i = 0; i < 10; i++)
 	{
-		testPT.x = rand() % m_mapSizex;
-		testPT.y = rand() % m_mapSizey;
+		testPT.x = rand() % m_mapSizex*m_tileSize.x;
+		testPT.y = rand() % m_mapSizey*m_tileSize.y;
 
 		char result;
 		result = m_levelManager->get_character(testPT, true);
@@ -158,7 +159,7 @@ void ZombieManager::update()
 		{
 			const float speed = 2.0f;
 			m_zombies[i].isAlive = true;
-			m_characterManager->tile_collision();
+			tile_collision();
 		}
 	}
 }
