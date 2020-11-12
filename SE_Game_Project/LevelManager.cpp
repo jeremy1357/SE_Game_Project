@@ -60,7 +60,7 @@ void LevelManager::init(
 	GLuint starTexture = m_textureCache->get_texture_id(imageDirectory + "log2.png");
 	GLuint dTexture = m_textureCache->get_texture_id(imageDirectory + "sand.png");
 	GLuint wTexture = m_textureCache->get_texture_id(imageDirectory + "LAVA.png");
-	//For missing textures - placeholder mostly
+	//For missing textures
 	GLuint nullTexture = m_textureCache->get_texture_id(imageDirectory + "missing.png");
 
 	m_textureLookup.insert(std::make_pair('#', poundTexture)); // Cobbles
@@ -71,11 +71,11 @@ void LevelManager::init(
 	m_textureLookup.insert(std::make_pair('*', starTexture)); // Wood log
 	m_textureLookup.insert(std::make_pair('d', dTexture)); // Sand
 	m_textureLookup.insert(std::make_pair('w', wTexture)); // Lava
-	m_textureLookup.insert(std::make_pair('o', nullTexture)); // Snow?
-	m_textureLookup.insert(std::make_pair('&', nullTexture)); // Snow Edge
+	m_textureLookup.insert(std::make_pair('o', nullTexture));
+	m_textureLookup.insert(std::make_pair('&', nullTexture));
 	m_textureLookup.insert(std::make_pair('=', nullTexture));
 
-	m_textureLookup.insert(std::make_pair('n',nullTexture));
+	m_textureLookup.insert(std::make_pair('~',nullTexture)); // No texture yet/error texture
 }
 
 void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) {
@@ -114,8 +114,8 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 				case 'd':
 					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('d'));
 					break;
-
 				default:
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('~'));
 					break;
 					// Maybe add a texture showing ERROR
 				}
@@ -125,33 +125,6 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 			tileCenter.y = 0.0f;
 		}
 	}
-
-	// Go through the 2D vector and render each tile. 
-	// Go of the logic that a tile in location of 0 0 (in the vector)
-	// should be rendered at position x=0, y=0.
-	// If 2D vector position is at 5 7, the position would be at
-	// x = 5 * (width of tile) and y = 7 * (height of tile)
-	// The offset variables account for the size of each tile to correctly
-	// align the tile.
-	//for (size_t x = 0; x < m_mapData.size(); x++) {
-	//	for (size_t y = 0; y < m_mapData[x].size(); y++) {
-	//		glm::vec2 tileCenter = glm::vec2(x, y);
-	//		
-	//		// Determine what the current character is and render its associated texture
-	//		switch (m_mapData[x][y]) {
-	//		case '#':
-	//			m_renderer->add_sprite_to_batch(tileCenter, get_texture_ID('#'));
-	//			break;
-	//		case '-':
-	//			m_renderer->add_sprite_to_batch(tileCenter, get_texture_ID('-'));
-	//			break;
-
-	//		default:
-	//			break;
-	//			// Maybe add a texture showing ERROR
-	//		}
-	//	}
-	//}
 }
 
 char LevelManager::get_character(glm::vec2 position, bool shouldScale)
@@ -184,11 +157,6 @@ glm::vec2 LevelManager::get_tile_center(glm::vec2 tileToGetCenterOf)
 			return bl;
 		}
 	}
-}
-
-
-void LevelManager::update() {
-
 }
 
 GLuint LevelManager::get_texture_ID(const char& key)
