@@ -8,12 +8,12 @@
 #ifndef GameEconomy_hpp
 #define GameEconomy_hpp
 
-#include <stdio.h>
 #include <string>
 #include <vector>
 
 // struct that contains game economy items
-struct Item{
+struct Item {
+    int Type;
     std::string Name;
     int Cost;
     int SellCost;
@@ -23,12 +23,14 @@ struct Item{
 class GameEconomy
 {
 public:
-    bool Buy_Item(int& playerMoney, std::string item);
+    Item Buy_Item(int& playerMoney, std::string item);
     bool Insufficient_Funds(int& playerMoney, int price);
-    void Zombie_Reward(int& playerMoney, std::string size);
+    void Zombie_Reward(int& playerMoney);
     std::vector<Item> itemList;
-    void init(std::string path);
+    void init(std::string path, int reward);
     GameEconomy();
     ~GameEconomy();
+private:
+    int zombieKill;
 };
 #endif /* GameEconomy_hpp */
