@@ -24,10 +24,13 @@ struct Square {
 class CollisionManager
 {
 public:
+    CollisionManager();
+    ~CollisionManager();
     CollisionManager(LevelManager& levelManager);
     bool check_circle_collision(Circle circle1, Circle circle2);
     bool check_square_collision(Square square1 ,Square square2);
     bool is_square_on_restricted_tile(const glm::vec2& center, const glm::vec2& dims);
+  
 
 private:
     LevelManager* m_levelManager = nullptr;

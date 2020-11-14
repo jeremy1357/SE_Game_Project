@@ -20,11 +20,15 @@ ZombieManager::~ZombieManager()
 glm::vec2 ZombieManager::calculate_spawnPosition()
 {
 	glm::vec2 testPT = glm::vec2 (0.0);
+	srand(time(0));
 
 	for (int i = 0; i < 10; i++)
 	{
-		testPT.x = rand() % m_mapSizex;
-		testPT.y = rand() % m_mapSizey;
+		//testPT.x = rand() % m_mapSizex*m_tileSize.x;   //1 - 3899
+		//testPT.y = rand() % m_mapSizey*m_tileSize.y;   //
+
+		testPT.x = rand() % 3625 + 100;   //1 - 3899
+		testPT.y = rand() % 7450 + 175;   //
 
 		char result;
 		result = m_levelManager->get_character(testPT, true);
@@ -57,12 +61,14 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 	//	if no matches return position
 }
 
-void ZombieManager::init(LevelManager& levelManager,CharacterManager& characterManager, const std::vector<char> blacklistedTiles, int mapSizex, int mapSizey, glm::vec2 tileSize)
+
+void ZombieManager::init(LevelManager& levelManager, CharacterManager& characterManager, const std::vector<char> blacklistedTiles, int mapSizex, int mapSizey, glm::vec2 tileSize, CollisionManager& collisionManager)
 {
 	m_mapSizex = mapSizex;
 	m_mapSizey = mapSizey;
 	m_levelManager = &levelManager;
 	m_characterManager = &characterManager;
+	m_collisionManager = &collisionManager;
 	m_blacklistedChar = blacklistedTiles;
 
 }
@@ -121,28 +127,34 @@ void ZombieManager::update()
 
 	//update the zombie position variables
 
-	if (playerX > m_zombies.data()->position.x)
+	for (int i = 0; i < m_zombies.size(); i++)
 	{
-		m_zombies.data()->position.x = m_zombies.data()->position.x + speed;
+		//float angle = (atan2(playerY - m_zombies[i].position.y, playerX - m_zombies[i].position.x) * 180) / 3.141;
+		float angle = (atan2(m_zombies[i].position.y - playerY, m_zombies[i].position.x - playerX) * 180) / 3.141;
+		if (playerX > m_zombies[i].position.x)
+		{
+			m_zombies[i].position.x = m_zombies[i].position.x + speed;
+			m_zombies[i].angle = angle;
+		}
+
+		if (playerY > m_zombies[i].position.y)
+		{
+			m_zombies[i].position.y = m_zombies[i].position.y + speed;
+			m_zombies[i].angle = angle;
+		}
+
+		if (playerX < m_zombies[i].position.x)
+		{
+			m_zombies[i].position.x = m_zombies[i].position.x - speed;
+			m_zombies[i].angle = angle;
+		}
+
+		if (playerY < m_zombies[i].position.y)
+		{
+			m_zombies[i].position.y = m_zombies[i].position.y - speed;
+			m_zombies[i].angle = angle;
+		}
 	}
-
-	if (playerY > m_zombies.data()->position.y)
-	{
-		m_zombies.data()->position.y = m_zombies.data()->position.y + speed;
-	}
-
-	if (playerX < m_zombies.data()->position.x)
-	{
-		m_zombies.data()->position.x = m_zombies.data()->position.x - speed;
-	}
-
-	if (playerY < m_zombies.data()->position.y)
-	{
-		m_zombies.data()->position.y = m_zombies.data()->position.y - speed;
-	}
-
-	float angle = (atan2(playerY - m_zombies.data()->position.y, playerX - m_zombies.data()->position.x) * 180) / 3.141;
-
 	 //Need to have zombie implement angle to face player
 
 
@@ -156,9 +168,11 @@ void ZombieManager::update()
 		{
 			const float speed = 2.0f;
 			m_zombies[i].isAlive = true;
-			m_characterManager->tile_collision();
+			tile_collision();
 		}
 	}
+
+	npc_collision();
 }
 
 void ZombieManager::tile_collision() {
@@ -228,5 +242,30 @@ void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
 				}
 			}
 		}
+	}
+}
+void ZombieManager::npc_collision()
+{
+
+	float pushback = 5.0f;
+	for (int i = 0; i < m_zombies.size(); i++)
+	{
+		for (int j = 0; j < m_zombies.size(); j++)
+		{
+			float dx = m_zombies[i].position.x-m_zombies[j].position.x;
+			float dy = m_zombies[i].position.y - m_zombies[j].position.y;
+			float radius = (dx * dx) + (dy * dy);
+			if (radius < m_zombies[i].radius)
+			{
+				float angleZomb = (atan2(m_zombies[i].position.y - m_zombies[j].position.y, m_zombies[i].position.x - m_zombies[j].position.x) * 180) / 3.141;
+
+				m_zombies[i].position.x = m_zombies[i].position.x + cos(angleZomb) * pushback;
+				m_zombies[i].position.y = m_zombies[i].position.y + cos(angleZomb) * pushback;
+
+				m_zombies[j].position.x = m_zombies[j].position.x - cos(angleZomb) * pushback;
+				m_zombies[j].position.y = m_zombies[j].position.y - cos(angleZomb) * pushback;
+			}
+		}
+
 	}
 }
