@@ -18,12 +18,12 @@ public:
 	bool get_key(int key);
 	bool get_if_closed();
 	bool get_keyHeld(int key);
+	bool get_keyPressed(int key);
 private:
 	SDL_Event m_inputEvent;
 	std::map<int, bool> m_currentKeys;
 	std::map<int, bool> m_priorKeys;
 	bool m_didPlayerCloseApp;
-	int m_refreshRate;
 	//void set_mouse_click(SDL_MouseButtonEvent& button); //Depreciated; use map instead
 	//void un_mouse_click(SDL_MouseButtonEvent& button);
 };

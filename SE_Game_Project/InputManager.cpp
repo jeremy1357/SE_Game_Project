@@ -74,6 +74,15 @@ bool InputManager::get_keyHeld(int key) {
 	}
 }
 
+bool InputManager::get_keyPressed(int key) {
+	if (m_priorKeys[key] == true && m_currentKeys[key] == false) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 /*void InputManager::set_mouse_click(SDL_MouseButtonEvent& button) {
 	// Checking both left and right buttons
 	if (button.button == SDL_BUTTON_LEFT)
