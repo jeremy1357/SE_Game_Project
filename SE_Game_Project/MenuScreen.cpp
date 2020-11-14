@@ -43,8 +43,8 @@ void MenuScreen::on_render()
 
 	//Setting Up Colors of different things
 	style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
-	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
-	style.Colors[ImGuiCol_Button] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
+	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.0f);
+	style.Colors[ImGuiCol_Button] = ImVec4(0.100f, 0.100f, 0.100f, 1.0f);
 	style.Colors[ImGuiCol_Border] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
 	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.900f, 0.900f, 0.900f, 0.900f);
 
@@ -55,32 +55,46 @@ void MenuScreen::on_render()
 	int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::Begin("Zombie Onslaught");
-	ImGui::SetWindowFontScale(1.5);
+	//ImGui::SetWindowFontScale(1.5);
 	style.WindowBorderSize = 1.0f;
 	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
 	style.WindowMenuButtonPosition = ImGuiDir_None;
-	
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+
 
 	float buttonPlayGameSize = 225.0f;
 	ImGui::SameLine(width - 112.5);
 	if (ImGui::Button("Play Game", ImVec2(buttonPlayGameSize, 50))) {
 		m_screenManager->setScreen(ScreenKeys::GAME);
 	}
-
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
 	ImGui::NewLine();
 	float buttonTopScorers = 250.0f;
 	ImGui::SameLine(width - 125);
 	if (ImGui::Button("Top Scorers", ImVec2(buttonTopScorers, 50))) {
 		//m_screenManager->setScreen(ScreenKeys::GAME);
 	}
-
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
 	ImGui::NewLine();
 	float buttonSettings = 200.0f;
 	ImGui::SameLine(width - 100);
 	if (ImGui::Button("Settings", ImVec2(buttonSettings, 50))) {
 		m_screenManager->setScreen(ScreenKeys::SETTINGS);
 	}
-
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
 	ImGui::NewLine();
 	float buttonExitGame = 200.0f;
 	ImGui::SameLine(width - 100);

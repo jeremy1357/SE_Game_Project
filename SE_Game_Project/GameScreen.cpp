@@ -12,7 +12,7 @@ void GameScreen::on_init()
 	m_spriteRenderer.on_init(m_screenManager->m_camera, m_textureCache, m_screenManager->get_project_directory());
 	m_levelManager.init(m_screenManager->get_project_directory(), m_spriteRenderer, m_textureCache);
 	m_characterManager.init(m_screenManager->m_inputManager, m_levelManager, m_collisionManager, glm::vec2(900, 3075));
-	m_economy.init(m_screenManager->get_project_directory(),1);
+	m_economy.init(m_screenManager->get_project_directory(), 1);
 }
 
 void GameScreen::on_entry()
