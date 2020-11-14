@@ -15,6 +15,7 @@ struct Zombie {
 	bool isAlive = true;
 	glm::vec2 position = glm::vec2(0.0);
 	float angle = 0.0;
+	float radius = 25.0f;
 };
 
 class ZombieManager
@@ -45,7 +46,7 @@ private:
 		bool didCollisionOccur = false;
 	};
 
-	void npc_collision(CollisionPosition* cp);
+	void npc_collision();
 	bool should_spawn_wave();
 	void spawn_Wave(int wave);
 	const glm::vec2 dim = glm::vec2(25.0f);

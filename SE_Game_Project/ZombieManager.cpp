@@ -24,8 +24,11 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 
 	for (int i = 0; i < 10; i++)
 	{
-		testPT.x = rand() % m_mapSizex*m_tileSize.x;   //1 - 3899
-		testPT.y = rand() % m_mapSizey*m_tileSize.y;   //
+		//testPT.x = rand() % m_mapSizex*m_tileSize.x;   //1 - 3899
+		//testPT.y = rand() % m_mapSizey*m_tileSize.y;   //
+
+		testPT.x = rand() % 3625 + 100;   //1 - 3899
+		testPT.y = rand() % 7450 + 175;   //
 
 		char result;
 		result = m_levelManager->get_character(testPT, true);
@@ -152,8 +155,6 @@ void ZombieManager::update()
 			m_zombies[i].angle = angle;
 		}
 	}
-
-
 	 //Need to have zombie implement angle to face player
 
 
@@ -170,6 +171,8 @@ void ZombieManager::update()
 			tile_collision();
 		}
 	}
+
+	npc_collision();
 }
 
 void ZombieManager::tile_collision() {
@@ -241,13 +244,27 @@ void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
 		}
 	}
 }
-void ZombieManager::npc_collision(CollisionPosition *cp)
+void ZombieManager::npc_collision()
 {
+
+	float pushback = 5.0f;
 	for (int i = 0; i < m_zombies.size(); i++)
 	{
-		if (cp[i].didCollisionOccur)
+		for (int j = 0; j < m_zombies.size(); j++)
 		{
+			float dx = m_zombies[i].position.x-m_zombies[j].position.x;
+			float dy = m_zombies[i].position.y - m_zombies[j].position.y;
+			float radius = (dx * dx) + (dy * dy);
+			if (radius < m_zombies[i].radius)
+			{
+				float angleZomb = (atan2(m_zombies[i].position.y - m_zombies[j].position.y, m_zombies[i].position.x - m_zombies[j].position.x) * 180) / 3.141;
 
+				m_zombies[i].position.x = m_zombies[i].position.x + cos(angleZomb) * pushback;
+				m_zombies[i].position.y = m_zombies[i].position.y + cos(angleZomb) * pushback;
+
+				m_zombies[j].position.x = m_zombies[j].position.x - cos(angleZomb) * pushback;
+				m_zombies[j].position.y = m_zombies[j].position.y - cos(angleZomb) * pushback;
+			}
 		}
 
 	}
