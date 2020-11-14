@@ -16,7 +16,9 @@ void ScreenManager::runProgram()
 		m_timer.end_FPS();
 
 		// FPS Timer END would go HERE
-
+		//if (m_inputManager.get_if_closed() == false) {
+		//	m_isProgramRunning = false;
+		//}
 	}
 	std::cout << "Exited main control loop. Shutting down.\n";
 	this->destroy();

@@ -75,7 +75,7 @@ bool InputManager::get_keyHeld(int key) {
 }
 
 bool InputManager::get_keyPressed(int key) {
-	if (m_priorKeys[key] == true && m_currentKeys[key] == false) {
+	if (m_priorKeys[key] == false && m_currentKeys[key] == true) {
 		return true;
 	}
 	else {

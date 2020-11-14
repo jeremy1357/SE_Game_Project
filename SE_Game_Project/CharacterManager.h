@@ -2,11 +2,13 @@
 #pragma once
 
 #include <string>
-#include<glm/glm.hpp>
+#include <glm/glm.hpp>
 #include "InputManager.h"
 #include "LevelManager.h"
 #include "LevelManager.h"
 #include "ZombieManager.h"
+#include "GameEconomy.hpp"
+#include "Camera.h"
 
 #include <vector>
 
@@ -32,14 +34,19 @@ class CharacterManager
 
 		void Damage(int amount);
 		void SetName(string n);
-		void init(InputManager& inputManager, LevelManager& levelManager, CollisionManager& collisionManager, const glm::vec2& playerPos);
+		void init(InputManager& inputManager, 
+			LevelManager& levelManager, 
+			CollisionManager& collisionManager, 
+			Camera& camera,
+			const glm::vec2& playerPos,
+			const std::string& programDirectory);
 		void update();
 		void tile_collision();
 		bool is_player_alive();
 
 		Player m_player;
 		ZombieManager m_zombieManager;
-
+		GameEconomy m_economy;
 
 	private:
 		struct CollisionPosition {
@@ -51,6 +58,8 @@ class CharacterManager
 		const glm::vec2 dim = glm::vec2(25.0f);
 		InputManager* m_inputManager = nullptr;
 		LevelManager* m_levelManager = nullptr;
+		Camera* m_camera = nullptr;
+
 		CollisionManager* m_collisionManager = nullptr;
 		std::vector<char> blacklistedChar;
 		bool collisionCheck(char parameter);

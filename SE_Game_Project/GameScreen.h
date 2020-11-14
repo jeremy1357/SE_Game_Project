@@ -9,7 +9,6 @@
 #include "TextureCache.h"
 #include "LevelManager.h"
 #include "CollisionManager.h"
-#include "GameEconomy.hpp"
 
 class GameScreen : public Screen
 {
@@ -30,6 +29,5 @@ private:
 	LevelManager m_levelManager;
 	CharacterManager m_characterManager;
 	CollisionManager m_collisionManager;
-	GameEconomy m_economy;
 
 };

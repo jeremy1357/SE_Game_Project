@@ -41,24 +41,6 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 		}
 	}
 	return testPT;
-	// 	int m_mapSizex;
-	//	int m_mapSizey;
-	//	glm::vec2 tileSize;
-
-
-
-	//	for loop 10*max() if failed valid default value
-
-	//	each time within the for loop, calculate a new random and x and y position
-	//	verify that this position is valid by checking if it lands on a valid tile 
-
-
-
-	//	use level manager get char -- pass in random position 
-	//  function returns character at that position 
-
-	//	then compare return char against blacklisted characters
-	//	if no matches return position
 }
 
 
@@ -83,6 +65,7 @@ void ZombieManager::spawn_Wave(int wave)
 	{
 		m_zombies.push_back(Zombie());
 		m_zombies.back().position = calculate_spawnPosition();   //sets position to newest zombie using calcspawn function
+		m_zombies.back().speed = rand() % 4 + 1;
 	}
 }
 
@@ -121,7 +104,6 @@ void ZombieManager::update()
 	}
 
 
-	const float speed = 2.0f;
 	float playerX = m_characterManager->m_player.position.x;
 	float playerY = m_characterManager->m_player.position.y;
 
@@ -129,6 +111,8 @@ void ZombieManager::update()
 
 	for (int i = 0; i < m_zombies.size(); i++)
 	{
+		const float speed = m_zombies[i].speed;
+
 		//float angle = (atan2(playerY - m_zombies[i].position.y, playerX - m_zombies[i].position.x) * 180) / 3.141;
 		float angle = (atan2(m_zombies[i].position.y - playerY, m_zombies[i].position.x - playerX) * 180) / 3.141;
 		if (playerX > m_zombies[i].position.x)

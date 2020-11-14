@@ -58,6 +58,8 @@ void LevelManager::init(
 	GLuint starTexture = m_textureCache->get_texture_id(imageDirectory + "log2.png");
 	GLuint dTexture = m_textureCache->get_texture_id(imageDirectory + "sand.png");
 	GLuint wTexture = m_textureCache->get_texture_id(imageDirectory + "LAVA.png");
+	GLuint qTexture = m_textureCache->get_texture_id(imageDirectory + "grass.png");
+
 	//For missing textures
 	GLuint nullTexture = m_textureCache->get_texture_id(imageDirectory + "missing.png");
 
@@ -72,10 +74,14 @@ void LevelManager::init(
 	m_textureLookup.insert(std::make_pair('o', nullTexture));
 	m_textureLookup.insert(std::make_pair('&', nullTexture));
 	m_textureLookup.insert(std::make_pair('=', nullTexture));
+	m_textureLookup.insert(std::make_pair('q', qTexture)); // No texture yet/error texture
+
 	m_textureLookup.insert(std::make_pair('~',nullTexture)); // No texture yet/error texture
 	// Manually add in restricted tiles here. These cant me moved on
 	m_restrictedTiles.push_back('#');
 	m_restrictedTiles.push_back('%');
+	m_restrictedTiles.push_back('q');
+
 }
 
 void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) {
@@ -112,6 +118,9 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 					break;
 				case 'd':
 					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('d'));
+					break;
+				case 'q':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('q'));
 					break;
 				default:
 					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('~'));
@@ -153,7 +162,9 @@ bool LevelManager::is_tile_restricted(const glm::vec2& point) {
 
 bool LevelManager::unlock_tile(glm::vec2 point)
 {
-	const char DOOR = 'D';
+	point /= m_tileDimensions;
+
+	const char DOOR = 'q';
 	int xPos = (int)floor(point.x);
 	int yPos = (int)floor(point.y);
 	if (m_mapData.size() > xPos && xPos >= 0) {
@@ -161,6 +172,7 @@ bool LevelManager::unlock_tile(glm::vec2 point)
 			if (m_mapData[xPos][yPos] != DOOR) {
 				m_mapData[xPos][yPos] = '@';
 				m_needsRender = true;
+				return true;
 			}
 		}
 	}

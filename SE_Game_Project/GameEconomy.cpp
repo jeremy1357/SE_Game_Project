@@ -49,7 +49,7 @@ void GameEconomy::init(std::string path, int reward)
     else {
         std::cout << "File could not be opened" << std::endl;
     }
-
+    File.close();
 }
 // subtracts money after buying item and returns true
 Item GameEconomy::Buy_Item(int& playerMoney, std::string item)
@@ -74,7 +74,7 @@ Item GameEconomy::Buy_Item(int& playerMoney, std::string item)
 // determine if player has enough money
 bool GameEconomy::Insufficient_Funds(int& playerMoney, int price)
 {
-    if (playerMoney < price)
+    if (playerMoney >= price)
     {
         return true;
     }

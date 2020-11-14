@@ -11,8 +11,12 @@ void GameScreen::on_init()
 {
 	m_spriteRenderer.on_init(m_screenManager->m_camera, m_textureCache, m_screenManager->get_project_directory());
 	m_levelManager.init(m_screenManager->get_project_directory(), m_spriteRenderer, m_textureCache);
-	m_characterManager.init(m_screenManager->m_inputManager, m_levelManager, m_collisionManager, glm::vec2(900, 3075));
-	m_economy.init(m_screenManager->get_project_directory(), 1);
+	m_characterManager.init(m_screenManager->m_inputManager, 
+		m_levelManager, 
+		m_collisionManager, 
+		m_screenManager->m_camera,
+		glm::vec2(900, 3075),
+		m_screenManager->get_project_directory());
 }
 
 void GameScreen::on_entry()
@@ -76,7 +80,7 @@ void GameScreen::on_update()
 	m_characterManager.update();
 
 
-	if (m_screenManager->m_inputManager.get_key(SDLK_q)) {
+	if (m_screenManager->m_inputManager.get_keyPressed(SDLK_q)) {
 		std::cout << "Mouse X: " << m_screenManager->m_inputManager.m_mPosX << std::endl;
 		std::cout << "Mouse Y: " << m_screenManager->m_inputManager.m_mPosY << std::endl;
 		std::cout << "FPS: " << m_screenManager->m_timer.m_fps << std::endl;

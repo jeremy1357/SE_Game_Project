@@ -56,15 +56,19 @@ void CharacterManager::init(
 	InputManager& inputManager, 
 	LevelManager& levelManager, 
 	CollisionManager& collisionManager,
-	const glm::vec2& playerPos)
+	Camera& camera,
+	const glm::vec2& playerPos,
+	const std::string &programDirectory)
 {
-	m_inputManager = &inputManager;
-	m_levelManager = &levelManager;
-	m_collisionManager = &collisionManager;
+	m_inputManager		= &inputManager;
+	m_levelManager		= &levelManager;
+	m_collisionManager	= &collisionManager;
+	m_camera			= &camera;
 	m_player.position = playerPos;
 
 	blacklistedChar = m_levelManager->get_restricted_tiles();
 	m_zombieManager.init(levelManager, *this, blacklistedChar, m_levelManager->get_map_size().x, m_levelManager->get_map_size().y, m_levelManager->get_tile_dimensions(), collisionManager);
+	m_economy.init(programDirectory, 20);
 
 }
 
@@ -90,23 +94,27 @@ void CharacterManager::update()
 		//br.x += dim.x;
 		//br.y -= dim.y;
 
-		if (m_inputManager->get_key(SDLK_w))
-		{
+		if (m_inputManager->get_key(SDLK_w)) {
 			m_player.position.y += speed;
 		}
-		if (m_inputManager->get_key(SDLK_s))
-		{
+		if (m_inputManager->get_key(SDLK_s)) {
 			m_player.position.y -= speed;
 		}
-		if (m_inputManager->get_key(SDLK_a))
-		{
+		if (m_inputManager->get_key(SDLK_a)) {
 			m_player.position.x -= speed;	
 		}
-		if (m_inputManager->get_key(SDLK_d))
-		{
+		if (m_inputManager->get_key(SDLK_d)) {
 			m_player.position.x += speed;
 		}
-
+		if (m_inputManager->get_keyPressed(SDLK_r)) {
+			// Unlocking a door costs $200
+			if (m_economy.Insufficient_Funds(m_player.money, 200)) {
+				if (m_levelManager->unlock_tile(m_camera->get_world_cursor_position())) {
+					m_player.money -= 200;
+						std::cout << "UNLOCKED DOOR\n";
+				}
+			}
+		}
 		tile_collision();
 	}
 }
