@@ -169,7 +169,7 @@ bool LevelManager::unlock_tile(glm::vec2 point)
 	int yPos = (int)floor(point.y);
 	if (m_mapData.size() > xPos && xPos >= 0) {
 		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
-			if (m_mapData[xPos][yPos] != DOOR) {
+			if (m_mapData[xPos][yPos] == DOOR) {
 				m_mapData[xPos][yPos] = '@';
 				m_needsRender = true;
 				return true;

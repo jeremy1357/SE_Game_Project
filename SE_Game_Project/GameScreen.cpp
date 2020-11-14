@@ -43,7 +43,11 @@ void GameScreen::on_render()
 	m_spriteRenderer.add_light_to_batch(glm::vec2(1742.0f, 3180.0f), glm::vec2(170.0f), ColorRGBA32(123, 0, 0, 255));
 	m_spriteRenderer.add_light_to_batch(glm::vec2(840.0f, 2130.0f), glm::vec2(150.0f), ColorRGBA32(95, 95, 95, 255));
 	m_spriteRenderer.add_light_to_batch(glm::vec2(1470.0f, 5500.0f), glm::vec2(350.0f), ColorRGBA32(0, 0, 180, 255));
-
+	for (auto& it : m_characterManager.m_particleManager.m_particles) {
+		if (it.isActive) {
+			m_spriteRenderer.add_sprite_to_batch(it.position, it.size, "skeleton-idle_1.png", 0.0f);
+		}
+	}
 	m_spriteRenderer.on_render();
 	
 	ImGui::SetNextWindowBgAlpha(0.35f);

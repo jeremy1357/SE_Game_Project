@@ -9,6 +9,7 @@
 #include "ZombieManager.h"
 #include "GameEconomy.hpp"
 #include "Camera.h"
+#include "ParticleManager.h"
 
 #include <vector>
 
@@ -47,7 +48,7 @@ class CharacterManager
 		Player m_player;
 		ZombieManager m_zombieManager;
 		GameEconomy m_economy;
-
+		ParticleManager m_particleManager;
 	private:
 		struct CollisionPosition {
 			glm::vec2 position;

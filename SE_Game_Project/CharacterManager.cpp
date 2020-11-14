@@ -69,7 +69,7 @@ void CharacterManager::init(
 	blacklistedChar = m_levelManager->get_restricted_tiles();
 	m_zombieManager.init(levelManager, *this, blacklistedChar, m_levelManager->get_map_size().x, m_levelManager->get_map_size().y, m_levelManager->get_tile_dimensions(), collisionManager);
 	m_economy.init(programDirectory, 20);
-
+	m_particleManager.particle_init(collisionManager);
 }
 
 void CharacterManager::update()
@@ -114,6 +114,9 @@ void CharacterManager::update()
 						std::cout << "UNLOCKED DOOR\n";
 				}
 			}
+		}
+		if (m_inputManager->get_keyPressed(SDL_BUTTON_LEFT)) {
+			m_particleManager.update_AddParticle(glm::vec3(m_player.position, 0.0f), glm::vec3(m_player.direction, 0.0f));
 		}
 		tile_collision();
 	}
