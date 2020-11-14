@@ -1,6 +1,12 @@
 #include "CollisionManager.h"
 
+CollisionManager::CollisionManager()
+{
+}
 
+CollisionManager::~CollisionManager()
+{
+}
 
  Circle::Circle(float xpos, float ypos, float radius)
 {
@@ -31,6 +37,7 @@
      squareWidth = 0.0f;
      squareHeight = 0.0f;
  };
+
 
  CollisionManager::CollisionManager(LevelManager& levelManager)
  {

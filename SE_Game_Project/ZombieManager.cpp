@@ -24,8 +24,8 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 
 	for (int i = 0; i < 10; i++)
 	{
-		testPT.x = rand() % m_mapSizex*m_tileSize.x;
-		testPT.y = rand() % m_mapSizey*m_tileSize.y;
+		testPT.x = rand() % m_mapSizex*m_tileSize.x;   //1 - 3899
+		testPT.y = rand() % m_mapSizey*m_tileSize.y;   //
 
 		char result;
 		result = m_levelManager->get_character(testPT, true);
@@ -58,12 +58,14 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 	//	if no matches return position
 }
 
-void ZombieManager::init(LevelManager& levelManager,CharacterManager& characterManager, const std::vector<char> blacklistedTiles, int mapSizex, int mapSizey, glm::vec2 tileSize)
+
+void ZombieManager::init(LevelManager& levelManager, CharacterManager& characterManager, const std::vector<char> blacklistedTiles, int mapSizex, int mapSizey, glm::vec2 tileSize, CollisionManager& collisionManager)
 {
 	m_mapSizex = mapSizex;
 	m_mapSizey = mapSizey;
 	m_levelManager = &levelManager;
 	m_characterManager = &characterManager;
+	m_collisionManager = &collisionManager;
 	m_blacklistedChar = blacklistedTiles;
 
 }
@@ -124,27 +126,33 @@ void ZombieManager::update()
 
 	for (int i = 0; i < m_zombies.size(); i++)
 	{
+		//float angle = (atan2(playerY - m_zombies[i].position.y, playerX - m_zombies[i].position.x) * 180) / 3.141;
+		float angle = (atan2(m_zombies[i].position.y - playerY, m_zombies[i].position.x - playerX) * 180) / 3.141;
 		if (playerX > m_zombies[i].position.x)
 		{
 			m_zombies[i].position.x = m_zombies[i].position.x + speed;
+			m_zombies[i].angle = angle;
 		}
 
 		if (playerY > m_zombies[i].position.y)
 		{
 			m_zombies[i].position.y = m_zombies[i].position.y + speed;
+			m_zombies[i].angle = angle;
 		}
 
 		if (playerX < m_zombies[i].position.x)
 		{
 			m_zombies[i].position.x = m_zombies[i].position.x - speed;
+			m_zombies[i].angle = angle;
 		}
 
 		if (playerY < m_zombies[i].position.y)
 		{
 			m_zombies[i].position.y = m_zombies[i].position.y - speed;
+			m_zombies[i].angle = angle;
 		}
 	}
-	float angle = (atan2(playerY - m_zombies.data()->position.y, playerX - m_zombies.data()->position.x) * 180) / 3.141;
+
 
 	 //Need to have zombie implement angle to face player
 
@@ -231,5 +239,16 @@ void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
 				}
 			}
 		}
+	}
+}
+void ZombieManager::npc_collision(CollisionPosition *cp)
+{
+	for (int i = 0; i < m_zombies.size(); i++)
+	{
+		if (cp[i].didCollisionOccur)
+		{
+
+		}
+
 	}
 }

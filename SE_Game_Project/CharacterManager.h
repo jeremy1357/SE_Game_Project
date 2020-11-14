@@ -32,7 +32,7 @@ class CharacterManager
 
 		void Damage(int amount);
 		void SetName(string n);
-		void init(InputManager& inputManager, LevelManager& levelManager, const glm::vec2& playerPos);
+		void init(InputManager& inputManager, LevelManager& levelManager, CollisionManager& collisionManager, const glm::vec2& playerPos);
 		void update();
 		void tile_collision();
 		bool is_player_alive();
@@ -51,6 +51,7 @@ class CharacterManager
 		const glm::vec2 dim = glm::vec2(25.0f);
 		InputManager* m_inputManager = nullptr;
 		LevelManager* m_levelManager = nullptr;
+		CollisionManager* m_collisionManager = nullptr;
 		std::vector<char> blacklistedChar;
 		bool collisionCheck(char parameter);
 		void perform_tile_collision(CollisionPosition* cp);

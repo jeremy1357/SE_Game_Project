@@ -55,14 +55,16 @@ bool CharacterManager::collisionCheck(char parameter)
 void CharacterManager::init(
 	InputManager& inputManager, 
 	LevelManager& levelManager, 
+	CollisionManager& collisionManager,
 	const glm::vec2& playerPos)
 {
 	m_inputManager = &inputManager;
 	m_levelManager = &levelManager;
+	m_collisionManager = &collisionManager;
 	m_player.position = playerPos;
 
 	blacklistedChar = m_levelManager->get_restricted_tiles();
-	m_zombieManager.init(levelManager, *this, blacklistedChar, m_levelManager->get_map_size().x, m_levelManager->get_map_size().y, m_levelManager->get_tile_dimensions());
+	m_zombieManager.init(levelManager, *this, blacklistedChar, m_levelManager->get_map_size().x, m_levelManager->get_map_size().y, m_levelManager->get_tile_dimensions(), collisionManager);
 
 }
 
