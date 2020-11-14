@@ -92,7 +92,7 @@ void ScreenManager::update()
 void ScreenManager::render()
 {
 	// This stuff must be done every render. Ignore
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
@@ -147,8 +147,12 @@ void ScreenManager::init()
 	ImGui_ImplSDL2_InitForOpenGL(m_window.get_window_handle(), m_window.glContext);
 	ImGui_ImplOpenGL3_Init("#version 130");
 	ImGui::StyleColorsDark();
-	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 28.0f);
-
+	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 32.0f);
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowRounding = 5.0f;
+	style.FrameRounding = 10.0f;
+	style.ScrollbarRounding = 0;
+	style.ChildRounding = 5.0f;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
