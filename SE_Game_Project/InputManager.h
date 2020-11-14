@@ -24,7 +24,6 @@ private:
 	std::map<int, bool> m_currentKeys;
 	std::map<int, bool> m_priorKeys;
 	bool m_didPlayerCloseApp;
-	int m_refreshRate;
 	//void set_mouse_click(SDL_MouseButtonEvent& button); //Depreciated; use map instead
 	//void un_mouse_click(SDL_MouseButtonEvent& button);
 };
