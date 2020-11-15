@@ -75,7 +75,7 @@ void SpriteRenderer::on_init(Camera& camera, TextureCache& textureCache, const s
 	m_lightShader.add_attributes({ "vertexPosition", "vertexUV", "vertexColor" });
 	m_lightShader.link_shaders();
 
-	m_lightBatch.textureID = m_textureCache->get_texture_id(m_resourceDirectory + "light0.png");
+	m_lightBatch.textureID = m_textureCache->get_texture_id(m_resourceDirectory + "light.png");
 
 	glGenVertexArrays(1, &m_staticVAO);
 	glGenBuffers(1, &m_staticVBO);

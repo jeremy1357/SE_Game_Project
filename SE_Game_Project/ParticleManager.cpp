@@ -45,7 +45,7 @@ void ParticleManager::update_AddParticle(glm::vec2 pos, glm::vec2 dir, ColorRGBA
 			m_particles[i].isActive = true;
 			m_particles[i].position = pos;
 			m_particles[i].direction = dir;
-			m_particles[i].size = glm::vec2(5.0, 5.0);
+			m_particles[i].size = glm::vec2(15.0, 15.0);
 			m_particles[i].speed = glm::vec2(0.5, 0.5);
 			m_particles[i].health = 100.0f;
 			m_particles[i].m_color = color;

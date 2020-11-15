@@ -116,7 +116,7 @@ void CharacterManager::update()
 			}
 		}
 		if (m_inputManager->get_keyPressed(SDL_BUTTON_LEFT)) {
-			m_particleManager.update_AddParticle(glm::vec3(m_player.position, 0.0f), glm::vec3(m_player.direction, 0.0f));
+			m_particleManager.update_AddParticle(m_player.position, m_player.direction, ColorRGBA32(255, 0, 0, 255));
 		}
 		tile_collision();
 	}
