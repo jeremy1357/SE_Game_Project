@@ -43,6 +43,12 @@ void GameEconomy::init(std::string path, int reward)
             // next value for item
             File >> data;
             itemList.back().Armor = stoi(data);
+            // gun damage
+            File >> data;
+            itemList.back().damage = stoi(data);
+            // gun bullets
+            File >> data;
+            itemList.back().bulletsPerShot = stoi(data);
 
         }
     }
@@ -69,6 +75,16 @@ Item GameEconomy::Buy_Item(int& playerMoney, std::string item)
     // return empty object
     return Item();
 
+}
+
+Item GameEconomy::get_item(const std::string& itemName)
+{
+    for (auto& it : itemList) {
+        if (it.Name == itemName) {
+            return it;
+        }
+    }
+    return Item();
 }
 
 // determine if player has enough money

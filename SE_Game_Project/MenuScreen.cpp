@@ -35,7 +35,7 @@ void MenuScreen::on_render()
 	//ImGui::ShowDemoWindow();
 
 	//Color Defines
-	#define TEXT(v) ImVec4(0.999f, 0.100f, 0.100f, v) //Text color define
+	#define TEXT(v) ImVec4(0.7f, 0.0f, 0.0f, v) //Text color define
 	#define BG(v)   ImVec4(0.100f, 0.100f, 0.100f, v) //Background color define
 
 	//Getting Style
@@ -44,7 +44,7 @@ void MenuScreen::on_render()
 	//Setting Up Colors of different things
 	style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
 	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.0f);
-	style.Colors[ImGuiCol_Button] = ImVec4(0.100f, 0.100f, 0.100f, 1.0f);
+	style.Colors[ImGuiCol_Button] = ImVec4(0.500f, 0.500f, 0.500f, 0.7f);
 	style.Colors[ImGuiCol_Border] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
 	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.900f, 0.900f, 0.900f, 0.900f);
 

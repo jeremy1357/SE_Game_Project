@@ -149,20 +149,14 @@ void ScreenManager::init()
 	ImGui_ImplSDL2_InitForOpenGL(m_window.get_window_handle(), m_window.glContext);
 	ImGui_ImplOpenGL3_Init("#version 130");
 	ImGui::StyleColorsDark();
-	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 32.0f);
+	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\PTMono-Regular.ttf").c_str(), 32.0f);
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowRounding = 5.0f;
 	style.FrameRounding = 10.0f;
 	style.ScrollbarRounding = 0;
 	style.ChildRounding = 5.0f;
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
 	// Setup Dear ImGui style
 	//ImGui::StyleColorsClassic();
-
-	// Setup Platform/Renderer bindings
-
 
 	// Load Fonts
 	// - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
@@ -181,6 +175,22 @@ void ScreenManager::init()
 	m_soundDelegate.load_audio("shotgun.wav");
 	m_soundDelegate.load_audio("ZombiesAreComing.ogg");
 	m_soundDelegate.load_audio("sell_buy_item.wav");
+	m_soundDelegate.load_audio("ring_inventory.wav");
+
+
+	m_soundDelegate.load_audio("zombie0.wav");
+	m_soundDelegate.load_audio("zombie1.wav");
+	m_soundDelegate.load_audio("zombie2.wav");
+	m_soundDelegate.load_audio("zombie3.wav");
+	m_soundDelegate.load_audio("zombie4.wav");
+	m_soundDelegate.load_audio("zombie5.wav");
+	m_soundDelegate.load_audio("zombie6.wav");
+	m_soundDelegate.load_audio("zombie7.wav");
+	m_soundDelegate.load_audio("zombie8.wav");
+	m_soundDelegate.load_audio("zombie9.wav");
+
+
+
 
 	m_camera.set_scale(1.2);
 	m_camera.init_camera(m_window.get_width(), m_window.get_height());

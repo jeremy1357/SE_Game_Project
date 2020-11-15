@@ -36,11 +36,11 @@ void SoundDelegate::load_audio(const std::string& name)
 	}
 }
 
-void SoundDelegate::play_effect(int key)
+void SoundDelegate::play_effect(int key, int times)
 {
 	const auto& res = m_audioFiles.find(key);
 	if (res->second.audioData != NULL) {
-		int channel = Mix_PlayChannel(-1, res->second.audioData, 0);
+		int channel = Mix_PlayChannel(-1, res->second.audioData, times);
 		if (channel != -1) {
 			res->second.channel = channel;
 		}

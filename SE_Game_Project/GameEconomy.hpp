@@ -18,12 +18,17 @@ struct Item {
     int Cost;
     int SellCost;
     int Armor;
+    int damage;
+    int bulletsPerShot;
+    bool isEquipped = false;
 };
+
 // class that monitors game economy
 class GameEconomy
 {
 public:
     Item Buy_Item(int& playerMoney, std::string item);
+    Item get_item(const std::string& itemName);
     bool Insufficient_Funds(int& playerMoney, int price);
     void Zombie_Reward(int& playerMoney);
     std::vector<Item> itemList;

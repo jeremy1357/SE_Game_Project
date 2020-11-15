@@ -42,6 +42,33 @@ bool CharacterManager::is_player_alive()
 	return m_player.isAlive;
 }
 
+void CharacterManager::add_item_to_inventory(const std::string& itemName)
+{
+	Item item = m_economy.get_item(itemName);
+	if (item.Name != "") {
+		m_inventory.push_back(item);
+	}
+}
+
+void CharacterManager::set_gun_index(const std::string& itemName)
+{
+	for (int i = 0; i < m_inventory.size(); i++) {
+		if (m_inventory[i].Name == itemName && m_inventory[i].Type == 2) {
+			m_currentGunIndex = i;
+			return;
+		}
+	}
+	m_currentGunIndex = -1;
+}
+
+std::string CharacterManager::get_gun_name()
+{
+	if (m_currentGunIndex != -1) {
+		return m_inventory[m_currentGunIndex].Name;
+	}
+	return std::string();
+}
+
 bool CharacterManager::collisionCheck(char parameter)
 {
 	for (int i = 0; i < blacklistedChar.size(); i++) {
@@ -65,19 +92,29 @@ void CharacterManager::init(
 	m_levelManager		= &levelManager;
 	m_collisionManager	= &collisionManager;
 	m_camera			= &camera;
-	m_player.position = playerPos;
-	m_soundDelegate = &soundDelegate;
-
-
+	m_player.position	= playerPos;
+	m_soundDelegate		= &soundDelegate;
 	blacklistedChar = m_levelManager->get_restricted_tiles();
-	m_zombieManager.init(levelManager, *this, blacklistedChar, m_levelManager->get_map_size().x, m_levelManager->get_map_size().y, m_levelManager->get_tile_dimensions(), collisionManager);
+	m_zombieManager.init(levelManager, *this, blacklistedChar, m_levelManager->get_map_size().x, m_levelManager->get_map_size().y, m_levelManager->get_tile_dimensions(), collisionManager, soundDelegate);
 	m_economy.init(programDirectory, 20);
 	m_particleManager.particle_init(collisionManager);
+
+
+
+
+
+	// Give the player one pistol to start
+	add_item_to_inventory("Pistol");
+	add_item_to_inventory("Shotgun");
+
+	add_item_to_inventory("Beer");
+	set_gun_index("Shotgun");
 }
 
 void CharacterManager::update()
 {
 	m_zombieManager.update();
+	m_particleManager.update_particle();
 	if (m_player.health < 0)
 	{
 		m_player.isAlive = false;
@@ -103,13 +140,30 @@ void CharacterManager::update()
 			if (m_economy.Insufficient_Funds(m_player.money, 200)) {
 				if (m_levelManager->unlock_tile(m_camera->get_world_cursor_position())) {
 					m_player.money -= 200;
-						std::cout << "UNLOCKED DOOR\n";
-						m_soundDelegate->play_effect(2);
+					std::cout << "UNLOCKED DOOR\n";
+					m_soundDelegate->play_effect(2, 1);
+					m_soundDelegate->play_effect(3);
 				}
 			}
 		}
 		if (m_inputManager->get_keyPressed(SDL_BUTTON_LEFT)) {
-			m_particleManager.update_AddParticle(glm::vec3(m_player.position, 0.0f), glm::vec3(m_player.direction, 0.0f), ColorRGBA32(255, 0, 0, 255));
+			if (m_inventory[m_currentGunIndex].bulletsPerShot != 1) {
+				for (int i = 0; i < m_inventory[m_currentGunIndex].bulletsPerShot; i++) {
+					glm::vec2 dirVector(cos(m_player.angle * 3.14157 / 180), sin(m_player.angle * 3.14157 / 180));
+					glm::vec2 bulletPos = m_player.position + dirVector * 10.0f;
+					m_particleManager.update_AddParticle(bulletPos, m_player.angle + rand() % 10 - 4, ColorRGBA32(0, 0, 0, 255));
+
+				}
+			}
+			else {
+				glm::vec2 dirVector(cos(m_player.angle * 3.14157 / 180), sin(m_player.angle * 3.14157 / 180));
+
+				glm::vec2 bulletPos = m_player.position + dirVector * 10.0f;
+				m_particleManager.update_AddParticle(bulletPos, m_player.angle, ColorRGBA32(0, 0, 0, 255));
+			}
+			m_soundDelegate->play_effect(0);
+
+
 		}
 		tile_collision();
 	}

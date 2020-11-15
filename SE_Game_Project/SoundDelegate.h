@@ -21,7 +21,7 @@ public:
 	~SoundDelegate();
 	void init_sound_delegate(const std::string& soundPathway);
 	void load_audio(const std::string& name);
-	void play_effect(int key);
+	void play_effect(int key, int times = 0);
 	void stop_effect(int key);
 	void play_music(int key);
 	void stop_music(int key);

@@ -44,7 +44,7 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 }
 
 
-void ZombieManager::init(LevelManager& levelManager, CharacterManager& characterManager, const std::vector<char> blacklistedTiles, int mapSizex, int mapSizey, glm::vec2 tileSize, CollisionManager& collisionManager)
+void ZombieManager::init(LevelManager& levelManager, CharacterManager& characterManager, const std::vector<char> blacklistedTiles, int mapSizex, int mapSizey, glm::vec2 tileSize, CollisionManager& collisionManager, SoundDelegate& sound)
 {
 	m_mapSizex = mapSizex;
 	m_mapSizey = mapSizey;
@@ -52,6 +52,7 @@ void ZombieManager::init(LevelManager& levelManager, CharacterManager& character
 	m_characterManager = &characterManager;
 	m_collisionManager = &collisionManager;
 	m_blacklistedChar = blacklistedTiles;
+	soundDelegate = &sound;
 
 }
 
@@ -101,6 +102,12 @@ void ZombieManager::update()
 	if (should_spawn_wave() == true)
 	{
 		spawn_Wave(wave++);
+	}
+	// If false, zombies are still alive so play a sound (roll a dice)
+	else {
+		if (rand() % 400 < 3) {
+			soundDelegate->play_effect(m_zombieSoundKeys[rand() % 10]);
+		}
 	}
 
 
@@ -190,6 +197,13 @@ void ZombieManager::tile_collision() {
 			}
 		}
 		perform_tile_collision(collisionAreas);
+	}
+}
+
+void ZombieManager::set_zombie_sound_keys(int min, int max)
+{
+	for (int i = min; i <= max; i++) {
+		m_zombieSoundKeys.push_back(i);
 	}
 }
 

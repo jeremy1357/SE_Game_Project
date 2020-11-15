@@ -7,7 +7,8 @@
 
 struct Particle
 {
-	glm::vec2 position, direction;
+	glm::vec2 position;
+	float angle = 0.0f;
 	glm::vec2 size = glm::vec2(5.0, 5.0);
 	glm::vec2 speed = glm::vec2(0.5, 0.50);
 	//glm::vec4 r,g,b,a;
@@ -16,7 +17,7 @@ struct Particle
 	ColorRGBA32 m_color;
 
 	Particle()
-		: position(0.0f), direction(0.0f), /*color(1.0f),*/ health (0.0f) {}
+		: position(0.0f), health(0.0f) {}
 };
 
 class ParticleManager
@@ -29,8 +30,8 @@ public:
 
 	ParticleManager();
 	Particle m_particles[MAX_PARTICLE_COUNT];
-	void update_particle(float health, bool isActive);	// Purely update all particles
-	void update_AddParticle(glm::vec2 pos, glm::vec2 dir, ColorRGBA32 color);
+	void update_particle();	// Purely update all particles
+	void update_AddParticle(glm::vec2 pos, float angle, ColorRGBA32 color);
 	void particle_init(CollisionManager& collisionManager);
 	~ParticleManager();
 

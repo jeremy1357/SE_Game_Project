@@ -26,11 +26,12 @@ class CollisionManager
 public:
     CollisionManager();
     ~CollisionManager();
-    CollisionManager(LevelManager& levelManager);
+    void init(LevelManager& levelManager);
     bool check_circle_collision(Circle circle1, Circle circle2);
     bool check_square_collision(Square square1 ,Square square2);
     bool is_square_on_restricted_tile(const glm::vec2& center, const glm::vec2& dims);
-  
+    bool is_point_on_restricted_tile(const glm::vec2& center);
+
 
 private:
     LevelManager* m_levelManager = nullptr;

@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include "LevelManager.h"
 #include "CollisionManager.h"
+#include "SoundDelegate.h"
+
 #include <vector>
 
 using namespace std;
@@ -28,10 +30,11 @@ public:
 	int wave = 0;
 
 	void update();
-	void init(LevelManager& levelManager, CharacterManager& characterManager, const std::vector<char> blacklistedTiles, int mapSizex, int mapSizey, glm::vec2 tileSize, CollisionManager& collisionManager);
+	void init(LevelManager& levelManager, CharacterManager& characterManager, const std::vector<char> blacklistedTiles, int mapSizex, int mapSizey, glm::vec2 tileSize, CollisionManager& collisionManager, SoundDelegate& sound);
 	bool collision_Check(char parameter);
 	void tile_collision();
 	std::vector<Zombie> m_zombies;
+	void set_zombie_sound_keys(int min, int max);
 
 private:
 
@@ -55,9 +58,9 @@ private:
 	LevelManager* m_levelManager = nullptr;
 	CharacterManager* m_characterManager = nullptr;
 	CollisionManager* m_collisionManager = nullptr;
-
+	SoundDelegate* soundDelegate = nullptr;
 	std::vector<char> m_blacklistedChar;
-	
+	std::vector<int> m_zombieSoundKeys;
 	void perform_tile_collision(CollisionPosition* cp);
 
 

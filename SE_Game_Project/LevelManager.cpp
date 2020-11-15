@@ -172,6 +172,7 @@ bool LevelManager::unlock_tile(glm::vec2 point)
 			if (m_mapData[xPos][yPos] == DOOR) {
 				m_mapData[xPos][yPos] = '@';
 				m_needsRender = true;
+				m_renderer->require_static_redraw();
 				return true;
 			}
 		}

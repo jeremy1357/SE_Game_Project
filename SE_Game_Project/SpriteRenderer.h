@@ -51,11 +51,17 @@ public:
 		const glm::vec2& position, 
 		const glm::vec2& dimensions,
 		const ColorRGBA32& color);
+	void add_particle_to_batch(
+		const glm::vec2& position,
+		const glm::vec2& dimensions,
+		const ColorRGBA32& color);
+	void require_static_redraw();
 private:
 	std::string m_resourceDirectory = "";
 	std::vector<SpriteBatch> m_dynamicBatches;
 	std::vector<SpriteBatch> m_staticBatches;
 	LightBatch m_lightBatch;
+	LightBatch m_particleBatch;
 
 	bool m_doesStaticBatchesNeedRender = true;
 	Camera* m_camera;
@@ -72,6 +78,10 @@ private:
 	GLuint m_lightVBO;
 	GLuint m_lightVAO;
 	GLuint m_lightEBO;
+
+	GLuint m_particleVBO;
+	GLuint m_particleVAO;
+	GLuint m_particleEBO;
 
 	// IF YOU CHANGE THIS, MUST CHANGE THE ONE IN THE LevelManager!
 	const glm::vec2 tileDimensions = glm::vec2(75.0f, 75.0f);

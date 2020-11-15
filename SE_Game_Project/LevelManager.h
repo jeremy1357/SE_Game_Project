@@ -29,7 +29,7 @@ private:
 	SpriteRenderer* m_renderer		= nullptr;
 	bool m_needsRender				= true; // Start at true
 
-	const glm::vec2 m_tileDimensions = glm::vec2(75.0f, 75.0f);
+	glm::vec2 m_tileDimensions = glm::vec2(75.0f, 75.0f);
 	std::vector<char> m_restrictedTiles; // These are tiles that the player cant move across
 	std::vector<std::vector<char>> m_mapData;
 	std::map<char, GLuint> m_textureLookup;

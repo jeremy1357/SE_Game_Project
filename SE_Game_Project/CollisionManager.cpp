@@ -39,7 +39,7 @@ CollisionManager::~CollisionManager()
  };
 
 
- CollisionManager::CollisionManager(LevelManager& levelManager)
+ void CollisionManager::init(LevelManager& levelManager)
  {
      m_levelManager = &levelManager;
  }
@@ -83,5 +83,10 @@ bool CollisionManager::is_square_on_restricted_tile(const glm::vec2& center, con
 	if (m_levelManager->is_tile_restricted(bl)) { return true; }
 	if (m_levelManager->is_tile_restricted(br)) { return true; }
     return false;
+}
+
+bool CollisionManager::is_point_on_restricted_tile(const glm::vec2& center)
+{
+    return m_levelManager->is_tile_restricted(center);
 }
 

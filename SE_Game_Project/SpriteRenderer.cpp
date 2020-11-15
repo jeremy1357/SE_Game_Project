@@ -76,6 +76,7 @@ void SpriteRenderer::on_init(Camera& camera, TextureCache& textureCache, const s
 	m_lightShader.link_shaders();
 
 	m_lightBatch.textureID = m_textureCache->get_texture_id(m_resourceDirectory + "light.png");
+	m_particleBatch.textureID = m_textureCache->get_texture_id(m_resourceDirectory + "particle.png");
 
 	glGenVertexArrays(1, &m_staticVAO);
 	glGenBuffers(1, &m_staticVBO);
@@ -121,6 +122,25 @@ void SpriteRenderer::on_init(Camera& camera, TextureCache& textureCache, const s
 	glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE,
 		sizeof(Vertex), (void*)offsetof(Vertex, color));
 	glBindVertexArray(0);
+
+
+	glGenVertexArrays(1, &m_particleVAO);
+	glGenBuffers(1, &m_particleVBO);
+	glGenBuffers(1, &m_particleEBO);
+	glBindVertexArray(m_particleVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_particleVBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_particleEBO);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,
+		sizeof(Vertex), (void*)offsetof(Vertex, position));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+		sizeof(Vertex), (void*)offsetof(Vertex, uv));
+	glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE,
+		sizeof(Vertex), (void*)offsetof(Vertex, color));
+	glBindVertexArray(0);
+
 
 }
 
@@ -207,41 +227,31 @@ void SpriteRenderer::on_render()
 			startIndex += 4;
 		}
 	}
-
 	for (auto& batch : m_dynamicBatches) {
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, batch.textureID);
-
 		glBindBuffer(GL_ARRAY_BUFFER, m_dynamicVBO);
 		GLuint vertexDataSize = batch.vertices.size() * sizeof(VertexSimple);
 		glBufferData(GL_ARRAY_BUFFER, vertexDataSize, nullptr, GL_DYNAMIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vertexDataSize, batch.vertices.data());
-
 		GLuint elementDataSize = batch.indices.size() * sizeof(GLuint);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_dynamicEBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, nullptr, GL_DYNAMIC_DRAW);
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, elementDataSize, batch.indices.data());
-
 		glDrawElements(GL_TRIANGLES, batch.indices.size(), GL_UNSIGNED_INT, 0);
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
-
 	m_shader.unbind();
 	// At the end of each render. Clear batches
 	m_dynamicBatches.clear();
+	
 
 
 
-	m_lightShader.bind();
-	m_lightShader.set_uniform("tex", 0);
-	m_lightShader.set_uniform("cameraMatrix", projectionMatrix);
-
-	glBindVertexArray(m_lightVAO);
 
 	std::vector<GLuint> lightIndices;
 	lightIndices.resize(m_lightBatch.numSquares * 6);
-
 	GLuint lightIndex = 0;
 	for (size_t x = 0; x < lightIndices.size(); x += 6) {
 		// Store vertex indices 
@@ -253,29 +263,63 @@ void SpriteRenderer::on_render()
 		lightIndices[x + 5] = (lightIndex + 3);
 		lightIndex += 4;
 	}
+	std::vector<GLuint> particleIndices;
+	particleIndices.resize(m_particleBatch.numSquares * 6);
+	GLuint particleIndex = 0;
+	for (size_t x = 0; x < particleIndices.size(); x += 6) {
+		// Store vertex indices 
+		particleIndices[x] = particleIndex;
+		particleIndices[x + 1] = (particleIndex + 1);
+		particleIndices[x + 2] = (particleIndex + 2);
+		particleIndices[x + 3] = (particleIndex + 2);
+		particleIndices[x + 4] = (particleIndex + 1);
+		particleIndices[x + 5] = (particleIndex + 3);
+		particleIndex += 4;
+	}
 
-
-
-
+	m_lightShader.bind();
+	m_lightShader.set_uniform("tex", 0);
+	m_lightShader.set_uniform("cameraMatrix", projectionMatrix);
+	glBindVertexArray(m_lightVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_lightVBO);
 	GLuint vertexDataSize = m_lightBatch.vertices.size() * sizeof(Vertex);
 	glBufferData(GL_ARRAY_BUFFER, vertexDataSize, nullptr, GL_DYNAMIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vertexDataSize, m_lightBatch.vertices.data());
-
 	GLuint elementDataSize = lightIndices.size() * sizeof(GLuint);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_lightEBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, nullptr, GL_DYNAMIC_DRAW);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, elementDataSize, lightIndices.data());
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_lightBatch.textureID);
 	glDrawElements(GL_TRIANGLES, lightIndices.size(), GL_UNSIGNED_INT, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	glBindVertexArray(0);
+
+	glBindVertexArray(m_particleVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_particleVBO);
+	vertexDataSize = m_particleBatch.vertices.size() * sizeof(Vertex);
+	glBufferData(GL_ARRAY_BUFFER, vertexDataSize, nullptr, GL_DYNAMIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, vertexDataSize, m_particleBatch.vertices.data());
+	elementDataSize = particleIndices.size() * sizeof(GLuint);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_particleEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementDataSize, nullptr, GL_DYNAMIC_DRAW);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, elementDataSize, particleIndices.data());
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_particleBatch.textureID);
+	glDrawElements(GL_TRIANGLES, particleIndices.size(), GL_UNSIGNED_INT, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBindVertexArray(0);
+
+
 	m_lightBatch.vertices.clear();
+	m_lightBatch.numSquares = 0;
+	m_particleBatch.vertices.clear();
+	m_particleBatch.numSquares = 0;
+
 	m_lightShader.unbind();
 
 }
@@ -288,8 +332,6 @@ void SpriteRenderer::add_sprite_to_batch(
 {
 	GLuint textureID = m_textureCache->get_texture_id(m_resourceDirectory + textureName);
 	add_sprite_to_batch(position, dimensions, textureID, dirAngle);
-
-
 }
 
 void SpriteRenderer::add_sprite_to_batch(
@@ -421,4 +463,42 @@ void SpriteRenderer::add_light_to_batch(
 
 	m_lightBatch.numSquares++;
 
+}
+
+void SpriteRenderer::add_particle_to_batch(
+	const glm::vec2& position, 
+	const glm::vec2& dimensions, 
+	const ColorRGBA32& color)
+{
+	glm::vec2 tl = position;
+	glm::vec2 tr = position;
+	glm::vec2 bl = position;
+	glm::vec2 br = position;
+
+	tl.y += dimensions.y;
+	tr += dimensions;
+	br.x += dimensions.x;
+
+	uint32_t index = m_particleBatch.vertices.size();
+	m_particleBatch.vertices.resize(index + 4);
+	// Add in the new vertices. Rotate each vertex
+	m_particleBatch.vertices[index] = Vertex(tl, tlUV);
+	m_particleBatch.vertices[index++].color = color;
+
+	m_particleBatch.vertices[index] = Vertex(tr, trUV);
+	m_particleBatch.vertices[index++].color = color;
+
+	m_particleBatch.vertices[index] = Vertex(bl, blUV);
+	m_particleBatch.vertices[index++].color = color;
+
+	m_particleBatch.vertices[index] = Vertex(br, brUV);
+	m_particleBatch.vertices[index].color = color;
+
+	m_particleBatch.numSquares++;
+}
+
+void SpriteRenderer::require_static_redraw()
+{
+	m_staticBatches.clear();
+	m_doesStaticBatchesNeedRender = true;
 }
