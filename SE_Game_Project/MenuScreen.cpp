@@ -14,7 +14,7 @@ MenuScreen::MenuScreen(int uniqueScreenID)
 
 void MenuScreen::on_init()
 {
-	m_menuEffects.init();
+	m_menuEffects.init(m_screenManager->get_project_directory());
 }
 
 void MenuScreen::on_entry()

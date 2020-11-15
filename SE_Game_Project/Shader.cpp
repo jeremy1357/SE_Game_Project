@@ -170,6 +170,12 @@ void Shader::set_uniform(
 	glUniform1i(get_uniform(uniformName), value);
 }
 
+void Shader::set_uniform(const std::string& name, float rhs)
+{
+	glUniform1f(get_uniform(name), rhs);
+
+}
+
 void Shader::set_uniform(
 	const std::string & uniformName, 
 	const glm::mat4 & matrix)

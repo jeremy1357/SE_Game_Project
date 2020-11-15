@@ -8,7 +8,7 @@ class MenuEffects {
 public:
     MenuEffects();
     ~MenuEffects();
-    void init();
+    void init(const std::string& projectDirectory);
     void render(const Camera& camera, glm::vec2 cursor_position);
     void update();
     float time = 0.0f;

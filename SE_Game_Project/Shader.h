@@ -26,7 +26,7 @@ public:
 
 
 	void set_uniform(const std::string& name, int rhs);
-	//void set_uniform(const std::string& name, float rhs);
+	void set_uniform(const std::string& name, float rhs);
 	void set_uniform(const std::string& name, glm::vec2 rhs);
 	void set_uniform(const std::string& name, glm::vec3 rhs);
 	void set_uniform(const std::string& uniformName, const glm::mat4& mat);
