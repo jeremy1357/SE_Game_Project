@@ -180,6 +180,8 @@ void ScreenManager::init()
 	m_soundDelegate.init_sound_delegate(m_projectDirectory);
 	m_soundDelegate.load_audio("shotgun.wav");
 	m_soundDelegate.load_audio("ZombiesAreComing.ogg");
+	m_soundDelegate.load_audio("sell_buy_item.wav");
+
 	m_camera.set_scale(1.2);
 	m_camera.init_camera(m_window.get_width(), m_window.get_height());
 }

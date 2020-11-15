@@ -5,11 +5,11 @@
 #include <glm/glm.hpp>
 #include "InputManager.h"
 #include "LevelManager.h"
-#include "LevelManager.h"
 #include "ZombieManager.h"
 #include "GameEconomy.hpp"
 #include "Camera.h"
 #include "ParticleManager.h"
+#include "SoundDelegate.h"
 
 #include <vector>
 
@@ -37,8 +37,9 @@ class CharacterManager
 		void SetName(string n);
 		void init(InputManager& inputManager, 
 			LevelManager& levelManager, 
-			CollisionManager& collisionManager, 
+			CollisionManager& collisionManager,
 			Camera& camera,
+			SoundDelegate& soundDelegate,
 			const glm::vec2& playerPos,
 			const std::string& programDirectory);
 		void update();
@@ -60,6 +61,7 @@ class CharacterManager
 		InputManager* m_inputManager = nullptr;
 		LevelManager* m_levelManager = nullptr;
 		Camera* m_camera = nullptr;
+		SoundDelegate* m_soundDelegate = nullptr;
 
 		CollisionManager* m_collisionManager = nullptr;
 		std::vector<char> blacklistedChar;

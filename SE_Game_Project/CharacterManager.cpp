@@ -57,6 +57,7 @@ void CharacterManager::init(
 	LevelManager& levelManager, 
 	CollisionManager& collisionManager,
 	Camera& camera,
+	SoundDelegate& soundDelegate,
 	const glm::vec2& playerPos,
 	const std::string &programDirectory)
 {
@@ -65,6 +66,8 @@ void CharacterManager::init(
 	m_collisionManager	= &collisionManager;
 	m_camera			= &camera;
 	m_player.position = playerPos;
+	m_soundDelegate = &soundDelegate;
+
 
 	blacklistedChar = m_levelManager->get_restricted_tiles();
 	m_zombieManager.init(levelManager, *this, blacklistedChar, m_levelManager->get_map_size().x, m_levelManager->get_map_size().y, m_levelManager->get_tile_dimensions(), collisionManager);
@@ -83,17 +86,6 @@ void CharacterManager::update()
 	{
 		const float speed = 4.0f;
 		m_player.isAlive = true;
-		//glm::vec2 tl = m_player.position;
-		//glm::vec2 tr = m_player.position;
-		//glm::vec2 bl = m_player.position;
-		//glm::vec2 br = m_player.position;
-		//tl.x -= dim.x;
-		//tl.y += dim.y;
-		//bl -= dim;
-		//tr += dim;
-		//br.x += dim.x;
-		//br.y -= dim.y;
-
 		if (m_inputManager->get_key(SDLK_w)) {
 			m_player.position.y += speed;
 		}
@@ -112,11 +104,12 @@ void CharacterManager::update()
 				if (m_levelManager->unlock_tile(m_camera->get_world_cursor_position())) {
 					m_player.money -= 200;
 						std::cout << "UNLOCKED DOOR\n";
+						m_soundDelegate->play_effect(2);
 				}
 			}
 		}
 		if (m_inputManager->get_keyPressed(SDL_BUTTON_LEFT)) {
-			m_particleManager.update_AddParticle(glm::vec3(m_player.position, 0.0f), glm::vec3(m_player.direction, 0.0f));
+			m_particleManager.update_AddParticle(glm::vec3(m_player.position, 0.0f), glm::vec3(m_player.direction, 0.0f), ColorRGBA32(255, 0, 0, 255));
 		}
 		tile_collision();
 	}

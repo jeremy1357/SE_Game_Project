@@ -15,6 +15,7 @@ void GameScreen::on_init()
 		m_levelManager, 
 		m_collisionManager, 
 		m_screenManager->m_camera,
+		m_screenManager->m_soundDelegate,
 		glm::vec2(900, 3075),
 		m_screenManager->get_project_directory());
 }
