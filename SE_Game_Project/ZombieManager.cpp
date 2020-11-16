@@ -3,6 +3,7 @@
 #include "CharacterManager.h"
 #include <SDL/SDL.h>
 #include<iostream>
+#include <random>
 
 
 
@@ -20,15 +21,19 @@ ZombieManager::~ZombieManager()
 glm::vec2 ZombieManager::calculate_spawnPosition()
 {
 	glm::vec2 testPT = glm::vec2 (0.0);
-	srand(time(0));
+	std::random_device rd;  //Will be used to obtain a seed for the random number engine
+	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+	std::uniform_real_distribution<> disX(100.0, 3725.0);
+	std::uniform_real_distribution<> disY(175.0, 7625.0);
 
 	for (int i = 0; i < 10; i++)
 	{
 		//testPT.x = rand() % m_mapSizex*m_tileSize.x;   //1 - 3899
 		//testPT.y = rand() % m_mapSizey*m_tileSize.y;   //
-
-		testPT.x = rand() % 3625 + 100;   //1 - 3899
-		testPT.y = rand() % 7450 + 175;   //
+		
+		testPT.x = disX(gen);   
+		
+		testPT.y = disY(gen);   
 
 		char result;
 		result = m_levelManager->get_character(testPT, true);
@@ -244,16 +249,15 @@ void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
 }
 void ZombieManager::npc_collision()
 {
-
-	float pushback = 5.0f;
+	float pushback = 1.0f;
 	for (int i = 0; i < m_zombies.size(); i++)
 	{
 		for (int j = 0; j < m_zombies.size(); j++)
 		{
-			float dx = m_zombies[i].position.x-m_zombies[j].position.x;
+			float dx = m_zombies[i].position.x - m_zombies[j].position.x;
 			float dy = m_zombies[i].position.y - m_zombies[j].position.y;
-			float radius = (dx * dx) + (dy * dy);
-			if (radius < m_zombies[i].radius)
+			float radii_sum = m_zombies[i].radius + m_zombies[j].radius;
+			if ((dx * dx) + (dy * dy) <= (radii_sum * radii_sum))
 			{
 				float angleZomb = (atan2(m_zombies[i].position.y - m_zombies[j].position.y, m_zombies[i].position.x - m_zombies[j].position.x) * 180) / 3.141;
 
