@@ -121,7 +121,7 @@ void CharacterManager::update()
 	}
 	else
 	{
-		const float speed = 4.0f;
+		const float speed = 5.0f;
 		m_player.isAlive = true;
 		if (m_inputManager->get_key(SDLK_w)) {
 			m_player.position.y += speed;

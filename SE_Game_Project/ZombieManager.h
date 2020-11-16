@@ -17,7 +17,7 @@ struct Zombie {
 	bool isAlive = true;
 	glm::vec2 position = glm::vec2(0.0);
 	float angle = 0.0;
-	float radius = 25.0f;
+	float radius = 20.0f;
 	float speed = 0.0;
 };
 

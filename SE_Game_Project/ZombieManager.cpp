@@ -168,7 +168,7 @@ void ZombieManager::update()
 		}
 	}
 
-	npc_collision();
+npc_collision();
 }
 
 void ZombieManager::tile_collision() {
@@ -249,25 +249,47 @@ void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
 }
 void ZombieManager::npc_collision()
 {
-	float pushback = 1.0f;
+	float dx;
+	float dy;
+
+	float radii_sum;
+	float length;
+
+	float unit_x;
+	float unit_y;
+
+	float pushback = 3.0f;
 	for (int i = 0; i < m_zombies.size(); i++)
 	{
 		for (int j = 0; j < m_zombies.size(); j++)
 		{
-			float dx = m_zombies[i].position.x - m_zombies[j].position.x;
-			float dy = m_zombies[i].position.y - m_zombies[j].position.y;
-			float radii_sum = m_zombies[i].radius + m_zombies[j].radius;
-			if ((dx * dx) + (dy * dy) <= (radii_sum * radii_sum))
+			if (i != j)
 			{
-				float angleZomb = (atan2(m_zombies[i].position.y - m_zombies[j].position.y, m_zombies[i].position.x - m_zombies[j].position.x) * 180) / 3.141;
+				dx = m_zombies[i].position.x - m_zombies[j].position.x;
+				dy = m_zombies[i].position.y - m_zombies[j].position.y;
+				radii_sum = m_zombies[i].radius + m_zombies[j].radius;
+				if ((dx * dx) + (dy * dy) <= (radii_sum * radii_sum))
+				{
+					float angleZomb = (atan2(m_zombies[i].position.y - m_zombies[j].position.y, m_zombies[i].position.x - m_zombies[j].position.x) * 180) / 3.141;
 
-				m_zombies[i].position.x = m_zombies[i].position.x + cos(angleZomb) * pushback;
-				m_zombies[i].position.y = m_zombies[i].position.y + cos(angleZomb) * pushback;
+					m_zombies[i].position.x = m_zombies[i].position.x + cos(angleZomb) * pushback;
+					m_zombies[i].position.y = m_zombies[i].position.y + cos(angleZomb) * pushback;
 
-				m_zombies[j].position.x = m_zombies[j].position.x - cos(angleZomb) * pushback;
-				m_zombies[j].position.y = m_zombies[j].position.y - cos(angleZomb) * pushback;
+					m_zombies[j].position.x = m_zombies[j].position.x - cos(angleZomb) * pushback;
+					m_zombies[j].position.y = m_zombies[j].position.y - cos(angleZomb) * pushback;
+
+					//dx = m_zombies[i].position.x - m_zombies[j].position.x;
+					//dy = m_zombies[i].position.y - m_zombies[j].position.y;
+					//radii_sum = m_zombies[i].radius + m_zombies[j].radius;
+					//length = sqrt(dx * dx + dy * dy) || 1;
+					//unit_x = dx / length;
+					//unit_y = dy / length;
+					//m_zombies[i].position.x = m_zombies[i].position.x + (radii_sum + 1);
+					//m_zombies[i].position.y = m_zombies[i].position.y + (radii_sum + 1);
+				}
 			}
 		}
 
 	}
 }
+
