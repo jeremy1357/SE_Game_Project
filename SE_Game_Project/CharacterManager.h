@@ -47,6 +47,7 @@ class CharacterManager
 		bool is_player_alive();
 		void add_item_to_inventory(const std::string& itemName);
 		void set_gun_index(const std::string& itemName);
+		float get_sprite_radius() { return m_spriteRadius; }
 		std::string get_gun_name();
 
 		Player m_player;
@@ -64,7 +65,8 @@ class CharacterManager
 
 
 		// This should be half of player square dimensions
-		const glm::vec2 dim = glm::vec2(25.0f);
+		//const glm::vec2 dim = glm::vec2(25.0f);
+		float m_spriteRadius = 25.0f;
 		InputManager* m_inputManager			= nullptr;
 		LevelManager* m_levelManager			= nullptr;
 		Camera* m_camera						= nullptr;
