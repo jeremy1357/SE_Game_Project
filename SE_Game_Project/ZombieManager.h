@@ -4,7 +4,7 @@
 #include "LevelManager.h"
 #include "CollisionManager.h"
 #include "SoundDelegate.h"
-
+#include "ParticleManager.h"
 #include <vector>
 using namespace std;
 
@@ -40,6 +40,7 @@ private:
 	bool should_spawn_wave();
 	void spawn_Wave(int wave);
 	void collide_with_player(Zombie* zombie);
+	void bullet_collision(Zombie* zombie, Particle* particle);
 
 	int m_mapSizex;
 	int m_mapSizey;
@@ -60,6 +61,7 @@ private:
 	CharacterManager* m_characterManager = nullptr;
 	CollisionManager* m_collisionManager = nullptr;
 	SoundDelegate* soundDelegate = nullptr;
+	ParticleManager* m_particleManager = nullptr;
 	std::vector<char> m_blacklistedChar;
 	std::vector<int> m_zombieSoundKeys;
 	void perform_tile_collision(CollisionPosition* cp);
