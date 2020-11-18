@@ -188,8 +188,14 @@ void ScreenManager::init()
 	m_soundDelegate.load_audio("zombie7.wav");
 	m_soundDelegate.load_audio("zombie8.wav");
 	m_soundDelegate.load_audio("zombie9.wav");
-
-
+	m_soundDelegate.load_audio("aargh0.ogg");
+	m_soundDelegate.load_audio("aargh1.ogg");
+	m_soundDelegate.load_audio("aargh2.ogg");
+	m_soundDelegate.load_audio("aargh3.ogg");
+	m_soundDelegate.load_audio("aargh4.ogg");
+	m_soundDelegate.load_audio("aargh5.ogg");
+	m_soundDelegate.load_audio("aargh6.ogg");
+	m_soundDelegate.load_audio("aargh7.ogg");
 
 
 	m_camera.set_scale(1.2);

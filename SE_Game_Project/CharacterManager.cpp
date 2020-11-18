@@ -50,6 +50,21 @@ void CharacterManager::add_item_to_inventory(const std::string& itemName)
 	}
 }
 
+void CharacterManager::use_consumable_item(const std::string& itemName)
+{
+	for (size_t i = 0; i < m_inventory.size(); i++) {
+		if (m_inventory[i].Name == itemName) {
+
+		}
+	}
+}
+
+void CharacterManager::set_player_hurt_sound_ranges(int min, int max)
+{
+	m_characterSoundHurtMin = min;
+	m_characterSoundHurtMax = max;
+}
+
 void CharacterManager::set_gun_index(const std::string& itemName)
 {
 	for (int i = 0; i < m_inventory.size(); i++) {

@@ -46,6 +46,9 @@ class CharacterManager
 		void tile_collision();
 		bool is_player_alive();
 		void add_item_to_inventory(const std::string& itemName);
+		void use_consumable_item(const std::string& itemName);
+		void set_player_hurt_sound_ranges(int min, int max);
+
 		void set_gun_index(const std::string& itemName);
 		float get_sprite_radius() { return m_spriteRadius; }
 		std::string get_gun_name();
@@ -78,5 +81,8 @@ class CharacterManager
 		std::vector<Item> m_inventory;
 		int m_currentGunIndex = -1;
 
+		// Sound stuff
+		int m_characterSoundHurtMin = 0;
+		int m_characterSoundHurtMax = 0;
 };
 
