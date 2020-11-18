@@ -24,6 +24,7 @@ class ParticleManager
 {
 private:
 	int m_active_particles = 0;
+	int i = 0;
 	
 public:
 	CollisionManager* m_collisionManager = nullptr;

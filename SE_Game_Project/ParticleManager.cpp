@@ -15,7 +15,7 @@ void ParticleManager::particle_init(CollisionManager& collisionManager)
 void ParticleManager::update_particle()
 {
 
-	for (int i = 0; i < MAX_PARTICLE_COUNT; i++) {
+	for (i = i; i < MAX_PARTICLE_COUNT; i++) {
 		if (m_particles[i].health > 0.0) {
 			m_particles[i].isActive = true;
 			m_particles[i].health -= 0.05f;
@@ -35,6 +35,8 @@ void ParticleManager::update_particle()
 		else {
 			m_particles[i].isActive = false;
 		}
+		if (i == MAX_PARTICLE_COUNT)
+			i = 0;
 	}
 }
 
