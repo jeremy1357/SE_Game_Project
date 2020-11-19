@@ -63,27 +63,33 @@ void GameScreen::on_render()
 	m_spriteRenderer.on_render();
 	
 	ImGui::SetNextWindowBgAlpha(0.35f);
-	static bool no_titlebar = true;
-	ImGuiWindowFlags window_flags = 0;
-	if (no_titlebar) {
-		window_flags |= ImGuiWindowFlags_NoTitleBar;
-	}
-	ImGui::Begin("Zombie Onslaught");
+
+	int tempHeight = m_screenManager->m_window.get_height();
+	int tempWidth = m_screenManager->m_window.get_width();
+	int height = tempHeight / 2;
+	int width = tempWidth / 2;
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImVec2(210, 170));
+
+	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
 	ImGui::Text("Health: %i", m_characterManager.m_player.health);
 	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
-	// Added by Jeremy for debugging
-	glm::vec2 worldCursorCoordinates = m_screenManager->m_camera.get_world_cursor_position();
-	//ImGui::Text("X: [%i]  Y: [%i]", (int)worldCursorCoordinates.x, (int)worldCursorCoordinates.y);
-	//ImGui::Text("[%c]", m_levelManager.get_character(worldCursorCoordinates, true));
+
+	//glm::vec2 worldCursorCoordinates = m_screenManager->m_camera.get_world_cursor_position();
+
 
 	if (ImGui::Button("Main Menu")) {
 		m_screenManager->setScreen(ScreenKeys::MENU);
 	}
 	//ImGui::Text("Zombie Wave: );
 	ImGui::End();
-
-	ImGui::Begin("Gun");
+	
+	ImVec2 windowSize;
+	windowSize.y = m_screenManager->m_window.get_height();
+	ImGui::SetNextWindowPos(ImVec2(0, windowSize.y - 50));
+	ImGui::SetNextWindowSize(ImVec2(250, 50));
+	ImGui::Begin("Gun", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text(("Gun: " + m_characterManager.get_gun_name()).c_str());
 	ImGui::End();
 
