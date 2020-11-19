@@ -61,7 +61,11 @@ void GameScreen::on_render()
 	m_spriteRenderer.on_render();
 	
 	ImGui::SetNextWindowBgAlpha(0.35f);
-
+	static bool no_titlebar = true;
+	ImGuiWindowFlags window_flags = 0;
+	if (no_titlebar) {
+		window_flags |= ImGuiWindowFlags_NoTitleBar;
+	}
 	ImGui::Begin("Zombie Onslaught");
 	ImGui::Text("FPS: %f", m_screenManager->m_timer.m_fps);
 	ImGui::Text("Health: %i", m_characterManager.m_player.health);
