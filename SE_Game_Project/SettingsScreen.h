@@ -12,7 +12,7 @@ public:
 	virtual void on_update() override;
 
 private:
-
+	int m_maxFPS = 60;
 
 };
 
