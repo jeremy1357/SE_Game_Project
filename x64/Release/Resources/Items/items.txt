@@ -1,0 +1,6 @@
+2 Rifle 10 5 0 10 1
+1 Beer  2  3 0 0 0
+1 Beans 12 2 0 0 0
+0 Shield 15 1 8 0 0
+2 Pistol 5 1 0 2 1
+2 Shotgun 150, 6, 0, 8, 4

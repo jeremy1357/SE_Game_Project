@@ -16,8 +16,10 @@ void GameScreen::on_init()
 
 	// This must be at the end
 	// Set this before the init function
-	m_characterManager.m_zombieManager.set_zombie_sound_keys(m_screenManager->m_soundDelegate.get_key("zombie0.wav"), m_screenManager->m_soundDelegate.get_key("zombie9.wav"));
-
+	m_characterManager.m_zombieManager.set_zombie_sound_keys(m_screenManager->m_soundDelegate.get_key("zombie0.wav"), 
+					m_screenManager->m_soundDelegate.get_key("zombie9.wav"));
+	m_characterManager.set_player_hurt_sound_ranges(m_screenManager->m_soundDelegate.get_key("aargh0.ogg"),
+					m_screenManager->m_soundDelegate.get_key("aargh7.ogg"));
 	m_characterManager.init(m_screenManager->m_inputManager, 
 		m_levelManager, 
 		m_collisionManager, 

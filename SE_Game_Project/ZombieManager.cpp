@@ -49,15 +49,19 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 }
 
 
-void ZombieManager::init(LevelManager& levelManager, CharacterManager& characterManager, const std::vector<char> blacklistedTiles, int mapSizex, int mapSizey, glm::vec2 tileSize, CollisionManager& collisionManager, SoundDelegate& sound)
+void ZombieManager::init(LevelManager& levelManager, 
+	CharacterManager& characterManager, 
+	CollisionManager& collisionManager, 
+	SoundDelegate& sound)
 {
-	m_mapSizex = mapSizex;
-	m_mapSizey = mapSizey;
-	m_levelManager = &levelManager;
-	m_characterManager = &characterManager;
-	m_collisionManager = &collisionManager;
-	m_blacklistedChar = blacklistedTiles;
-	soundDelegate = &sound;
+	m_levelManager		= &levelManager;
+	m_characterManager	= &characterManager;
+	m_collisionManager	= &collisionManager;
+	soundDelegate		= &sound;
+	m_mapSize			= levelManager.get_map_size();
+	m_blacklistedChar	= levelManager.get_restricted_tiles();
+	m_tileSize			= levelManager.get_tile_dimensions();
+	minDistBetweenSprites = m_characterManager->get_sprite_radius() * 2.0f;
 
 }
 
@@ -67,22 +71,35 @@ void ZombieManager::spawn_Wave(int wave)
 	m_zombies.clear();
 	int numZombies = 10 * (wave)+10;
 
-	for (int i = 0; i < numZombies; i++)
-	{
+	for (int i = 0; i < numZombies; i++) 	{
 		m_zombies.push_back(Zombie());
 		m_zombies.back().position = calculate_spawnPosition();   //sets position to newest zombie using calcspawn function
-		m_zombies.back().speed = rand() % 4 + 1;
+		std::random_device rd;  //Will be used to obtain a seed for the random number engine
+		std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+		std::uniform_real_distribution<float> disX(1.0f, 4.0f);
+		m_zombies.back().speed = disX(rd);
 	}
 }
 
+void ZombieManager::collide_with_player(Zombie* zombie)
+{
+	// Get distance from center to center
+	float dist_a_to_b = glm::length(m_characterManager->m_player.position - zombie->position);
+	if (dist_a_to_b < minDistBetweenSprites) {
+		glm::vec2 normalizedAngle = glm::normalize(m_characterManager->m_player.position - zombie->position);
+		float collisionDepth = minDistBetweenSprites - dist_a_to_b;
+		glm::vec2 push = normalizedAngle * collisionDepth;
 
+		m_characterManager->m_player.position += push / 2.0f;
+		zombie->position -= push / 2.0f;
+	}
+
+}
 
 bool ZombieManager::collision_Check(char parameter)
 {
-	for (int i = 0; i < m_blacklistedChar.size(); i++) 
-	{
-		if (m_blacklistedChar[i] == parameter) 
-		{
+	for (int i = 0; i < m_blacklistedChar.size(); i++) {
+		if (m_blacklistedChar[i] == parameter) {
 			return true;
 		}
 	}
@@ -91,10 +108,8 @@ bool ZombieManager::collision_Check(char parameter)
 
 bool ZombieManager::should_spawn_wave()
 {
-	for (int i = 0; i < m_zombies.size(); i++)
-	{
-		if (m_zombies[i].isAlive)
-		{
+	for (int i = 0; i < m_zombies.size(); i++) {
+		if (m_zombies[i].isAlive) {
 			return false;
 		}
 	}
@@ -102,10 +117,8 @@ bool ZombieManager::should_spawn_wave()
 }
 
 
-void ZombieManager::update()
-{
-	if (should_spawn_wave() == true)
-	{
+void ZombieManager::update() {
+	if (should_spawn_wave() == true) {
 		spawn_Wave(wave++);
 	}
 	// If false, zombies are still alive so play a sound (roll a dice)
@@ -120,37 +133,46 @@ void ZombieManager::update()
 	float playerY = m_characterManager->m_player.position.y;
 
 	//update the zombie position variables
-
-	for (int i = 0; i < m_zombies.size(); i++)
-	{
-		const float speed = m_zombies[i].speed;
-
-		//float angle = (atan2(playerY - m_zombies[i].position.y, playerX - m_zombies[i].position.x) * 180) / 3.141;
-		float angle = (atan2(m_zombies[i].position.y - playerY, m_zombies[i].position.x - playerX) * 180) / 3.141;
-		if (playerX > m_zombies[i].position.x)
-		{
-			m_zombies[i].position.x = m_zombies[i].position.x + speed;
-			m_zombies[i].angle = angle;
-		}
-
-		if (playerY > m_zombies[i].position.y)
-		{
-			m_zombies[i].position.y = m_zombies[i].position.y + speed;
-			m_zombies[i].angle = angle;
-		}
-
-		if (playerX < m_zombies[i].position.x)
-		{
-			m_zombies[i].position.x = m_zombies[i].position.x - speed;
-			m_zombies[i].angle = angle;
-		}
-
-		if (playerY < m_zombies[i].position.y)
-		{
-			m_zombies[i].position.y = m_zombies[i].position.y - speed;
-			m_zombies[i].angle = angle;
-		}
+	for (auto& it : m_zombies) {
+		float angleRads = atan2(it.position.y - playerY, it.position.x - playerX);
+		float angleDegrees = angleRads * 180.0f / 3.14157f;
+		it.position -= glm::vec2(cos(angleRads), sin(angleRads)) * it.speed;
+		it.angle = angleDegrees;
 	}
+
+
+
+	// This is bad below, left in so you can see
+	//for (int i = 0; i < m_zombies.size(); i++)
+	//{
+	//	const float speed = m_zombies[i].speed;
+
+	//	float angle = ( * 180) / 3.141;
+
+	//	if (playerX > m_zombies[i].position.x)
+	//	{
+	//		m_zombies[i].position.x = m_zombies[i].position.x + speed;
+	//		m_zombies[i].angle = angle;
+	//	}
+
+	//	if (playerY > m_zombies[i].position.y)
+	//	{
+	//		m_zombies[i].position.y = m_zombies[i].position.y + speed;
+	//		m_zombies[i].angle = angle;
+	//	}
+
+	//	if (playerX < m_zombies[i].position.x)
+	//	{
+	//		m_zombies[i].position.x = m_zombies[i].position.x - speed;
+	//		m_zombies[i].angle = angle;
+	//	}
+
+	//	if (playerY < m_zombies[i].position.y)
+	//	{
+	//		m_zombies[i].position.y = m_zombies[i].position.y - speed;
+	//		m_zombies[i].angle = angle;
+	//	}
+	//}
 	 //Need to have zombie implement angle to face player
 
 
@@ -168,11 +190,10 @@ void ZombieManager::update()
 		}
 	}
 
-npc_collision();
+	npc_collision();
 }
 
 void ZombieManager::tile_collision() {
-
 	for (int i = 0; i < m_zombies.size(); i++)
 	{
 		glm::vec2 worldSize = m_levelManager->get_map_size();
@@ -205,16 +226,14 @@ void ZombieManager::tile_collision() {
 	}
 }
 
-void ZombieManager::set_zombie_sound_keys(int min, int max)
-{
+void ZombieManager::set_zombie_sound_keys(int min, int max) {
 	for (int i = min; i <= max; i++) {
 		m_zombieSoundKeys.push_back(i);
 	}
 }
 
 void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
-	for (int k = 0; k < m_zombies.size(); k++)
-	{
+	for (int k = 0; k < m_zombies.size(); k++) {
 		for (int i = 0; i < 4; i++) {
 			if (cp[i].didCollisionOccur) {
 				glm::vec2 tileCenter = m_levelManager->get_tile_center(cp[i].position);
@@ -247,49 +266,33 @@ void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
 		}
 	}
 }
-void ZombieManager::npc_collision()
-{
-	float dx;
-	float dy;
 
-	float radii_sum;
-	float length;
-
-	float unit_x;
-	float unit_y;
-
-	float pushback = 3.0f;
-	for (int i = 0; i < m_zombies.size(); i++)
-	{
-		for (int j = 0; j < m_zombies.size(); j++)
-		{
-			if (i != j)
-			{
-				dx = m_zombies[i].position.x - m_zombies[j].position.x;
-				dy = m_zombies[i].position.y - m_zombies[j].position.y;
-				radii_sum = m_zombies[i].radius + m_zombies[j].radius;
-				if ((dx * dx) + (dy * dy) <= (radii_sum * radii_sum))
-				{
-					float angleZomb = (atan2(m_zombies[i].position.y - m_zombies[j].position.y, m_zombies[i].position.x - m_zombies[j].position.x) * 180) / 3.141;
-
-					m_zombies[i].position.x = m_zombies[i].position.x + cos(angleZomb) * pushback;
-					m_zombies[i].position.y = m_zombies[i].position.y + cos(angleZomb) * pushback;
-
-					m_zombies[j].position.x = m_zombies[j].position.x - cos(angleZomb) * pushback;
-					m_zombies[j].position.y = m_zombies[j].position.y - cos(angleZomb) * pushback;
-
-					//dx = m_zombies[i].position.x - m_zombies[j].position.x;
-					//dy = m_zombies[i].position.y - m_zombies[j].position.y;
-					//radii_sum = m_zombies[i].radius + m_zombies[j].radius;
-					//length = sqrt(dx * dx + dy * dy) || 1;
-					//unit_x = dx / length;
-					//unit_y = dy / length;
-					//m_zombies[i].position.x = m_zombies[i].position.x + (radii_sum + 1);
-					//m_zombies[i].position.y = m_zombies[i].position.y + (radii_sum + 1);
+void ZombieManager::npc_collision() {
+	// This logic is saying that zombie is colliding with zombie j
+	for (int i = 0; i < m_zombies.size(); i++) {
+		for (int j = 0; j < m_zombies.size(); j++) {
+			if (i != j) {
+				// Get distance from center to center
+				float dist_a_to_b = glm::length(m_zombies[i].position - m_zombies[j].position);
+				if (dist_a_to_b < minDistBetweenSprites) {
+					glm::vec2 normalizedAngle = glm::normalize(m_zombies[i].position - m_zombies[j].position);
+					float collisionDepth = minDistBetweenSprites - dist_a_to_b;
+					glm::vec2 push = normalizedAngle * collisionDepth;
+					m_zombies[i].position += push / 2.0f;
+					m_zombies[j].position -= push / 2.0f;
 				}
 			}
 		}
+		collide_with_player(&m_zombies[i]);
 
 	}
 }
 
+void ZombieManager::bullet_collision(Zombie* zombie, Particle* particle) {
+
+	float dist_a_to_b = glm::length(zombie->position - particle->position);
+	if (dist_a_to_b < minDistBetweenSprites) {
+		float collisionDepth = minDistBetweenSprites - dist_a_to_b;
+		zombie->health - 25; 
+	}
+}

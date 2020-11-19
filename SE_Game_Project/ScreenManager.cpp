@@ -149,7 +149,7 @@ void ScreenManager::init()
 	ImGui_ImplSDL2_InitForOpenGL(m_window.get_window_handle(), m_window.glContext);
 	ImGui_ImplOpenGL3_Init("#version 130");
 	ImGui::StyleColorsDark();
-	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\PTMono-Regular.ttf").c_str(), 32.0f);
+	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 32.0f);
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowRounding = 5.0f;
 	style.FrameRounding = 10.0f;
@@ -188,8 +188,14 @@ void ScreenManager::init()
 	m_soundDelegate.load_audio("zombie7.wav");
 	m_soundDelegate.load_audio("zombie8.wav");
 	m_soundDelegate.load_audio("zombie9.wav");
-
-
+	m_soundDelegate.load_audio("aargh0.ogg");
+	m_soundDelegate.load_audio("aargh1.ogg");
+	m_soundDelegate.load_audio("aargh2.ogg");
+	m_soundDelegate.load_audio("aargh3.ogg");
+	m_soundDelegate.load_audio("aargh4.ogg");
+	m_soundDelegate.load_audio("aargh5.ogg");
+	m_soundDelegate.load_audio("aargh6.ogg");
+	m_soundDelegate.load_audio("aargh7.ogg");
 
 
 	m_camera.set_scale(1.2);

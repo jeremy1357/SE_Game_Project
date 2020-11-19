@@ -50,6 +50,21 @@ void CharacterManager::add_item_to_inventory(const std::string& itemName)
 	}
 }
 
+void CharacterManager::use_consumable_item(const std::string& itemName)
+{
+	for (size_t i = 0; i < m_inventory.size(); i++) {
+		if (m_inventory[i].Name == itemName) {
+
+		}
+	}
+}
+
+void CharacterManager::set_player_hurt_sound_ranges(int min, int max)
+{
+	m_characterSoundHurtMin = min;
+	m_characterSoundHurtMax = max;
+}
+
 void CharacterManager::set_gun_index(const std::string& itemName)
 {
 	for (int i = 0; i < m_inventory.size(); i++) {
@@ -95,7 +110,7 @@ void CharacterManager::init(
 	m_player.position	= playerPos;
 	m_soundDelegate		= &soundDelegate;
 	blacklistedChar = m_levelManager->get_restricted_tiles();
-	m_zombieManager.init(levelManager, *this, blacklistedChar, m_levelManager->get_map_size().x, m_levelManager->get_map_size().y, m_levelManager->get_tile_dimensions(), collisionManager, soundDelegate);
+	m_zombieManager.init(levelManager, *this, collisionManager, soundDelegate);
 	m_economy.init(programDirectory, 20);
 	m_particleManager.particle_init(collisionManager);
 
@@ -179,12 +194,12 @@ void CharacterManager::tile_collision() {
 	collisionAreas[2].position = m_player.position; //BL
 	collisionAreas[3].position = m_player.position; //BR
 
-	collisionAreas[0].position.x -= dim.x;
-	collisionAreas[0].position.y += dim.y;
-	collisionAreas[2].position -= dim;
-	collisionAreas[1].position += dim;
-	collisionAreas[3].position.x += dim.x;
-	collisionAreas[3].position.y -= dim.y;
+	collisionAreas[0].position.x -= m_spriteRadius;
+	collisionAreas[0].position.y += m_spriteRadius;
+	collisionAreas[2].position -= glm::vec2(m_spriteRadius);
+	collisionAreas[1].position += glm::vec2(m_spriteRadius);
+	collisionAreas[3].position.x += m_spriteRadius;
+	collisionAreas[3].position.y -= m_spriteRadius;
 
 
 	char cornerCharacters[4];
