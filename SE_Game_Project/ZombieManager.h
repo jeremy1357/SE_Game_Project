@@ -40,7 +40,7 @@ private:
 	bool should_spawn_wave();
 	void spawn_Wave(int wave);
 	void collide_with_player(Zombie* zombie);
-	void bullet_collision(Zombie* zombie, Particle* particle);
+	void bullet_collision(Particle* particle);
 
 	int m_mapSizex;
 	int m_mapSizey;
