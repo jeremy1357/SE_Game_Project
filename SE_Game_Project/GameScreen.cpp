@@ -69,13 +69,13 @@ void GameScreen::on_render()
 		window_flags |= ImGuiWindowFlags_NoTitleBar;
 	}
 	ImGui::Begin("Zombie Onslaught");
-	ImGui::Text("FPS: %f", m_screenManager->m_timer.m_fps);
+	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
 	ImGui::Text("Health: %i", m_characterManager.m_player.health);
 	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
 	// Added by Jeremy for debugging
 	glm::vec2 worldCursorCoordinates = m_screenManager->m_camera.get_world_cursor_position();
-	ImGui::Text("X: [%i]  Y: [%i]", (int)worldCursorCoordinates.x, (int)worldCursorCoordinates.y);
-	ImGui::Text("[%c]", m_levelManager.get_character(worldCursorCoordinates, true));
+	//ImGui::Text("X: [%i]  Y: [%i]", (int)worldCursorCoordinates.x, (int)worldCursorCoordinates.y);
+	//ImGui::Text("[%c]", m_levelManager.get_character(worldCursorCoordinates, true));
 
 	if (ImGui::Button("Main Menu")) {
 		m_screenManager->setScreen(ScreenKeys::MENU);
