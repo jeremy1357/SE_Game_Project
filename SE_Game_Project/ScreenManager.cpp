@@ -149,7 +149,7 @@ void ScreenManager::init()
 	ImGui_ImplSDL2_InitForOpenGL(m_window.get_window_handle(), m_window.glContext);
 	ImGui_ImplOpenGL3_Init("#version 130");
 	ImGui::StyleColorsDark();
-	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\PTMono-Regular.ttf").c_str(), 32.0f);
+	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 32.0f);
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowRounding = 5.0f;
 	style.FrameRounding = 10.0f;
