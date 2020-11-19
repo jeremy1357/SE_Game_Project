@@ -5,6 +5,7 @@
 #include "GameScreen.h"
 #include "MenuScreen.h"
 #include "SettingsScreen.h"
+#include "ScoringScreen.h"
 
 #include "ScreenManager.hpp"
 #include <glm/glm.hpp>
@@ -29,6 +30,7 @@ int main(int argc, char** argv)
 	std::unique_ptr<GameScreen> gameScreen = nullptr;
 	std::unique_ptr<MenuScreen> menuScreen = nullptr;
 	std::unique_ptr<SettingsScreen> settingsScreen = nullptr;
+	std::unique_ptr<ScoringScreen> scoringScreen = nullptr;
 
 	// We then create a unique ptr of GameScreen and call its
 	// constructor with a numeric ID which will ONLY be associated
@@ -36,10 +38,12 @@ int main(int argc, char** argv)
 	gameScreen = std::make_unique<GameScreen>(ScreenKeys::GAME);
 	menuScreen = std::make_unique<MenuScreen>(ScreenKeys::MENU);
 	settingsScreen = std::make_unique<SettingsScreen>(ScreenKeys::SETTINGS);
+	scoringScreen = std::make_unique<ScoringScreen>(ScreenKeys::SCORES);
 
 	// Now give our GameScreen object to the screen manager so it can manage it
 	gameManager.addScreen(gameScreen.get(), false);
 	gameManager.addScreen(menuScreen.get(), false);
+	gameManager.addScreen(scoringScreen.get(), false);
 	gameManager.addScreen(settingsScreen.get(), false);
 
 

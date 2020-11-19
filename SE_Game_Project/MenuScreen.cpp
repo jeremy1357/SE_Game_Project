@@ -9,7 +9,6 @@
 MenuScreen::MenuScreen(int uniqueScreenID)
 {
 	m_screenID = uniqueScreenID;
-
 }
 
 void MenuScreen::on_init()
@@ -31,11 +30,8 @@ void MenuScreen::on_exit()
 
 void MenuScreen::on_render()
 {
-	//Demo window for testing
-	//ImGui::ShowDemoWindow();
-
 	//Color Defines
-	#define TEXT(v) ImVec4(0.7f, 0.0f, 0.0f, v) //Text color define
+	#define TEXT(v) ImVec4(1.0f, 0.0f, 0.0f, v) //Text color define
 	#define BG(v)   ImVec4(0.100f, 0.100f, 0.100f, v) //Background color define
 
 	//Getting Style
@@ -54,8 +50,11 @@ void MenuScreen::on_render()
 	int height = tempHeight / 2;
 	int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::Begin("Zombie Onslaught");
-	//ImGui::SetWindowFontScale(1.5);
+	ImVec2 windowSize;
+	windowSize.x = m_screenManager->m_window.get_width();
+	windowSize.y = m_screenManager->m_window.get_height();
+	ImGui::SetNextWindowSize(windowSize);
+	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	style.WindowBorderSize = 1.0f;
 	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
 	style.WindowMenuButtonPosition = ImGuiDir_None;
@@ -65,37 +64,42 @@ void MenuScreen::on_render()
 	ImGui::Spacing();
 	ImGui::Spacing();
 
-
 	float buttonPlayGameSize = 225.0f;
 	ImGui::SameLine(width - 112.5);
 	if (ImGui::Button("Play Game", ImVec2(buttonPlayGameSize, 50))) {
 		m_screenManager->setScreen(ScreenKeys::GAME);
 	}
+	
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::NewLine();
+
 	float buttonTopScorers = 250.0f;
 	ImGui::SameLine(width - 125);
 	if (ImGui::Button("Top Scorers", ImVec2(buttonTopScorers, 50))) {
-		//m_screenManager->setScreen(ScreenKeys::GAME);
+		m_screenManager->setScreen(ScreenKeys::SCORES);
 	}
+
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::NewLine();
+
 	float buttonSettings = 200.0f;
 	ImGui::SameLine(width - 100);
 	if (ImGui::Button("Settings", ImVec2(buttonSettings, 50))) {
 		m_screenManager->setScreen(ScreenKeys::SETTINGS);
 	}
+
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::NewLine();
+
 	float buttonExitGame = 200.0f;
 	ImGui::SameLine(width - 100);
 	if (ImGui::Button("Exit Game", ImVec2(buttonExitGame, 50))) {

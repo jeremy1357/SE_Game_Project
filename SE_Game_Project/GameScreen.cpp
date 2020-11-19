@@ -16,8 +16,10 @@ void GameScreen::on_init()
 
 	// This must be at the end
 	// Set this before the init function
-	m_characterManager.m_zombieManager.set_zombie_sound_keys(m_screenManager->m_soundDelegate.get_key("zombie0.wav"), m_screenManager->m_soundDelegate.get_key("zombie9.wav"));
-
+	m_characterManager.m_zombieManager.set_zombie_sound_keys(m_screenManager->m_soundDelegate.get_key("zombie0.wav"), 
+					m_screenManager->m_soundDelegate.get_key("zombie9.wav"));
+	m_characterManager.set_player_hurt_sound_ranges(m_screenManager->m_soundDelegate.get_key("aargh0.ogg"),
+					m_screenManager->m_soundDelegate.get_key("aargh7.ogg"));
 	m_characterManager.init(m_screenManager->m_inputManager, 
 		m_levelManager, 
 		m_collisionManager, 
@@ -43,7 +45,9 @@ void GameScreen::on_render()
 	m_levelManager.render(glm::vec2(0.0, 0.0), glm::vec2(0.0f));
 
 	for (auto& it : m_characterManager.m_zombieManager.m_zombies) {
-		m_spriteRenderer.add_sprite_to_batch(it.position, glm::vec2(25.0f), "skeleton-idle_1.png", it.angle);
+		if (it.isAlive) {
+			m_spriteRenderer.add_sprite_to_batch(it.position, glm::vec2(25.0f), "skeleton-idle_1.png", it.angle);
+		}
 	}
 	
 	m_spriteRenderer.add_sprite_to_batch(m_characterManager.m_player.position, 
@@ -62,26 +66,34 @@ void GameScreen::on_render()
 	
 	ImGui::SetNextWindowBgAlpha(0.35f);
 
-	ImGui::Begin("Zombie Onslaught");
-	ImGui::Text("FPS: %f", m_screenManager->m_timer.m_fps);
+	int tempHeight = m_screenManager->m_window.get_height();
+	int tempWidth = m_screenManager->m_window.get_width();
+	int height = tempHeight / 2;
+	int width = tempWidth / 2;
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImVec2(230, 200));
+
+	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
 	ImGui::Text("Health: %i", m_characterManager.m_player.health);
 	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
-	// Added by Jeremy for debugging
-	glm::vec2 worldCursorCoordinates = m_screenManager->m_camera.get_world_cursor_position();
-	ImGui::Text("X: [%i]  Y: [%i]", (int)worldCursorCoordinates.x, (int)worldCursorCoordinates.y);
-	ImGui::Text("[%c]", m_levelManager.get_character(worldCursorCoordinates, true));
+	ImGui::Text("Wave: %i", m_characterManager.m_zombieManager.wave);
+	//glm::vec2 worldCursorCoordinates = m_screenManager->m_camera.get_world_cursor_position();
+
 
 	if (ImGui::Button("Main Menu")) {
 		m_screenManager->setScreen(ScreenKeys::MENU);
 	}
 	//ImGui::Text("Zombie Wave: );
 	ImGui::End();
-
-	ImGui::Begin("Gun");
+	
+	ImVec2 windowSize;
+	windowSize.y = m_screenManager->m_window.get_height();
+	ImGui::SetNextWindowPos(ImVec2(0, windowSize.y - 50));
+	ImGui::SetNextWindowSize(ImVec2(250, 50));
+	ImGui::Begin("Gun", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text(("Gun: " + m_characterManager.get_gun_name()).c_str());
 	ImGui::End();
-
-
 }
 
 void GameScreen::on_update()
@@ -99,7 +111,5 @@ void GameScreen::on_update()
 	
 	m_characterManager.m_player.angle = m_screenManager->m_camera.playerCursorAngle;
 	m_characterManager.update();
-
-	
 
 }

@@ -15,9 +15,9 @@ public:
 	char get_character(glm::vec2 position, bool shouldScale);
 	glm::vec2 get_tile_center(glm::vec2 tileToGetCenterOf);
 	bool is_tile_restricted(const glm::vec2& point);
-	std::vector<char> get_restricted_tiles() const { return m_restrictedTiles; }
 	bool unlock_tile(glm::vec2 point);
 
+	std::vector<char> get_restricted_tiles() const { return m_restrictedTiles; }
 	glm::vec2 get_map_size()		const { return mapSize; }
 	glm::vec2 get_tile_dimensions() const { return m_tileDimensions; }
 private:
