@@ -47,7 +47,7 @@ void ParticleManager::update_AddParticle(glm::vec2 pos, float angle, ColorRGBA32
 			m_particles[i].isActive = true;
 			m_particles[i].position = pos;
 			m_particles[i].angle = angle;
-			m_particles[i].size = glm::vec2(6.0);
+			m_particles[i].size = glm::vec2(5.0);
 			m_particles[i].speed = glm::vec2(7.0f);
 			m_particles[i].health = 100.0f;
 			m_particles[i].m_color = color;
@@ -56,6 +56,13 @@ void ParticleManager::update_AddParticle(glm::vec2 pos, float angle, ColorRGBA32
 		}
 	}
 }
+
+//void ParticleManager::blood_particle(glm::vec2 pos, float angle)
+//{
+//	for (int i = 0; i < blood_particle_number; i++) {
+//		blood_particle[i] = glm::normalize(glm::vec2((rand() % 1500 - 750) / 10000.0f, (rand() % 1500 - 750) / 10000.0f);
+//	}
+//}
 
 ParticleManager::~ParticleManager()
 {
