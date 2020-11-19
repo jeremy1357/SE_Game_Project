@@ -110,10 +110,10 @@ void CharacterManager::init(
 	m_player.position	= playerPos;
 	m_soundDelegate		= &soundDelegate;
 	blacklistedChar = m_levelManager->get_restricted_tiles();
-	m_zombieManager.init(levelManager, *this, collisionManager, soundDelegate);
 	m_economy.init(programDirectory, 20);
 	m_particleManager.particle_init(collisionManager);
 
+	m_zombieManager.init(levelManager, *this, collisionManager, soundDelegate, m_particleManager);
 
 
 

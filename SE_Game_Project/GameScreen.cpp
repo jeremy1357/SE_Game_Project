@@ -45,7 +45,9 @@ void GameScreen::on_render()
 	m_levelManager.render(glm::vec2(0.0, 0.0), glm::vec2(0.0f));
 
 	for (auto& it : m_characterManager.m_zombieManager.m_zombies) {
-		m_spriteRenderer.add_sprite_to_batch(it.position, glm::vec2(25.0f), "skeleton-idle_1.png", it.angle);
+		if (it.isAlive) {
+			m_spriteRenderer.add_sprite_to_batch(it.position, glm::vec2(25.0f), "skeleton-idle_1.png", it.angle);
+		}
 	}
 	
 	m_spriteRenderer.add_sprite_to_batch(m_characterManager.m_player.position, 
@@ -92,8 +94,6 @@ void GameScreen::on_render()
 	ImGui::Begin("Gun", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text(("Gun: " + m_characterManager.get_gun_name()).c_str());
 	ImGui::End();
-
-
 }
 
 void GameScreen::on_update()
@@ -111,7 +111,5 @@ void GameScreen::on_update()
 	
 	m_characterManager.m_player.angle = m_screenManager->m_camera.playerCursorAngle;
 	m_characterManager.update();
-
-	
 
 }

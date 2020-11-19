@@ -52,17 +52,19 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 void ZombieManager::init(LevelManager& levelManager, 
 	CharacterManager& characterManager, 
 	CollisionManager& collisionManager, 
-	SoundDelegate& sound)
+	SoundDelegate& sound,
+	ParticleManager& particleManager)
 {
-	m_levelManager		= &levelManager;
-	m_characterManager	= &characterManager;
-	m_collisionManager	= &collisionManager;
-	soundDelegate		= &sound;
-	m_mapSize			= levelManager.get_map_size();
-	m_blacklistedChar	= levelManager.get_restricted_tiles();
-	m_tileSize			= levelManager.get_tile_dimensions();
-	minDistBetweenSprites = m_characterManager->get_sprite_radius() * 2.0f;
-
+	m_levelManager			= &levelManager;
+	m_characterManager		= &characterManager;
+	m_collisionManager		= &collisionManager;
+	soundDelegate			= &sound;
+	m_mapSize				= levelManager.get_map_size();
+	m_blacklistedChar		= levelManager.get_restricted_tiles();
+	m_tileSize				= levelManager.get_tile_dimensions();
+	minDistBetweenSprites		= m_characterManager->get_sprite_radius() * 2.0f;
+	m_minBulletCollisionDist	= m_characterManager->get_sprite_radius() + (7.0f / 2.0f); // 7.0 is the bullet diameter
+	m_particleManager = &particleManager;
 }
 
 
@@ -139,43 +141,6 @@ void ZombieManager::update() {
 		it.position -= glm::vec2(cos(angleRads), sin(angleRads)) * it.speed;
 		it.angle = angleDegrees;
 	}
-
-
-
-	// This is bad below, left in so you can see
-	//for (int i = 0; i < m_zombies.size(); i++)
-	//{
-	//	const float speed = m_zombies[i].speed;
-
-	//	float angle = ( * 180) / 3.141;
-
-	//	if (playerX > m_zombies[i].position.x)
-	//	{
-	//		m_zombies[i].position.x = m_zombies[i].position.x + speed;
-	//		m_zombies[i].angle = angle;
-	//	}
-
-	//	if (playerY > m_zombies[i].position.y)
-	//	{
-	//		m_zombies[i].position.y = m_zombies[i].position.y + speed;
-	//		m_zombies[i].angle = angle;
-	//	}
-
-	//	if (playerX < m_zombies[i].position.x)
-	//	{
-	//		m_zombies[i].position.x = m_zombies[i].position.x - speed;
-	//		m_zombies[i].angle = angle;
-	//	}
-
-	//	if (playerY < m_zombies[i].position.y)
-	//	{
-	//		m_zombies[i].position.y = m_zombies[i].position.y - speed;
-	//		m_zombies[i].angle = angle;
-	//	}
-	//}
-	 //Need to have zombie implement angle to face player
-
-
 	for (int i = 0; i < m_zombies.size(); i++)
 	{
 		if (m_zombies[i].health < 0)
@@ -184,13 +149,14 @@ void ZombieManager::update() {
 		}
 		else
 		{
-			const float speed = 2.0f;
 			m_zombies[i].isAlive = true;
 			tile_collision();
+
 		}
 	}
-
+	collide_bullets_with_zombies();
 	npc_collision();
+
 }
 
 void ZombieManager::tile_collision() {
@@ -270,6 +236,9 @@ void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
 void ZombieManager::npc_collision() {
 	// This logic is saying that zombie is colliding with zombie j
 	for (int i = 0; i < m_zombies.size(); i++) {
+		if (m_zombies[i].isAlive == false) {
+			continue;
+		}
 		for (int j = 0; j < m_zombies.size(); j++) {
 			if (i != j) {
 				// Get distance from center to center
@@ -288,12 +257,23 @@ void ZombieManager::npc_collision() {
 	}
 }
 
-void ZombieManager::bullet_collision(Particle* particle) {
+void ZombieManager::collide_bullets_with_zombies() {
 	for (int i = 0; i < m_zombies.size(); i++) {
-		float dist_a_to_b = glm::length(m_zombies[i].position - particle->position);
-		if (dist_a_to_b < minDistBetweenSprites) {
-			float collisionDepth = minDistBetweenSprites - dist_a_to_b;
-			m_zombies[i].health - 25;
+		if (m_zombies[i].isAlive == false) {
+			continue;
+		}
+		for (auto& it : m_particleManager->m_particles) {
+			if (it.isActive) {
+				float dist_a_to_b = glm::length(m_zombies[i].position - it.position);
+				if (dist_a_to_b < m_minBulletCollisionDist) {
+					it.isActive = false;
+					it.health = 0.0;
+					m_zombies[i].health -= m_characterManager->get_gun_damage();
+					if (m_zombies[i].health <= 0.0) {
+						m_characterManager->m_economy.Zombie_Reward(m_characterManager->m_player.money);
+					}
+				}
+			}
 		}
 	}
 }
