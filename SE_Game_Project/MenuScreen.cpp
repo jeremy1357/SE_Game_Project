@@ -35,7 +35,7 @@ void MenuScreen::on_render()
 	//ImGui::ShowDemoWindow();
 
 	//Color Defines
-	#define TEXT(v) ImVec4(0.7f, 0.0f, 0.0f, v) //Text color define
+	#define TEXT(v) ImVec4(1.0f, 0.0f, 0.0f, v) //Text color define
 	#define BG(v)   ImVec4(0.100f, 0.100f, 0.100f, v) //Background color define
 
 	//Getting Style
@@ -70,36 +70,42 @@ void MenuScreen::on_render()
 	ImGui::Spacing();
 	ImGui::Spacing();
 
-
 	float buttonPlayGameSize = 225.0f;
 	ImGui::SameLine(width - 112.5);
 	if (ImGui::Button("Play Game", ImVec2(buttonPlayGameSize, 50))) {
 		m_screenManager->setScreen(ScreenKeys::GAME);
 	}
+	
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::NewLine();
+
 	float buttonTopScorers = 250.0f;
 	ImGui::SameLine(width - 125);
 	if (ImGui::Button("Top Scorers", ImVec2(buttonTopScorers, 50))) {
 		//m_screenManager->setScreen(ScreenKeys::GAME);
 	}
+
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
+
 	ImGui::NewLine();
+
 	float buttonSettings = 200.0f;
 	ImGui::SameLine(width - 100);
 	if (ImGui::Button("Settings", ImVec2(buttonSettings, 50))) {
 		m_screenManager->setScreen(ScreenKeys::SETTINGS);
 	}
+
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
+
 	ImGui::NewLine();
 	float buttonExitGame = 200.0f;
 	ImGui::SameLine(width - 100);
