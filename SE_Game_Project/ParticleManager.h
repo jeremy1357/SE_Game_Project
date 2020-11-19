@@ -23,7 +23,7 @@ struct Particle
 class ParticleManager
 {
 private:
-	int m_active_particles = 0;
+	unsigned int lastUsedParticle = 0;
 	
 public:
 	CollisionManager* m_collisionManager = nullptr;
