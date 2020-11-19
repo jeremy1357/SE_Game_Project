@@ -288,3 +288,11 @@ void ZombieManager::npc_collision() {
 	}
 }
 
+void ZombieManager::bullet_collision(Zombie* zombie, Particle* particle) {
+
+	float dist_a_to_b = glm::length(zombie->position - particle->position);
+	if (dist_a_to_b < minDistBetweenSprites) {
+		float collisionDepth = minDistBetweenSprites - dist_a_to_b;
+		zombie->health - 25; 
+	}
+}
