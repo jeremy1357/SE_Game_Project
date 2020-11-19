@@ -20,7 +20,8 @@
 enum ScreenKeys {
 	GAME = 0,
 	MENU = 1,
-	SETTINGS = 2
+	SETTINGS = 2,
+	SCORES = 3
 };
 
 class Screen;
