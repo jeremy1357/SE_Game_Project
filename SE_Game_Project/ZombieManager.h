@@ -27,7 +27,8 @@ public:
 	void init(LevelManager& levelManager,
 		CharacterManager& characterManager,
 		CollisionManager& collisionManager,
-		SoundDelegate& sound);
+		SoundDelegate& sound,
+		ParticleManager& particleManager);
 	void set_zombie_sound_keys(int min, int max);
 	bool collision_Check(char parameter);
 	void tile_collision();
@@ -40,14 +41,15 @@ private:
 	bool should_spawn_wave();
 	void spawn_Wave(int wave);
 	void collide_with_player(Zombie* zombie);
-	void bullet_collision(Particle* particle);
+	void collide_bullets_with_zombies();
+	glm::vec2 calculate_spawnPosition();
 
 	int m_mapSizex;
 	int m_mapSizey;
 	glm::vec2 m_tileSize = glm::vec2(75.0f, 75.0f);
 	glm::vec2 m_mapSize;
-	glm::vec2 calculate_spawnPosition();
-	float minDistBetweenSprites = 0.0f;
+	float minDistBetweenSprites    = 0.0f;
+	float m_minBulletCollisionDist = 0.0f;
 
 	struct CollisionPosition {
 		glm::vec2 position;

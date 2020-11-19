@@ -51,6 +51,7 @@ class CharacterManager
 
 		void set_gun_index(const std::string& itemName);
 		float get_sprite_radius() { return m_spriteRadius; }
+		float get_gun_damage() { return m_inventory[m_currentGunIndex].damage; }
 		std::string get_gun_name();
 
 		Player m_player;
