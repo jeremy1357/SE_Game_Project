@@ -166,6 +166,7 @@
     <ClCompile Include="MenuScreen.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="picoPNG.cpp" />
+    <ClCompile Include="ScoringScreen.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="MenuScreen.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="picoPNG.h" />
+    <ClInclude Include="ScoringScreen.h" />
     <ClInclude Include="Screen.hpp" />
     <ClInclude Include="ScreenManager.hpp" />
     <ClInclude Include="SDLWindow.h" />

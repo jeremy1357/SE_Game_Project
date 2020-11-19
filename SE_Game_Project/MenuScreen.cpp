@@ -54,7 +54,12 @@ void MenuScreen::on_render()
 	int height = tempHeight / 2;
 	int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::Begin("Zombie Onslaught");
+	ImVec2 windowSize;
+	windowSize.x = m_screenManager->m_window.get_width();
+	windowSize.y = m_screenManager->m_window.get_height();
+	ImGui::SetNextWindowSize(windowSize);
+	// ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders) | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	//ImGui::SetWindowFontScale(1.5);
 	style.WindowBorderSize = 1.0f;
 	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
