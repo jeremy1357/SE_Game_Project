@@ -31,6 +31,7 @@ void MenuScreen::on_exit()
 void MenuScreen::on_render()
 {
 	//Color Defines
+    #define TEXT(v) ImVec4(0.900f, 0.100f, 0.100f, v)
 	#define BG(v)   ImVec4(0.100f, 0.100f, 0.100f, v) //Background color define
 
 	//Getting Style
@@ -62,6 +63,16 @@ void MenuScreen::on_render()
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
+	ImGui::NewLine();
+
+	string inputText[300] = {};
+	ImGui::InputText("Enter Player Username", inputText, sizeof(inputText));
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::NewLine();
 
 	float buttonPlayGameSize = 225.0f;
 	ImGui::SameLine(width - 112.5);
