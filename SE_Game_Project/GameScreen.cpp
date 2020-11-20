@@ -71,13 +71,13 @@ void GameScreen::on_render()
 	int height = tempHeight / 2;
 	int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(210, 170));
+	ImGui::SetNextWindowSize(ImVec2(230, 200));
 
 	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
 	ImGui::Text("Health: %i", m_characterManager.m_player.health);
 	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
-
+	ImGui::Text("Wave: %i", m_characterManager.m_zombieManager.wave);
 	//glm::vec2 worldCursorCoordinates = m_screenManager->m_camera.get_world_cursor_position();
 
 

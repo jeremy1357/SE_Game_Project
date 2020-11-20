@@ -9,7 +9,6 @@
 MenuScreen::MenuScreen(int uniqueScreenID)
 {
 	m_screenID = uniqueScreenID;
-
 }
 
 void MenuScreen::on_init()
@@ -31,8 +30,6 @@ void MenuScreen::on_exit()
 
 void MenuScreen::on_render()
 {
-	//Demo window for testing
-
 	//Color Defines
 	#define TEXT(v) ImVec4(1.0f, 0.0f, 0.0f, v) //Text color define
 	#define BG(v)   ImVec4(0.100f, 0.100f, 0.100f, v) //Background color define
@@ -57,9 +54,7 @@ void MenuScreen::on_render()
 	windowSize.x = m_screenManager->m_window.get_width();
 	windowSize.y = m_screenManager->m_window.get_height();
 	ImGui::SetNextWindowSize(windowSize);
-	// ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders) | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
 	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-	//ImGui::SetWindowFontScale(1.5);
 	style.WindowBorderSize = 1.0f;
 	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
 	style.WindowMenuButtonPosition = ImGuiDir_None;
@@ -84,14 +79,13 @@ void MenuScreen::on_render()
 	float buttonTopScorers = 250.0f;
 	ImGui::SameLine(width - 125);
 	if (ImGui::Button("Top Scorers", ImVec2(buttonTopScorers, 50))) {
-		//m_screenManager->setScreen(ScreenKeys::GAME);
+		m_screenManager->setScreen(ScreenKeys::SCORES);
 	}
 
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
-
 	ImGui::NewLine();
 
 	float buttonSettings = 200.0f;
@@ -104,8 +98,8 @@ void MenuScreen::on_render()
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
-
 	ImGui::NewLine();
+
 	float buttonExitGame = 200.0f;
 	ImGui::SameLine(width - 100);
 	if (ImGui::Button("Exit Game", ImVec2(buttonExitGame, 50))) {
