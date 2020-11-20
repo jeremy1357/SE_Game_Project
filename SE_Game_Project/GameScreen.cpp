@@ -25,7 +25,6 @@ void GameScreen::on_init()
 		m_collisionManager, 
 		m_screenManager->m_camera,
 		m_screenManager->m_soundDelegate,
-		glm::vec2(900, 3075),
 		m_screenManager->get_project_directory());
 
 }
@@ -33,6 +32,7 @@ void GameScreen::on_init()
 void GameScreen::on_entry()
 {
 	m_screenState = ScreenState::ACTIVE;
+	m_characterManager.start_game(m_screenManager->m_playerName);
 }
 
 void GameScreen::on_exit()
@@ -111,23 +111,53 @@ void GameScreen::on_update()
 		m_screenManager->m_window.get_width(),
 		m_screenManager->m_window.get_height());
 	
-	m_characterManager.m_player.angle = m_screenManager->m_camera.playerCursorAngle;
-	m_characterManager.update();
+	m_characterManager.update(m_screenManager->m_camera.playerCursorAngle);
 
 }
 
 void GameScreen::render_game_screen()
 {
-	ImGui::ShowDemoWindow();
-
-	if (ImGui::TreeNode("Shop"))
-	{
-		//ImGui::Begin("Shop");
-		ImGui::SetWindowFontScale(0.70);
-		for (auto& it : m_characterManager.m_economy.itemList) {
-			ImGui::Text(it.Name.c_str());
+	//ImGui::ShowDemoWindow();
+	//ImGui::SetNextWindowWidth(200);
+	//ImGui::SetNextWindowSize(ImVec2(200, 300));
+	ImGui::Begin("Shop");
+	ImGui::SetWindowFontScale(0.70);
+	for (auto& it : m_characterManager.m_economy.itemList) {
+		ImGui::TextColored(ImVec4(0, 0, 0, 1), it.Name.c_str());
+		ImGui::SameLine(120.0f);
+		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Cost: $%i", it.Cost);
+		ImGui::SameLine(30.0f);
+		if (ImGui::Button("BUY")) {
+			// TODO: Logic with character manager her
 		}
-		ImGui::TreePop();
-		//ImGui::End();
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Sell: $%i", it.SellCost);
+		ImGui::SameLine(30.0f);
+		if (ImGui::Button("SELL")) {
+			// TODO: Logic with character manager her
+		}
+
+		// Render stuff specific to an item
+		switch (it.Type) {
+		case 0:
+
+			break;
+		case 1:
+
+			break;
+
+		case 2:
+
+			break;
+
+		}
+
+		ImGui::Spacing();
+
 	}
+	ImGui::End();
+	ImGuiStyle& style = ImGui::GetStyle();
+
+	style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
+
 }

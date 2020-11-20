@@ -57,6 +57,7 @@ void GameEconomy::init(std::string path, int reward)
     }
     File.close();
 }
+
 // subtracts money after buying item and returns true
 Item GameEconomy::Buy_Item(int& playerMoney, std::string item)
 {
@@ -103,7 +104,7 @@ bool GameEconomy::Insufficient_Funds(int& playerMoney, int price)
 // adds money after killing
 void GameEconomy::Zombie_Reward(int& playerMoney)
 {
-    playerMoney += zombieKill;
+    //playerMoney += zombieKill;
 }
 
 // default constructor

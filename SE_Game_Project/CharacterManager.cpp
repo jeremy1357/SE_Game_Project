@@ -22,6 +22,32 @@ int CharacterManager::GetHealth()
 	return this->m_player.health;
 }
 
+void CharacterManager::start_game(std::string name)
+{
+	// This function should reset the player if needed (dead)
+	if (!m_player.isAlive) {
+		bool shouldSearch = true;
+		// Verify name isnt already stored
+		while (shouldSearch) {
+			for (int i = 0; i < m_scores.size(); i++) {
+				if (name == m_scores[i].name) {
+					name += "~";
+				}
+			}
+			shouldSearch = false;
+		}
+		m_player.name		= name;
+		m_player.angle		= 0.0f;
+		m_player.isAlive	= true;
+		m_player.money		= 500;
+		m_player.position	= PLAYER_START_POINT;
+		m_player.health		= 100;
+
+		m_zombieManager.reset();
+		m_levelManager->reset_map_data();
+	}
+}
+
 void CharacterManager::Damage(int amount)
 {
 	this->m_player.health -= amount;
@@ -100,14 +126,12 @@ void CharacterManager::init(
 	CollisionManager& collisionManager,
 	Camera& camera,
 	SoundDelegate& soundDelegate,
-	const glm::vec2& playerPos,
 	const std::string &programDirectory)
 {
 	m_inputManager		= &inputManager;
 	m_levelManager		= &levelManager;
 	m_collisionManager	= &collisionManager;
 	m_camera			= &camera;
-	m_player.position	= playerPos;
 	m_soundDelegate		= &soundDelegate;
 	blacklistedChar = m_levelManager->get_restricted_tiles();
 	m_economy.init(programDirectory, 20);
@@ -126,16 +150,19 @@ void CharacterManager::init(
 	set_gun_index("Shotgun");
 }
 
-void CharacterManager::update()
+void CharacterManager::update(float playerAngle)
 {
-	m_zombieManager.update();
-	m_particleManager.update_particle();
-	if (m_player.health < 0)
+	if (m_player.health <= 0 && m_player.isAlive)
 	{
 		m_player.isAlive = false;
+		m_scores.push_back(Score(m_player.name, m_zombieManager.wave));
+		
 	}
-	else
+	else if (m_player.isAlive)
 	{
+		m_zombieManager.update();
+		m_particleManager.update_particle();
+		m_player.angle = playerAngle;
 		const float speed = 4.5f;
 		m_player.isAlive = true;
 		if (m_inputManager->get_key(SDLK_w)) {

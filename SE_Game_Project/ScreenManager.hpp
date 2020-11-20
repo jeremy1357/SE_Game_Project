@@ -8,10 +8,13 @@
 #include "InputManager.h"
 #include "Camera.h"
 #include "SoundDelegate.h"
-
+#include "imgui.h"
 #include <unordered_map>
 #include <GL/glew.h>
 #include <string.h>
+
+#define TEXT(v) ImVec4(0.0f, 0.0f, 0.0f, v) //Text color define
+
 
 // As of right now, only screen is the gameplay screen
 // In the future we may have a main menu, settings, etc...
@@ -48,6 +51,7 @@ public:
 	InputManager m_inputManager;
 	Camera m_camera;
 	SoundDelegate m_soundDelegate;
+	std::string m_playerName = "Steve";
 
 	bool m_isProgramRunning = false;
 protected:

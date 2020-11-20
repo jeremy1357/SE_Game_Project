@@ -187,6 +187,12 @@ void ZombieManager::tile_collision() {
 	}
 }
 
+void ZombieManager::reset()
+{
+	wave = 0;
+	m_zombies.clear();
+}
+
 void ZombieManager::set_zombie_sound_keys(int min, int max) {
 	for (int i = min; i <= max; i++) {
 		m_zombieSoundKeys.push_back(i);
@@ -260,7 +266,7 @@ void ZombieManager::perform_collisions() {
 					particle.health = 0.0;
 					m_zombies[i].health -= m_characterManager->get_gun_damage();
 					if (m_zombies[i].health <= 0.0) {
-						m_characterManager->m_economy.Zombie_Reward(m_characterManager->m_player.money);
+						m_characterManager->m_player.money += m_characterManager->m_economy.zombieKill;
 					}
 				}
 			}

@@ -17,14 +17,22 @@ using namespace std;
 
 
 struct Player {
-	string name = "Steve";
-	int health = 100;
-	bool isAlive = true;
-	float angle = 0.0f;
+	string name		= "Steve";
+	int health		= 100;
+	bool isAlive	= false;
+	float angle		= 0.0f;
 	glm::vec2 position = glm::vec2(0,0);
-	int money = 500;
+	int money		= 500;
 };
 
+struct Score {
+	Score(const std::string& name, int wave) {
+		this->name = name;
+		this->wave = wave;
+	}
+	std::string name;
+	int wave;
+};
 class CharacterManager
 {
 	public:
@@ -32,6 +40,7 @@ class CharacterManager
 		~CharacterManager();
 		string GetName();
 		int GetHealth();
+		void start_game(std::string name);
 
 		void Damage(int amount);
 		void SetName(string n);
@@ -40,9 +49,8 @@ class CharacterManager
 			CollisionManager& collisionManager,
 			Camera& camera,
 			SoundDelegate& soundDelegate,
-			const glm::vec2& playerPos,
 			const std::string& programDirectory);
-		void update();
+		void update(float playerAngle);
 		void tile_collision();
 		bool is_player_alive();
 		void add_item_to_inventory(const std::string& itemName);
@@ -54,6 +62,8 @@ class CharacterManager
 		float get_gun_damage() { return m_inventory[m_currentGunIndex].damage; }
 		std::string get_gun_name();
 
+
+		std::vector<Score> m_scores;
 		Player m_player;
 		ZombieManager m_zombieManager;
 		GameEconomy m_economy;
@@ -71,6 +81,7 @@ class CharacterManager
 		// This should be half of player square dimensions
 		//const glm::vec2 dim = glm::vec2(25.0f);
 		float m_spriteRadius = 25.0f;
+		const glm::vec2 PLAYER_START_POINT = glm::vec2(900.0f, 3075.0f);
 		InputManager* m_inputManager			= nullptr;
 		LevelManager* m_levelManager			= nullptr;
 		Camera* m_camera						= nullptr;

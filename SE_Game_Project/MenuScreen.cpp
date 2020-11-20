@@ -31,7 +31,6 @@ void MenuScreen::on_exit()
 void MenuScreen::on_render()
 {
 	//Color Defines
-	#define TEXT(v) ImVec4(1.0f, 0.0f, 0.0f, v) //Text color define
 	#define BG(v)   ImVec4(0.100f, 0.100f, 0.100f, v) //Background color define
 
 	//Getting Style
@@ -68,6 +67,7 @@ void MenuScreen::on_render()
 	ImGui::SameLine(width - 112.5);
 	if (ImGui::Button("Play Game", ImVec2(buttonPlayGameSize, 50))) {
 		m_screenManager->setScreen(ScreenKeys::GAME);
+
 	}
 	
 	ImGui::Spacing();

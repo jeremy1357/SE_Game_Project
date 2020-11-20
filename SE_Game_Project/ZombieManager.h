@@ -32,6 +32,7 @@ public:
 	void set_zombie_sound_keys(int min, int max);
 	bool collision_Check(char parameter);
 	void tile_collision();
+	void reset();
 
 
 	std::vector<Zombie> m_zombies;

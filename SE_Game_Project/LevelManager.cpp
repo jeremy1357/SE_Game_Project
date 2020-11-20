@@ -45,7 +45,8 @@ void LevelManager::init(
 		}
 		m_mapData[row].push_back(mapData[i]);
 	}
-	
+	// Create a copy of the map data for when we need to reset the map
+	m_originalMapData = m_mapData;
 	mapSize.x = m_mapData.size();
 	mapSize.y = m_mapData[0].size();
 	std::string imageDirectory = projectDirectory + "Resources\\Textures\\";
@@ -178,6 +179,13 @@ bool LevelManager::unlock_tile(glm::vec2 point)
 		}
 	}
 	return false;
+}
+
+void LevelManager::reset_map_data()
+{
+	m_mapData = m_originalMapData;
+	m_needsRender = true;
+	m_renderer->require_static_redraw();
 }
 
 glm::vec2 LevelManager::get_tile_center(glm::vec2 tileToGetCenterOf)

@@ -94,7 +94,7 @@ void ScreenManager::update()
 void ScreenManager::render()
 {
 	// This stuff must be done every render. Ignore
-	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
+	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
@@ -113,9 +113,6 @@ void ScreenManager::render()
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	//ImGuiIO& io = ImGui::GetIO();
-	//io.Fonts->AddFontFromFileTTF("A:/Downloads/04b_30/04B_30__.TTF", 16.0f);
-
 	m_window.update();
 
 }

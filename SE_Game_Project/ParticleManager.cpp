@@ -1,7 +1,6 @@
 #include"ParticleManager.h"
 #include"CollisionManager.h"
 
-
 ParticleManager::ParticleManager()
 {
 	// Empty
@@ -77,7 +76,6 @@ void ParticleManager::blood_particle(glm::vec2 pos, float angle)
 		blood_particles[i].position = pos; //position is location of the zombie
 		blood_particles[i].angle = angle * (-1*rand()); //reverse the particle direction from impact. with some variation
 		blood_particles[i].m_color = ColorRGBA32 (145, 0, 45, 1); //gives the color a dark red color
-		//blood_particles[i].m_color = ColorRGBA32 (226, 0, 45, 1); //gives the color a bright red color
 		blood_particles[i].size = glm::vec2(3.0);
 		blood_particles[i].speed = glm::vec2(7.0f);
 		blood_particles[i].health = 1.0f;

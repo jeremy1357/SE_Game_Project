@@ -35,7 +35,7 @@ public:
     void init(std::string path, int reward);
     GameEconomy();
     ~GameEconomy();
-private:
     int zombieKill;
+
 };
 #endif /* GameEconomy_hpp */
