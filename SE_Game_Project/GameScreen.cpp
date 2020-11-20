@@ -94,6 +94,8 @@ void GameScreen::on_render()
 	ImGui::Begin("Gun", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text(("Gun: " + m_characterManager.get_gun_name()).c_str());
 	ImGui::End();
+
+	render_game_screen();
 }
 
 void GameScreen::on_update()
@@ -112,4 +114,20 @@ void GameScreen::on_update()
 	m_characterManager.m_player.angle = m_screenManager->m_camera.playerCursorAngle;
 	m_characterManager.update();
 
+}
+
+void GameScreen::render_game_screen()
+{
+	ImGui::ShowDemoWindow();
+
+	if (ImGui::TreeNode("Shop"))
+	{
+		//ImGui::Begin("Shop");
+		ImGui::SetWindowFontScale(0.70);
+		for (auto& it : m_characterManager.m_economy.itemList) {
+			ImGui::Text(it.Name.c_str());
+		}
+		ImGui::TreePop();
+		//ImGui::End();
+	}
 }
