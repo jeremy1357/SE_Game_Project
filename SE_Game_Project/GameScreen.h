@@ -22,12 +22,11 @@ public:
 
 
 private:
-	// DECLARE YOUR OBJECTS HERE
-	// Can be used by any member function of this class
+	void render_game_screen();
 	SpriteRenderer m_spriteRenderer;
 	TextureCache m_textureCache;
 	LevelManager m_levelManager;
 	CharacterManager m_characterManager;
 	CollisionManager m_collisionManager;
-
+	bool m_isInventoryFocused = false;
 };

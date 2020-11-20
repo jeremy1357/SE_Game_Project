@@ -32,7 +32,6 @@ void MenuScreen::on_exit()
 void MenuScreen::on_render()
 {
 	//Demo window for testing
-	//ImGui::ShowDemoWindow();
 
 	//Color Defines
 	#define TEXT(v) ImVec4(1.0f, 0.0f, 0.0f, v) //Text color define
