@@ -71,7 +71,7 @@ void ZombieManager::init(LevelManager& levelManager,
 void ZombieManager::spawn_Wave(int wave)
 {
 	m_zombies.clear();
-	int numZombies = 10 * (wave)+10;
+	int numZombies = 1000 * (wave)+10;
 
 	for (int i = 0; i < numZombies; i++) 	{
 		m_zombies.push_back(Zombie());
@@ -80,6 +80,7 @@ void ZombieManager::spawn_Wave(int wave)
 		std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
 		std::uniform_real_distribution<float> disX(1.0f, 4.0f);
 		m_zombies.back().speed = disX(rd);
+		m_zombies.back().isAlive = true;
 	}
 }
 
@@ -136,26 +137,21 @@ void ZombieManager::update() {
 
 	//update the zombie position variables
 	for (auto& it : m_zombies) {
+		if (!it.isAlive) {
+			continue;
+		}
+		if (it.health <= 0.0f) {
+			it.isAlive = false;
+		}
 		float angleRads = atan2(it.position.y - playerY, it.position.x - playerX);
 		float angleDegrees = angleRads * 180.0f / 3.14157f;
 		it.position -= glm::vec2(cos(angleRads), sin(angleRads)) * it.speed;
 		it.angle = angleDegrees;
+		damage_player(it);
 	}
-	for (int i = 0; i < m_zombies.size(); i++)
-	{
-		if (m_zombies[i].health < 0)
-		{
-			m_zombies[i].isAlive = false;
-		}
-		else
-		{
-			m_zombies[i].isAlive = true;
-			tile_collision();
-
-		}
-	}
-	collide_bullets_with_zombies();
-	npc_collision();
+	
+	tile_collision();
+	perform_collisions();
 
 }
 
@@ -169,13 +165,12 @@ void ZombieManager::tile_collision() {
 		collisionAreas[2].position = m_zombies[i].position; //BL
 		collisionAreas[3].position = m_zombies[i].position; //BR
 
-		collisionAreas[0].position.x -= dim.x;
-		collisionAreas[0].position.y += dim.y;
-		collisionAreas[2].position -= dim;
-		collisionAreas[1].position += dim;
-		collisionAreas[3].position.x += dim.x;
-		collisionAreas[3].position.y -= dim.y;
-
+		collisionAreas[0].position.x	-= dim.x;
+		collisionAreas[0].position.y	+= dim.y;
+		collisionAreas[2].position		-= dim;
+		collisionAreas[1].position		+= dim;
+		collisionAreas[3].position.x	+= dim.x;
+		collisionAreas[3].position.y	-= dim.y;
 
 		char cornerCharacters[4];
 		cornerCharacters[0] = m_levelManager->get_character(collisionAreas[0].position, true);
@@ -233,7 +228,7 @@ void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
 	}
 }
 
-void ZombieManager::npc_collision() {
+void ZombieManager::perform_collisions() {
 	// This logic is saying that zombie is colliding with zombie j
 	for (int i = 0; i < m_zombies.size(); i++) {
 		if (m_zombies[i].isAlive == false) {
@@ -254,20 +249,15 @@ void ZombieManager::npc_collision() {
 		}
 		collide_with_player(&m_zombies[i]);
 
-	}
-}
-
-void ZombieManager::collide_bullets_with_zombies() {
-	for (int i = 0; i < m_zombies.size(); i++) {
-		if (m_zombies[i].isAlive == false) {
-			continue;
-		}
-		for (auto& it : m_particleManager->m_particles) {
-			if (it.isActive) {
-				float dist_a_to_b = glm::length(m_zombies[i].position - it.position);
+		// ================================================
+		// PARTICLE COLLISION
+		// ================================================
+		for (auto& particle : m_particleManager->m_particles) {
+			if (particle.isActive) {
+				float dist_a_to_b = glm::length(m_zombies[i].position - particle.position);
 				if (dist_a_to_b < m_minBulletCollisionDist) {
-					it.isActive = false;
-					it.health = 0.0;
+					particle.isActive = false;
+					particle.health = 0.0;
 					m_zombies[i].health -= m_characterManager->get_gun_damage();
 					if (m_zombies[i].health <= 0.0) {
 						m_characterManager->m_economy.Zombie_Reward(m_characterManager->m_player.money);
@@ -276,4 +266,15 @@ void ZombieManager::collide_bullets_with_zombies() {
 			}
 		}
 	}
+}
+
+void ZombieManager::damage_player(Zombie& zombie)
+{
+	float distance = glm::length(m_characterManager->m_player.position - zombie.position);
+
+	if (distance <= minDistBetweenSprites + 10.0f) {
+		m_characterManager->m_player.health -= 0.5f;
+
+	}
+
 }

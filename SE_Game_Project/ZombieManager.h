@@ -37,11 +37,11 @@ public:
 	std::vector<Zombie> m_zombies;
 	int wave = 0;
 private:
-	void npc_collision();
+	void perform_collisions();
 	bool should_spawn_wave();
 	void spawn_Wave(int wave);
 	void collide_with_player(Zombie* zombie);
-	void collide_bullets_with_zombies();
+	void damage_player(Zombie& zombie);
 	glm::vec2 calculate_spawnPosition();
 
 	int m_mapSizex;

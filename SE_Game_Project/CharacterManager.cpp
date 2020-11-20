@@ -136,7 +136,7 @@ void CharacterManager::update()
 	}
 	else
 	{
-		const float speed = 5.0f;
+		const float speed = 4.5f;
 		m_player.isAlive = true;
 		if (m_inputManager->get_key(SDLK_w)) {
 			m_player.position.y += speed;
@@ -167,12 +167,10 @@ void CharacterManager::update()
 					glm::vec2 dirVector(cos(m_player.angle * 3.14157 / 180), sin(m_player.angle * 3.14157 / 180));
 					glm::vec2 bulletPos = m_player.position + dirVector * 10.0f;
 					m_particleManager.update_AddParticle(bulletPos, m_player.angle + rand() % 10 - 4, ColorRGBA32(0, 0, 0, 255));
-
 				}
 			}
 			else {
 				glm::vec2 dirVector(cos(m_player.angle * 3.14157 / 180), sin(m_player.angle * 3.14157 / 180));
-
 				glm::vec2 bulletPos = m_player.position + dirVector * 10.0f;
 				m_particleManager.update_AddParticle(bulletPos, m_player.angle, ColorRGBA32(0, 0, 0, 255));
 			}
