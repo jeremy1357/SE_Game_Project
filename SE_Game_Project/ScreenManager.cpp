@@ -101,6 +101,7 @@ void ScreenManager::render()
 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_window.get_window_handle());
+
 	ImGui::NewFrame();
 		
 	// Verify that the currentScreen points to a valid memory address
@@ -143,8 +144,11 @@ void ScreenManager::init()
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); 
 	(void)io;
+
 	ImGui_ImplSDL2_InitForOpenGL(m_window.get_window_handle(), m_window.glContext);
 	ImGui_ImplOpenGL3_Init("#version 130");
+
+
 	ImGui::StyleColorsDark();
 	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 32.0f);
 	ImGuiStyle& style = ImGui::GetStyle();

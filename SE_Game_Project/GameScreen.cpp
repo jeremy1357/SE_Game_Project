@@ -117,7 +117,7 @@ void GameScreen::on_update()
 
 void GameScreen::render_game_screen()
 {
-	//ImGui::ShowDemoWindow();
+	ImGui::ShowDemoWindow();
 	//ImGui::SetNextWindowWidth(200);
 	//ImGui::SetNextWindowSize(ImVec2(200, 300));
 	ImGui::Begin("Shop");

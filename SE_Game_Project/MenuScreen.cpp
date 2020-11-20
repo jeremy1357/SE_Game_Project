@@ -116,6 +116,7 @@ void MenuScreen::on_render()
 	if (ImGui::Button("Exit Game", ImVec2(buttonExitGame, 50))) {
 		m_screenManager->m_isProgramRunning = false;
 	}
+	ImGui::InputText("Enter Text", buf1, 64);
 
 	ImGui::End();
 	glm::vec2 cursorPosition(m_screenManager->m_inputManager.m_mPosX, m_screenManager->m_inputManager.m_mPosY);
