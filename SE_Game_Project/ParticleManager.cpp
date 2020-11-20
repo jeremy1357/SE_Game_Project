@@ -51,7 +51,7 @@ void ParticleManager::update_AddParticle(glm::vec2 pos, float angle, ColorRGBA32
 			lastUsedParticle = i;
 			break;
 		}
-		if (i == MAX_PARTICLE_COUNT)
+		if (i == MAX_PARTICLE_COUNT-1)
 			lastUsedParticle = 0;
 	}
 }
