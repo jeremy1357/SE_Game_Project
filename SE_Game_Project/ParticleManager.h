@@ -4,7 +4,6 @@
 #include"CollisionManager.h"
 
 #define MAX_PARTICLE_COUNT 100
-#define blood_particle_number 6
 
 struct Particle
 {
@@ -31,6 +30,7 @@ public:
 
 	ParticleManager();
 	Particle m_particles[MAX_PARTICLE_COUNT];
+	Particle blood_particles[10];
 	//Particle blood_particle[blood_particle_number];
 	void update_particle();	// Purely update all particles
 	void update_AddParticle(glm::vec2 pos, float angle, ColorRGBA32 color);

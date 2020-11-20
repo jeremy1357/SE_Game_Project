@@ -56,12 +56,20 @@ void ParticleManager::update_AddParticle(glm::vec2 pos, float angle, ColorRGBA32
 	}
 }
 
-//void ParticleManager::blood_particle(glm::vec2 pos, float angle)
-//{
-//	for (int i = 0; i < blood_particle_number; i++) {
-//		blood_particle[i] = glm::normalize(glm::vec2((rand() % 1500 - 750) / 10000.0f, (rand() % 1500 - 750) / 10000.0f);
-//	}
-//}
+void ParticleManager::blood_particle(glm::vec2 pos, float angle)
+{
+	for (int i = 0; i < 10; i++)
+	{
+		blood_particles[i].isActive = true;
+		blood_particles[i].position = pos; //position is location of the zombie
+		blood_particles[i].angle = angle * (-1*rand()); //reverse the particle direction from impact. with some variation
+		blood_particles[i].m_color = ColorRGBA32 (145, 0, 45, 1); //gives the color a dark red color
+		//blood_particles[i].m_color = ColorRGBA32 (226, 0, 45, 1); //gives the color a bright red color
+		blood_particles[i].size = glm::vec2(3.0);
+		blood_particles[i].speed = glm::vec2(7.0f);
+		blood_particles[i].health = 1.0f;
+	}
+}
 
 ParticleManager::~ParticleManager()
 {
