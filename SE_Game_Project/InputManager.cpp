@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "InputManager.h"
+#include "imgui_impl_sdl.h"
 
 InputManager::InputManager() {
 	// Constructor
@@ -22,6 +23,7 @@ void InputManager::update() {
 	// SDL Events Loop - When no events, goes to 0
 	// October 6, 2020
 	while (SDL_PollEvent(&m_inputEvent)) {
+		ImGui_ImplSDL2_ProcessEvent(&m_inputEvent);
 		switch (m_inputEvent.type) {
 			// using SDL keycodes
 			// https://wiki.libsdl.org/SDL_Keycode
