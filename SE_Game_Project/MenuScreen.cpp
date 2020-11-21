@@ -65,15 +65,6 @@ void MenuScreen::on_render()
 	ImGui::Spacing();
 	ImGui::NewLine();
 
-	string inputText[300] = {};
-	ImGui::InputText("Enter Player Username", inputText, sizeof(inputText));
-
-	ImGui::Spacing();
-	ImGui::Spacing();
-	ImGui::Spacing();
-	ImGui::Spacing();
-	ImGui::NewLine();
-
 	float buttonPlayGameSize = 225.0f;
 	ImGui::SameLine(width - 112.5);
 	if (ImGui::Button("Play Game", ImVec2(buttonPlayGameSize, 50))) {
@@ -119,6 +110,7 @@ void MenuScreen::on_render()
 	ImGui::InputText("Enter Text", buf1, 64);
 
 	ImGui::End();
+
 	glm::vec2 cursorPosition(m_screenManager->m_inputManager.m_mPosX, m_screenManager->m_inputManager.m_mPosY);
 	m_menuEffects.render(m_screenManager->m_camera, cursorPosition);
 
