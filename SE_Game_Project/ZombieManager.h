@@ -6,6 +6,7 @@
 #include "SoundDelegate.h"
 #include "ParticleManager.h"
 #include <vector>
+#include <chrono>
 using namespace std;
 
 class CharacterManager;
@@ -44,6 +45,7 @@ private:
 	void collide_with_player(Zombie* zombie);
 	void damage_player(Zombie& zombie);
 	glm::vec2 calculate_spawnPosition();
+	std::chrono::steady_clock::time_point start;
 
 	int m_mapSizex;
 	int m_mapSizey;

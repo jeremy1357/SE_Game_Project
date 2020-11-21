@@ -65,6 +65,7 @@ void ZombieManager::init(LevelManager& levelManager,
 	minDistBetweenSprites		= m_characterManager->get_sprite_radius() * 2.0f;
 	m_minBulletCollisionDist	= m_characterManager->get_sprite_radius() + (7.0f / 2.0f); // 7.0 is the bullet diameter
 	m_particleManager			= &particleManager;
+	start = std::chrono::steady_clock::now();
 }
 
 
@@ -111,12 +112,17 @@ bool ZombieManager::collision_Check(char parameter)
 
 bool ZombieManager::should_spawn_wave()
 {
-	for (int i = 0; i < m_zombies.size(); i++) {
-		if (m_zombies[i].isAlive) {
-			return false;
-		}
+	std::chrono::steady_clock::time_point local_time_PT = std::chrono::steady_clock::now();
+
+
+	std::chrono::duration<double> elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(local_time_PT - start);
+	if (elapsed_seconds.count() >= 60)
+	{
+		cout << "spawn wave" << endl;
+		start = std::chrono::steady_clock::now();
+		return true;
 	}
-	return true;
+	return false;
 }
 
 
