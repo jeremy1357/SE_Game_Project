@@ -42,8 +42,9 @@ void CharacterManager::start_game(std::string name)
 		m_player.money		= 500;
 		m_player.position	= PLAYER_START_POINT;
 		m_player.health		= 100;
-
+		m_player.zombieKills = 0;
 		m_inventory.clear();
+		// TODO: Add in restart of particle manager
 		// Add starting items
 		add_item_to_inventory("Pistol");
 		add_item_to_inventory("Shotgun");

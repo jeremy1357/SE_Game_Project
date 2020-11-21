@@ -55,23 +55,23 @@ void ZombieManager::init(LevelManager& levelManager,
 	SoundDelegate& sound,
 	ParticleManager& particleManager)
 {
-	m_levelManager			= &levelManager;
-	m_characterManager		= &characterManager;
-	m_collisionManager		= &collisionManager;
-	soundDelegate			= &sound;
-	m_mapSize				= levelManager.get_map_size();
-	m_blacklistedChar		= levelManager.get_restricted_tiles();
-	m_tileSize				= levelManager.get_tile_dimensions();
+	m_levelManager				= &levelManager;
+	m_characterManager			= &characterManager;
+	m_collisionManager			= &collisionManager;
+	soundDelegate				= &sound;
+	m_mapSize					= levelManager.get_map_size();
+	m_blacklistedChar			= levelManager.get_restricted_tiles();
+	m_tileSize					= levelManager.get_tile_dimensions();
 	minDistBetweenSprites		= m_characterManager->get_sprite_radius() * 2.0f;
 	m_minBulletCollisionDist	= m_characterManager->get_sprite_radius() + (7.0f / 2.0f); // 7.0 is the bullet diameter
-	m_particleManager = &particleManager;
+	m_particleManager			= &particleManager;
 }
 
 
 void ZombieManager::spawn_Wave(int wave)
 {
 	m_zombies.clear();
-	int numZombies = 1000 * (wave)+10;
+	int numZombies = 300 * (wave)+10;
 
 	for (int i = 0; i < numZombies; i++) 	{
 		m_zombies.push_back(Zombie());
@@ -267,6 +267,7 @@ void ZombieManager::perform_collisions() {
 					m_zombies[i].health -= m_characterManager->get_gun_damage();
 					if (m_zombies[i].health <= 0.0) {
 						m_characterManager->m_player.money += m_characterManager->m_economy.zombieKill;
+						break;
 					}
 				}
 			}

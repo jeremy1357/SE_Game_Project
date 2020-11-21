@@ -23,6 +23,7 @@ struct Player {
 	float angle		= 0.0f;
 	glm::vec2 position = glm::vec2(0,0);
 	int money		= 500;
+	int zombieKills = 0;
 };
 
 struct Score {
