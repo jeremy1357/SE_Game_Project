@@ -68,6 +68,7 @@ void MenuScreen::on_render()
 
 	ImGui::InputText("Enter Player Username", playerName, sizeof(playerName));
 	m_screenManager->m_playerName = std::string(playerName);
+
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();

@@ -41,9 +41,43 @@ void ScoringScreen::on_render()
 		m_screenManager->setScreen(ScreenKeys::MENU);
 	}
 
-	//ImGui::Text("First Place: ")
-	//ImGui::Text("Second Place: ")
-	//ImGui::Text("Third Place: ")
+	//ImGui::Text("Top Scorer: ")
+	for (auto& it : m_characterManager.m_scores.itemList) {
+		ImGui::Columns(4, "mixed");
+		ImGui::Text(it.Name.c_str());
+		ImGui::NextColumn();
+		ImGui::Text("%i", it.Cost);
+		ImGui::SameLine(50.0f);
+		if (ImGui::Button(("Buy##" + it.Name).c_str())) {
+			m_characterManager.attempt_to_buy_item(it.Name);
+
+		}
+		ImGui::NextColumn();
+		ImGui::Text("%i", it.SellCost);
+		ImGui::SameLine(50.0f);
+		if (ImGui::Button(("Sell##" + it.Name).c_str())) {
+			m_characterManager.attempt_to_sell_item(it.Name);
+		}
+		ImGui::NextColumn();
+		switch (it.Type) {
+		case 0:
+			ImGui::Text("Armor");
+			ImGui::Text("Dmg % Block %i", it.Armor);
+			break;
+		case 1:
+			ImGui::Text("Consumable");
+			ImGui::Text("Health Regen %i", it.healthRegen);
+			break;
+		case 2:
+			ImGui::Text("Weapon");
+			ImGui::Text("Damage %i", it.damage);
+			ImGui::Text("Bullets per shot %i", it.bulletsPerShot);
+			break;
+		}
+		ImGui::Columns(1);
+		ImGui::Separator();
+	}
+
 
 	ImGui::End();
 }

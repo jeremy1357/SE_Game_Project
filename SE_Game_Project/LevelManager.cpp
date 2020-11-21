@@ -58,8 +58,23 @@ void LevelManager::init(
 	GLuint atTexture = m_textureCache->get_texture_id(imageDirectory + "dark_crate_five.png");
 	GLuint starTexture = m_textureCache->get_texture_id(imageDirectory + "log2.png");
 	GLuint dTexture = m_textureCache->get_texture_id(imageDirectory + "sand.png");
-	GLuint wTexture = m_textureCache->get_texture_id(imageDirectory + "LAVA.png");
+	GLuint wTexture = m_textureCache->get_texture_id(imageDirectory + "lava.png");
 	GLuint qTexture = m_textureCache->get_texture_id(imageDirectory + "grass.png");
+	GLuint tTexture = m_textureCache->get_texture_id(imageDirectory + "tile.png");
+	GLuint cTexture = m_textureCache->get_texture_id(imageDirectory + "concrete.png");
+	GLuint ampTexture = m_textureCache->get_texture_id(imageDirectory + "wasteland.png");
+	GLuint pTexture = m_textureCache->get_texture_id(imageDirectory + "lava_n.png");
+	GLuint oTexture = m_textureCache->get_texture_id(imageDirectory + "lava_s.png");
+	GLuint kTexture = m_textureCache->get_texture_id(imageDirectory + "lava_e.png");
+	GLuint jTexture = m_textureCache->get_texture_id(imageDirectory + "lava_w.png");
+	GLuint bTexture = m_textureCache->get_texture_id(imageDirectory + "lava_ne.png");
+	GLuint iTexture = m_textureCache->get_texture_id(imageDirectory + "lava_nw.png");
+	GLuint nTexture = m_textureCache->get_texture_id(imageDirectory + "lava_se.png");
+	GLuint lTexture = m_textureCache->get_texture_id(imageDirectory + "lava_sw.png");
+	GLuint vTexture = m_textureCache->get_texture_id(imageDirectory + "lava_ne_i.png");
+	GLuint uTexture = m_textureCache->get_texture_id(imageDirectory + "lava_nw_i.png");
+	GLuint mTexture = m_textureCache->get_texture_id(imageDirectory + "lava_se_i.png");
+	GLuint hTexture = m_textureCache->get_texture_id(imageDirectory + "lava_sw_i.png");
 
 	//For missing textures
 	GLuint nullTexture = m_textureCache->get_texture_id(imageDirectory + "missing.png");
@@ -72,8 +87,21 @@ void LevelManager::init(
 	m_textureLookup.insert(std::make_pair('*', starTexture)); // Wood log
 	m_textureLookup.insert(std::make_pair('d', dTexture)); // Sand
 	m_textureLookup.insert(std::make_pair('w', wTexture)); // Lava
-	m_textureLookup.insert(std::make_pair('o', nullTexture));
-	m_textureLookup.insert(std::make_pair('&', nullTexture));
+	m_textureLookup.insert(std::make_pair('c', cTexture)); // Concrete wall
+	m_textureLookup.insert(std::make_pair('t', tTexture)); // Tile
+	m_textureLookup.insert(std::make_pair('&', ampTexture)); // Wasteland
+	m_textureLookup.insert(std::make_pair('p', pTexture)); // North lava
+	m_textureLookup.insert(std::make_pair('o', oTexture)); // South lava
+	m_textureLookup.insert(std::make_pair('k', kTexture)); // East lava
+	m_textureLookup.insert(std::make_pair('j', jTexture)); // West lava
+	m_textureLookup.insert(std::make_pair('b', bTexture)); // Northeast lava
+	m_textureLookup.insert(std::make_pair('i', iTexture)); // Northwest lava
+	m_textureLookup.insert(std::make_pair('n', nTexture)); // Southeast lava
+	m_textureLookup.insert(std::make_pair('l', lTexture)); // Southwest lava
+	m_textureLookup.insert(std::make_pair('v', vTexture)); // Inverted northeast lava
+	m_textureLookup.insert(std::make_pair('u', uTexture)); // Inverted northwest lava
+	m_textureLookup.insert(std::make_pair('m', mTexture)); // Inverted southeast lava
+	m_textureLookup.insert(std::make_pair('h', hTexture)); // Inverted southwest lava
 	m_textureLookup.insert(std::make_pair('=', nullTexture));
 	m_textureLookup.insert(std::make_pair('q', qTexture)); // No texture yet/error texture
 
@@ -82,6 +110,8 @@ void LevelManager::init(
 	m_restrictedTiles.push_back('#');
 	m_restrictedTiles.push_back('%');
 	m_restrictedTiles.push_back('q');
+	m_restrictedTiles.push_back('&');
+	m_restrictedTiles.push_back('c');
 
 }
 
@@ -123,10 +153,54 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 				case 'q':
 					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('q'));
 					break;
+				case 't':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('t'));
+					break;
+				case 'c':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('c'));
+					break;
+				case '&':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('&'));
+					break;
+				case 'p':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('p'));
+					break;
+				case 'o':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('o'));
+					break;
+				case 'k':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('k'));
+					break;
+				case 'j':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('j'));
+					break;
+				case 'b':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('b'));
+					break;
+				case 'i':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('i'));
+					break;
+				case 'n':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('n'));
+					break;
+				case 'l':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('l'));
+					break;
+				case 'v':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('v'));
+					break;
+				case 'u':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('u'));
+					break;
+				case 'm':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('m'));
+					break;
+				case 'h':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('h'));
+					break;
 				default:
 					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('~'));
 					break;
-					// Maybe add a texture showing ERROR
 				}
 				tileCenter.y += 1.0f;
 			}
