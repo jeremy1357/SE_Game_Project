@@ -70,38 +70,39 @@ void ParticleManager::update_AddParticle(glm::vec2 pos, float angle, ColorRGBA32
 
 void ParticleManager::blood_particle(glm::vec2 pos, float angle)
 {
-	// Find an inactive particle within the array
-	for (int i = lastUsedParticle; i < MAX_PARTICLE_COUNT; i++)
+	for (int n = 0; n < 4; n++)
 	{
-		if (m_particles[i].isActive == false) {
-			m_particles[i].isActive = true;
-			m_particles[i].position = pos;
-			m_particles[i].angle = angle * (-1*rand());
-			m_particles[i].size = glm::vec2(3.0);
-			m_particles[i].speed = glm::vec2(1.0f);
-			m_particles[i].health = 5.0f;
-			m_particles[i].m_color = ColorRGBA32 (226, 0, 45, 1);
-			lastUsedParticle = i;
-			return;
+		for (int i = lastUsedParticle; i < MAX_PARTICLE_COUNT; i++)
+		{
+			if (m_particles[i].isActive == false) {
+				m_particles[i].isActive = true;
+				m_particles[i].position = pos;
+				m_particles[i].angle = angle * (-1 * rand());
+				m_particles[i].size = glm::vec2(3.0);
+				m_particles[i].speed = glm::vec2(1.0f);
+				m_particles[i].health = 5.0f;
+				m_particles[i].m_color = ColorRGBA32(226, 0, 45, 1);
+				lastUsedParticle = i;
+				break;
+			}
+		}
+		for (int i = 0; i < lastUsedParticle; i++)
+		{
+			if (m_particles[i].isActive == false) {
+				m_particles[i].isActive = true;
+				m_particles[i].position = pos;
+				m_particles[i].angle = angle * (-1 * rand());
+				m_particles[i].size = glm::vec2(3.0);
+				m_particles[i].speed = glm::vec2(1.0f);
+				m_particles[i].health = 5.0f;
+				m_particles[i].m_color = ColorRGBA32(226, 0, 45, 1);
+				lastUsedParticle = i;
+				break;
+			}
 		}
 	}
-	for (int i = 0; i < lastUsedParticle; i++)
-	{
-		if (m_particles[i].isActive == false) {
-			m_particles[i].isActive = true;
-			m_particles[i].position = pos;
-			m_particles[i].angle = angle * (-1 * rand());
-			m_particles[i].size = glm::vec2(3.0);
-			m_particles[i].speed = glm::vec2(1.0f);
-			m_particles[i].health = 5.0f;
-			m_particles[i].m_color = ColorRGBA32 (226, 0, 45, 1);
-			lastUsedParticle = i;
-			return;
-		}
-	}
+}
 
-}
-}
 
 ParticleManager::~ParticleManager()
 {
