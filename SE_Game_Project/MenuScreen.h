@@ -13,7 +13,7 @@ public:
 	virtual void on_render() override;
 	virtual void on_update() override;
 
-	char buf1[64];
+	char playerName[32];
 
 private:
 	MenuEffects m_menuEffects;

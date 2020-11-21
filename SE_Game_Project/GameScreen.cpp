@@ -64,14 +64,15 @@ void GameScreen::on_render()
 	}
 	m_spriteRenderer.on_render();
 	
-	ImGui::SetNextWindowBgAlpha(0.35f);
+	//ImGui::SetNextWindowBgAlpha(0.35f);
+	render_game_screen();
 
 	int tempHeight = m_screenManager->m_window.get_height();
 	int tempWidth = m_screenManager->m_window.get_width();
 	int height = tempHeight / 2;
 	int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(230, 200));
+	ImGui::SetNextWindowSize(ImVec2(190, 150));
 
 	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
@@ -89,13 +90,12 @@ void GameScreen::on_render()
 	
 	ImVec2 windowSize;
 	windowSize.y = m_screenManager->m_window.get_height();
-	ImGui::SetNextWindowPos(ImVec2(0, windowSize.y - 50));
+	ImGui::SetNextWindowPos(ImVec2(0, windowSize.y - 35));
 	ImGui::SetNextWindowSize(ImVec2(250, 50));
 	ImGui::Begin("Gun", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text(("Gun: " + m_characterManager.get_gun_name()).c_str());
 	ImGui::End();
 
-	render_game_screen();
 }
 
 void GameScreen::on_update()
@@ -117,47 +117,59 @@ void GameScreen::on_update()
 
 void GameScreen::render_game_screen()
 {
-	ImGui::ShowDemoWindow();
-	//ImGui::SetNextWindowWidth(200);
-	//ImGui::SetNextWindowSize(ImVec2(200, 300));
 	ImGui::Begin("Shop");
-	ImGui::SetWindowFontScale(0.70);
+	ImGui::Columns(4, "mixed");
+	ImGui::Separator();
+	ImGui::Text("Name");
+	ImGui::NextColumn();
+	ImGui::Text("Buy Price");
+	ImGui::NextColumn();
+	ImGui::Text("Sell Price");
+	ImGui::NextColumn();
+	ImGui::Text("Item Type");
+	ImGui::NextColumn();
+	ImGui::Columns(1);
+	ImGui::Separator();
 	for (auto& it : m_characterManager.m_economy.itemList) {
-		ImGui::TextColored(ImVec4(0, 0, 0, 1), it.Name.c_str());
-		ImGui::SameLine(120.0f);
-		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Cost: $%i", it.Cost);
-		ImGui::SameLine(30.0f);
-		if (ImGui::Button("BUY")) {
-			// TODO: Logic with character manager her
-		}
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Sell: $%i", it.SellCost);
-		ImGui::SameLine(30.0f);
-		if (ImGui::Button("SELL")) {
-			// TODO: Logic with character manager her
-		}
+		ImGui::Columns(4, "mixed");
+		ImGui::Text(it.Name.c_str());
+		ImGui::NextColumn();
+		ImGui::Text("%i", it.Cost);
+		ImGui::SameLine(50.0f);
+		if (ImGui::Button(("Buy##" + it.Name).c_str())) {
+			m_characterManager.attempt_to_buy_item(it.Name);
 
-		// Render stuff specific to an item
+		}
+		ImGui::NextColumn();
+		ImGui::Text("%i", it.SellCost);
+		ImGui::SameLine(50.0f);
+		if (ImGui::Button(("Sell##" + it.Name).c_str())) {
+			m_characterManager.attempt_to_sell_item(it.Name);
+		}
+		ImGui::NextColumn();
 		switch (it.Type) {
 		case 0:
-
+			ImGui::Text("Armor");
+			ImGui::Text("Dmg % Block %i", it.Armor);
 			break;
 		case 1:
-
+			ImGui::Text("Consumable");
+			ImGui::Text("Health Regen %i", it.healthRegen);
 			break;
-
 		case 2:
-
+			ImGui::Text("Weapon");
+			ImGui::Text("Damage %i", it.damage);
+			ImGui::Text("Bullets per shot %i", it.bulletsPerShot);
 			break;
-
 		}
-
-		ImGui::Spacing();
-
+		ImGui::Columns(1);
+		ImGui::Separator();
 	}
+
+	ImGui::Separator();
 	ImGui::End();
 	ImGuiStyle& style = ImGui::GetStyle();
 
-	style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
+	//style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
 
 }

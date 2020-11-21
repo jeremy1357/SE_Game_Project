@@ -55,6 +55,8 @@ class CharacterManager
 		bool is_player_alive();
 		void add_item_to_inventory(const std::string& itemName);
 		void use_consumable_item(const std::string& itemName);
+		void attempt_to_buy_item(const std::string& itemName);
+		void attempt_to_sell_item(const std::string& itemName);
 		void set_player_hurt_sound_ranges(int min, int max);
 
 		void set_gun_index(const std::string& itemName);
@@ -68,6 +70,8 @@ class CharacterManager
 		ZombieManager m_zombieManager;
 		GameEconomy m_economy;
 		ParticleManager m_particleManager;
+		std::vector<Item> m_inventory;
+
 	private:
 		struct CollisionPosition {
 			glm::vec2 position;
@@ -90,7 +94,6 @@ class CharacterManager
 
 
 		std::vector<char> blacklistedChar;
-		std::vector<Item> m_inventory;
 		int m_currentGunIndex = -1;
 
 		// Sound stuff

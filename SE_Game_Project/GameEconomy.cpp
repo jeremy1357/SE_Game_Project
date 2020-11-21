@@ -49,7 +49,8 @@ void GameEconomy::init(std::string path, int reward)
             // gun bullets
             File >> data;
             itemList.back().bulletsPerShot = stoi(data);
-
+            File >> data;
+            itemList.back().healthRegen = stoi(data);
         }
     }
     else {
