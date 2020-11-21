@@ -150,7 +150,7 @@ void ScreenManager::init()
 
 
 	ImGui::StyleColorsDark();
-	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 32.0f);
+	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 24.0f);
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowRounding = 5.0f;
 	style.FrameRounding = 10.0f;

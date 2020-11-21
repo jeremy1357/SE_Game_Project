@@ -43,6 +43,12 @@ void CharacterManager::start_game(std::string name)
 		m_player.position	= PLAYER_START_POINT;
 		m_player.health		= 100;
 
+		m_inventory.clear();
+		// Add starting items
+		add_item_to_inventory("Pistol");
+		add_item_to_inventory("Shotgun");
+
+		set_gun_index("Shotgun");
 		m_zombieManager.reset();
 		m_levelManager->reset_map_data();
 	}
@@ -82,6 +88,31 @@ void CharacterManager::use_consumable_item(const std::string& itemName)
 		if (m_inventory[i].Name == itemName) {
 
 		}
+	}
+}
+
+void CharacterManager::attempt_to_buy_item(const std::string& itemName)
+{
+	for (auto& it : m_economy.itemList) {
+		if (itemName == it.Name) {
+			if (m_player.money >= it.Cost) {
+				m_player.money -= it.Cost;
+				m_inventory.push_back(m_economy.get_item(itemName));
+			}
+		}
+	}
+}
+
+void CharacterManager::attempt_to_sell_item(const std::string& itemName)
+{
+	int index = 0;
+	for (auto& it : m_inventory) {
+		if (itemName == it.Name) {
+			m_player.money += it.SellCost;
+			m_inventory.erase(m_inventory.begin() + index);
+			
+		}
+		index += 1;
 	}
 }
 
@@ -138,16 +169,6 @@ void CharacterManager::init(
 	m_particleManager.particle_init(collisionManager);
 
 	m_zombieManager.init(levelManager, *this, collisionManager, soundDelegate, m_particleManager);
-
-
-
-
-	// Give the player one pistol to start
-	add_item_to_inventory("Pistol");
-	add_item_to_inventory("Shotgun");
-
-	add_item_to_inventory("Beer");
-	set_gun_index("Shotgun");
 }
 
 void CharacterManager::update(float playerAngle)

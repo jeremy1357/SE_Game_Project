@@ -21,6 +21,7 @@ struct Item {
     int damage;
     int bulletsPerShot;
     bool isEquipped = false;
+    int healthRegen;
 };
 
 // class that monitors game economy

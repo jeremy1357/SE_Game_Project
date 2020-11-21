@@ -38,11 +38,11 @@ void MenuScreen::on_render()
 	ImGuiStyle& style = ImGui::GetStyle();
 
 	//Setting Up Colors of different things
-	style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
-	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.0f);
-	style.Colors[ImGuiCol_Button] = ImVec4(0.500f, 0.500f, 0.500f, 0.7f);
-	style.Colors[ImGuiCol_Border] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
-	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.900f, 0.900f, 0.900f, 0.900f);
+	//style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
+	//style.Colors[ImGuiCol_WindowBg] = ImVec4(0.100f, 0.100f, 0.100f, 0.75f);
+	//style.Colors[ImGuiCol_Button] = ImVec4(0.500f, 0.500f, 0.500f, 0.7f);
+	//style.Colors[ImGuiCol_Border] = ImVec4(0.100f, 0.100f, 0.100f, 0.100f);
+	//style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.900f, 0.900f, 0.900f, 0.900f);
 
 	//Window Details
 	int tempHeight = m_screenManager->m_window.get_height();
@@ -54,11 +54,20 @@ void MenuScreen::on_render()
 	windowSize.x = m_screenManager->m_window.get_width();
 	windowSize.y = m_screenManager->m_window.get_height();
 	ImGui::SetNextWindowSize(windowSize);
+	ImGui::SetWindowFontScale(8.0f);
 	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	style.WindowBorderSize = 1.0f;
 	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
 	style.WindowMenuButtonPosition = ImGuiDir_None;
 
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::NewLine();
+
+	ImGui::InputText("Enter Player Username", playerName, sizeof(playerName));
+	m_screenManager->m_playerName = std::string(playerName);
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
@@ -107,10 +116,8 @@ void MenuScreen::on_render()
 	if (ImGui::Button("Exit Game", ImVec2(buttonExitGame, 50))) {
 		m_screenManager->m_isProgramRunning = false;
 	}
-	ImGui::InputText("Enter Text", buf1, 64);
 
 	ImGui::End();
-
 	glm::vec2 cursorPosition(m_screenManager->m_inputManager.m_mPosX, m_screenManager->m_inputManager.m_mPosY);
 	m_menuEffects.render(m_screenManager->m_camera, cursorPosition);
 
