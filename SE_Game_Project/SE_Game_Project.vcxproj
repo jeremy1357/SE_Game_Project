@@ -211,6 +211,16 @@
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="ZombieManager.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Textures\dirt.png" />
+    <Image Include="Resources\Textures\door.png" />
+    <Image Include="Resources\Textures\grass.png" />
+    <Image Include="Resources\Textures\grass_n.png" />
+    <Image Include="Resources\Textures\grass_ne.png" />
+    <Image Include="Resources\Textures\grass_ne_i.png" />
+    <Image Include="Resources\Textures\grass_nw.png" />
+    <Image Include="Resources\Textures\Ground_05.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
