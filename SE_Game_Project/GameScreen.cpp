@@ -227,10 +227,10 @@ void GameScreen::render_widget1()
 	int height = tempHeight / 2;
 	int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(160, 160));
+	ImGui::SetNextWindowSize(ImVec2(200, 180));
 	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
-	ImGui::Text("Health: %i", m_characterManager.m_player.health);
+	ImGui::Text("Health: %i", (int)m_characterManager.m_player.health);
 	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
 	ImGui::Text("Wave: %i", m_characterManager.m_zombieManager.wave);
 	if (ImGui::Button("Main Menu")) {

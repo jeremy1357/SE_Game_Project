@@ -137,6 +137,7 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 			return;
 		}
 		glm::vec2 tileCenter(0.0f, 0.0f);
+
 		for (auto& x : m_mapData) {
 			for (auto& y : x) {
 				switch (y) {
@@ -237,10 +238,11 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('~'));
 					break;
 				}
-				tileCenter.y += 1.0f;
+
+				tileCenter.x += 1.0f;
 			}
-			tileCenter.x += 1.0f;
-			tileCenter.y = 0.0f;
+			tileCenter.y += 1.0f;
+			tileCenter.x = 0.0f;
 		}
 	}
 }
@@ -250,8 +252,8 @@ char LevelManager::get_character(glm::vec2 position, bool shouldScale)
 	if (shouldScale) {
 		position /= m_tileDimensions;
 	}
-	int xPos = (int)floor(position.x);
-	int yPos = (int)floor(position.y);
+	int xPos = (int)floor(position.y);
+	int yPos = (int)floor(position.x);
 	if (m_mapData.size() > xPos && xPos >= 0) {
 		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
 			return m_mapData[xPos][yPos];

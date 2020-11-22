@@ -153,6 +153,11 @@ void CharacterManager::set_gun_index(const std::string& itemName)
 	m_currentGunIndex = -1;
 }
 
+void CharacterManager::damage_player(float damage)
+{
+	m_player.health -= damage;
+}
+
 std::string CharacterManager::get_gun_name()
 {
 	if (m_currentGunIndex != -1) {

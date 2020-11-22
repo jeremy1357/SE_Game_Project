@@ -19,12 +19,13 @@ using namespace std;
 
 struct Player {
 	string name		= "Steve";
-	int health		= 100;
+	float health		= 100.0f;
 	bool isAlive	= false;
 	float angle		= 0.0f;
 	glm::vec2 position = glm::vec2(0,0);
 	int money		= 500;
 	int zombieKills = 0;
+	int armor = 0;
 };
 
 
@@ -59,6 +60,7 @@ class CharacterManager
 		void set_gun_index(const std::string& itemName);
 		float get_sprite_radius() { return m_spriteRadius; }
 		float get_gun_damage() { return m_inventory[m_currentGunIndex].damage; }
+		void damage_player(float damage);
 		std::string get_gun_name();
 
 
@@ -82,7 +84,7 @@ class CharacterManager
 		// This should be half of player square dimensions
 		//const glm::vec2 dim = glm::vec2(25.0f);
 		float m_spriteRadius = 25.0f;
-		const glm::vec2 PLAYER_START_POINT = glm::vec2(900.0f, 3075.0f);
+		const glm::vec2 PLAYER_START_POINT = glm::vec2(600.0f, 1875.0f);
 		InputManager* m_inputManager			= nullptr;
 		LevelManager* m_levelManager			= nullptr;
 		Camera* m_camera						= nullptr;

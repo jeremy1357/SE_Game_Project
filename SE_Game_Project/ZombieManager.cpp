@@ -284,7 +284,7 @@ void ZombieManager::damage_player(Zombie& zombie)
 {
 	float distance = glm::length(m_characterManager->m_player.position - zombie.position);
 
-	if (distance <= minDistBetweenSprites + 10.0f) {
-		m_characterManager->m_player.health -= 0.5f;
+	if (distance <= minDistBetweenSprites + 15.0f) {
+		m_characterManager->damage_player(0.3f);
 	}
 }

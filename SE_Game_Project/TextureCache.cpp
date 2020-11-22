@@ -15,7 +15,7 @@ TextureCache::~TextureCache()
 	}
 }
 
-GLuint TextureCache::get_texture_id(const std::string& texturePath)
+GLuint TextureCache::get_texture_id(const std::string& texturePath, bool clamp)
 {
 	size_t found = texturePath.find_last_of("/") + 1;
 	std::string textureName = texturePath.substr(found);
@@ -27,7 +27,7 @@ GLuint TextureCache::get_texture_id(const std::string& texturePath)
 	if (it == m_textureCache.end())
 	{
 		Texture newTexture;
-		load_texture_from_PNG(texturePath, newTexture.textureID);
+		load_texture_from_PNG(texturePath, newTexture.textureID, clamp);
 
 		m_textureCache.insert(std::make_pair(texturePath, newTexture));
 		return newTexture.textureID;
@@ -35,7 +35,7 @@ GLuint TextureCache::get_texture_id(const std::string& texturePath)
 	return it->second.textureID;
 }
 
-bool TextureCache::load_texture_from_PNG(std::string texturePath, GLuint& textureID)
+bool TextureCache::load_texture_from_PNG(std::string texturePath, GLuint& textureID, bool clamp)
 {
 	std::vector <unsigned char> inImage;
 	std::vector <unsigned char> outImage;
@@ -72,8 +72,10 @@ bool TextureCache::load_texture_from_PNG(std::string texturePath, GLuint& textur
 	glGenTextures(1, &(textureID));
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(outImage[0]));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	if (clamp) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	float aniso = 0.0f;
