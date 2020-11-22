@@ -92,9 +92,9 @@ void GameScreen::on_update()
 void GameScreen::render_shop()
 {
 	int tempWidth = m_screenManager->m_window.get_width();
-	int width = tempWidth / 4 + 320;
+	int width = tempWidth / 4 + 300;
 	ImGui::SetNextWindowPos(ImVec2(width, 0));
-	ImGui::SetNextWindowSize(ImVec2(410, 270));
+	ImGui::SetNextWindowSize(ImVec2(410, 300));
 	int id = 0;
 	ImGui::Begin("Shop", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::PushFont(m_screenManager->m_smallFont);
@@ -227,12 +227,14 @@ void GameScreen::render_widget1()
 	int height = tempHeight / 2;
 	int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(200, 180));
+	ImGui::SetNextWindowSize(ImVec2(200, 170));
 	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
 	ImGui::Text("Health: %i", (int)m_characterManager.m_player.health);
 	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
 	ImGui::Text("Wave: %i", m_characterManager.m_zombieManager.wave);
+	ImGui::Text("%c", m_levelManager.get_character(m_screenManager->m_camera.get_world_cursor_position(), true));
+
 	if (ImGui::Button("Main Menu")) {
 		m_screenManager->setScreen(ScreenKeys::MENU);
 	}

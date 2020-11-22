@@ -261,9 +261,6 @@ void CharacterManager::update(float playerAngle, bool isImGuiHovered)
 }
 
 void CharacterManager::tile_collision() {
-
-
-	glm::vec2 worldSize = m_levelManager->get_map_size();
 	CollisionPosition collisionAreas[4];
 	collisionAreas[0].position = m_player.position; //TL
 	collisionAreas[1].position = m_player.position; //TR

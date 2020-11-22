@@ -47,8 +47,8 @@ void LevelManager::init(
 	}
 	// Create a copy of the map data for when we need to reset the map
 	m_originalMapData = m_mapData;
-	mapSize.x = m_mapData.size();
-	mapSize.y = m_mapData[0].size();
+	mapSize.y = m_mapData.size();
+	mapSize.x = m_mapData[0].size();
 	std::string imageDirectory = projectDirectory + "Resources\\Textures\\";
 
 	GLuint poundTexture		= m_textureCache->get_texture_id(imageDirectory + "Ground_01.png");
@@ -277,8 +277,8 @@ bool LevelManager::unlock_tile(glm::vec2 point)
 	point /= m_tileDimensions;
 
 	const char DOOR = 'q';
-	int xPos = (int)floor(point.x);
-	int yPos = (int)floor(point.y);
+	int xPos = (int)floor(point.y);
+	int yPos = (int)floor(point.x);
 	if (m_mapData.size() > xPos && xPos >= 0) {
 		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
 			if (m_mapData[xPos][yPos] == DOOR) {
@@ -302,10 +302,10 @@ void LevelManager::reset_map_data()
 glm::vec2 LevelManager::get_tile_center(glm::vec2 tileToGetCenterOf)
 {
 	glm::vec2 tempTile = tileToGetCenterOf / m_tileDimensions;
-	int xPos = (int)floor(tempTile.x);
-	int yPos = (int)floor(tempTile.y);
-	tileToGetCenterOf.x = xPos * m_tileDimensions.x;
-	tileToGetCenterOf.y = yPos * m_tileDimensions.y;
+	int xPos = (int)floor(tempTile.y);
+	int yPos = (int)floor(tempTile.x);
+	tileToGetCenterOf.y = xPos * m_tileDimensions.x;
+	tileToGetCenterOf.x = yPos * m_tileDimensions.y;
 
 	if (m_mapData.size() > xPos && xPos >= 0) {
 		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
