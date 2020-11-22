@@ -40,15 +40,18 @@ void CharacterManager::start_game(std::string name)
 		m_player.money		= 500;
 		m_player.position	= PLAYER_START_POINT;
 		m_player.health		= 100;
-		m_player.zombieKills = 0;
+		m_player.zombieKills	= 0;
+		m_player.armor			= 0;
+		m_player.armorIndex		= 0;
+		m_player.armorEquipped = false;
 		m_inventory.clear();
 		m_gameoverMusicPlaying = false;
 		// TODO: Add in restart of particle manager
 		// Add starting items
 		add_item_to_inventory("Pistol");
-		add_item_to_inventory("Shotgun");
 
-		set_gun_index("Shotgun");
+		set_gun_index("Pistol");
+		m_inventory[m_currentGunIndex].isEquipped = true;
 		m_zombieManager.reset();
 		m_levelManager->reset_map_data();
 		m_particleManager.reset();
@@ -80,15 +83,6 @@ void CharacterManager::add_item_to_inventory(const std::string& itemName)
 	Item item = m_economy.get_item(itemName);
 	if (item.Name != "") {
 		m_inventory.push_back(item);
-	}
-}
-
-void CharacterManager::use_consumable_item(const std::string& itemName)
-{
-	for (size_t i = 0; i < m_inventory.size(); i++) {
-		if (m_inventory[i].Name == itemName) {
-
-		}
 	}
 }
 
@@ -138,6 +132,26 @@ void CharacterManager::use_consumable(const std::string& itemName)
 			}
 			m_inventory.erase(m_inventory.begin() + i);
 			break;
+		}
+	}
+}
+
+void CharacterManager::toggleEquippableItem(const std::string& itemName)
+{
+	for (auto& it : m_inventory) {
+		if (it.Name == itemName) {
+			if (it.Type == 0) {
+				m_inventory[m_player.armorIndex].isEquipped = false;
+				m_player.armor = it.Armor;
+				it.isEquipped = true;
+				
+			}
+			else if (it.Type == 2) {
+				m_inventory[m_currentGunIndex].isEquipped = false;
+				set_gun_index(itemName);
+				it.isEquipped = true;
+				
+			}
 		}
 	}
 }
@@ -296,7 +310,7 @@ void CharacterManager::perform_tile_collision(CollisionPosition *cp) {
 			glm::vec2 vectorFromTileToPlayer = m_player.position - tileCenter;
 			const float radius = 25.0f;
 			// 75 should not be a hard coded constant. CHANGE 
-			const float distTillCollision = radius + (75.0f / 2); // 75.0f is the window of a tile.
+			const float distTillCollision = radius + (75.0f / 2); // 75.0f is the width of a tile.
 			float x = distTillCollision - abs(vectorFromTileToPlayer.x);
 			float y = distTillCollision - abs(vectorFromTileToPlayer.y);
 

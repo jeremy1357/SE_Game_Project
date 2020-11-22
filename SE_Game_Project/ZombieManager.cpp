@@ -75,10 +75,10 @@ void ZombieManager::spawn_Wave(int wave)
 	std::uniform_real_distribution<float> disX(1.0f, 2.8f);
 
 	for (int i = 0; i < numZombies; i++) 	{
-		//m_zombies.push_back(Zombie());
-		//m_zombies.back().position = calculate_spawnPosition();   //sets position to newest zombie using calcspawn function
-		//m_zombies.back().speed = disX(rd);
-		//m_zombies.back().isAlive = true;
+		m_zombies.push_back(Zombie());
+		m_zombies.back().position = calculate_spawnPosition();   //sets position to newest zombie using calcspawn function
+		m_zombies.back().speed = disX(rd);
+		m_zombies.back().isAlive = true;
 	}
 }
 

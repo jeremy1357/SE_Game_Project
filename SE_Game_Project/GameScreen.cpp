@@ -94,7 +94,7 @@ void GameScreen::render_shop()
 	int tempWidth = m_screenManager->m_window.get_width();
 	int width = tempWidth / 4 + 300;
 	ImGui::SetNextWindowPos(ImVec2(width, 0));
-	ImGui::SetNextWindowSize(ImVec2(410, 300));
+	ImGui::SetNextWindowSize(ImVec2(430, 300));
 	int id = 0;
 	ImGui::Begin("Shop", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::PushFont(m_screenManager->m_smallFont);
@@ -134,18 +134,17 @@ void GameScreen::render_shop()
 			break;
 		case 1:
 			ImGui::Text("Consumable");
-			ImGui::Text("Health Regen: %i", it.healthRegen);
+			ImGui::Text("Health+: %i", it.healthRegen);
 			break;
 		case 2:
 			ImGui::Text("Weapon");
 			ImGui::Text("Damage: %i", it.damage);
-			ImGui::Text("Bullets per shot: %i", it.bulletsPerShot);
+			ImGui::Text("Bullets: %i", it.bulletsPerShot);
 			break;
 		}
 		ImGui::Columns(1);
 		ImGui::Separator();
 	}
-	ImGui::Separator();
 	ImGui::PopFont();
 	ImGui::End();
 }
@@ -153,7 +152,7 @@ void GameScreen::render_shop()
 void GameScreen::render_inventory()
 {
 	int tempWidth = m_screenManager->m_window.get_width();
-	int width = tempWidth / 4;
+	int width = tempWidth / 4.2;
 	ImGui::SetNextWindowPos(ImVec2(width, 0));
 	ImGui::SetNextWindowSize(ImVec2(300, 300));
 	int id = 0;
@@ -177,16 +176,16 @@ void GameScreen::render_inventory()
 		switch (it.Type) {
 		case 0:
 			ImGui::Text("Armor");
-			ImGui::Text("Dmg % Block %i", it.Armor);
+			ImGui::Text("Dmg % Block: %i", it.Armor);
 			break;
 		case 1:
 			ImGui::Text("Consumable");
-			ImGui::Text("Health Regen %i", it.healthRegen);
+			ImGui::Text("Health +: %i", it.healthRegen);
 			break;
 		case 2:
 			ImGui::Text("Weapon");
-			ImGui::Text("Damage %i", it.damage);
-			ImGui::Text("Bullets per shot %i", it.bulletsPerShot);
+			ImGui::Text("Damage: %i", it.damage);
+			ImGui::Text("Bullets: %i", it.bulletsPerShot);
 			break;
 		}
 		//ImGui::SetColumnWidth(2, 50.0f);
@@ -198,16 +197,27 @@ void GameScreen::render_inventory()
 				m_characterManager.use_consumable(it.Name);
 			}
 			break;
-		default:
+		case 0:
 			if (it.isEquipped) {
 				if (ImGui::Button(("Unequip##" + std::to_string(id)).c_str())) {
+					m_characterManager.toggleEquippableItem(it.Name);
 				}
 			}
 			else {
 				if (ImGui::Button(("Equip##" + std::to_string(id)).c_str())) {
-
+					m_characterManager.toggleEquippableItem(it.Name);
 				}
 			}
+		case 2:
+			if (it.isEquipped) {
+				ImGui::Text("Current gun");
+			}
+			else {
+				if (ImGui::Button(("Equip##" + std::to_string(id)).c_str())) {
+					m_characterManager.toggleEquippableItem(it.Name);
+				}
+			}
+
 			break;
 		}
 		//ImGui::SetColumnWidth(3, 50.0f);
@@ -227,13 +237,12 @@ void GameScreen::render_widget1()
 	int height = tempHeight / 2;
 	int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(200, 170));
+	ImGui::SetNextWindowSize(ImVec2(170, 160));
 	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
 	ImGui::Text("Health: %i", (int)m_characterManager.m_player.health);
 	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
 	ImGui::Text("Wave: %i", m_characterManager.m_zombieManager.wave);
-	ImGui::Text("%c", m_levelManager.get_character(m_screenManager->m_camera.get_world_cursor_position(), true));
 
 	if (ImGui::Button("Main Menu")) {
 		m_screenManager->setScreen(ScreenKeys::MENU);

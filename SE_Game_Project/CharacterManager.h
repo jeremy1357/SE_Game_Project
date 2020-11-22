@@ -18,14 +18,16 @@ using namespace std;
 
 
 struct Player {
-	string name		= "Steve";
+	string name			= "Steve";
 	float health		= 100.0f;
-	bool isAlive	= false;
-	float angle		= 0.0f;
-	glm::vec2 position = glm::vec2(0,0);
-	int money		= 500;
-	int zombieKills = 0;
-	int armor = 0;
+	bool isAlive		= false;
+	float angle			= 0.0f;
+	glm::vec2 position	= glm::vec2(0,0);
+	int money			= 500;
+	int zombieKills		= 0;
+	int armor			= 0;
+	bool armorEquipped	= false;
+	int armorIndex	    = -1;
 };
 
 
@@ -57,6 +59,7 @@ class CharacterManager
 		void set_player_hurt_sound_ranges(int min, int max);
 		void stop_game_over_music();
 		void use_consumable(const std::string& itemName);
+		void toggleEquippableItem(const std::string& itemName);
 		void set_gun_index(const std::string& itemName);
 		float get_sprite_radius() { return m_spriteRadius; }
 		float get_gun_damage() { return m_inventory[m_currentGunIndex].damage; }
