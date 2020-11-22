@@ -214,7 +214,7 @@ void SpriteRenderer::on_render()
 
 	glBindVertexArray(m_dynamicVAO);
 	for (auto& batch : m_dynamicBatches) {
-		batch.indices.resize(batch.vertices.size() * 6);
+		batch.indices.resize(batch.numSquares * 6);
 		GLuint startIndex = 0;
 		for (size_t x = 0; x < batch.indices.size(); x += 6) {
 			// Store vertex indices 
@@ -383,7 +383,7 @@ void SpriteRenderer::add_sprite_to_batch(
 	it->vertices[index++].rotate(dirAngle, position);
 	it->vertices[index] = VertexSimple(br, brUV);
 	it->vertices[index].rotate(dirAngle, position);
-
+	it->numSquares++;
 
 }
 

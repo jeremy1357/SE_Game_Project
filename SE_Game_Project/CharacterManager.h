@@ -27,12 +27,14 @@ struct Player {
 };
 
 struct Score {
-	Score(const std::string& name, int wave) {
+	Score(const std::string& name, int wave, int zombieKills) {
 		this->name = name;
 		this->wave = wave;
+		this->zombieKills = zombieKills;
 	}
 	std::string name;
 	int wave;
+	int zombieKills;
 };
 class CharacterManager
 {
@@ -59,6 +61,7 @@ class CharacterManager
 		void attempt_to_buy_item(const std::string& itemName);
 		void attempt_to_sell_item(const std::string& itemName);
 		void set_player_hurt_sound_ranges(int min, int max);
+		void stop_game_over_music();
 
 		void set_gun_index(const std::string& itemName);
 		float get_sprite_radius() { return m_spriteRadius; }
@@ -100,5 +103,6 @@ class CharacterManager
 		// Sound stuff
 		int m_characterSoundHurtMin = 0;
 		int m_characterSoundHurtMax = 0;
+		bool m_gameoverMusicPlaying = false;
 };
 

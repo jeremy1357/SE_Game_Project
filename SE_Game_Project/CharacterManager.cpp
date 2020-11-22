@@ -44,6 +44,7 @@ void CharacterManager::start_game(std::string name)
 		m_player.health		= 100;
 		m_player.zombieKills = 0;
 		m_inventory.clear();
+		m_gameoverMusicPlaying = false;
 		// TODO: Add in restart of particle manager
 		// Add starting items
 		add_item_to_inventory("Pistol");
@@ -123,6 +124,11 @@ void CharacterManager::set_player_hurt_sound_ranges(int min, int max)
 	m_characterSoundHurtMax = max;
 }
 
+void CharacterManager::stop_game_over_music()
+{
+	m_soundDelegate->stop_effect(m_soundDelegate->get_key("GAMEOVER.wav"));
+}
+
 void CharacterManager::set_gun_index(const std::string& itemName)
 {
 	for (int i = 0; i < m_inventory.size(); i++) {
@@ -177,7 +183,11 @@ void CharacterManager::update(float playerAngle)
 	if (m_player.health <= 0 && m_player.isAlive)
 	{
 		m_player.isAlive = false;
-		m_scores.push_back(Score(m_player.name, m_zombieManager.wave));
+		m_scores.push_back(Score(m_player.name, m_zombieManager.wave, m_player.zombieKills));
+		if (m_gameoverMusicPlaying == false) {
+			m_soundDelegate->play_effect(m_soundDelegate->get_key("GAMEOVER.wav"), -1);
+			m_gameoverMusicPlaying = false;
+		}
 		
 	}
 	else if (m_player.isAlive)
@@ -185,7 +195,7 @@ void CharacterManager::update(float playerAngle)
 		m_zombieManager.update();
 		m_particleManager.update_particle();
 		m_player.angle = playerAngle;
-		const float speed = 4.5f;
+		const float speed = 3.5f;
 		m_player.isAlive = true;
 		if (m_inputManager->get_key(SDLK_w)) {
 			m_player.position.y += speed;

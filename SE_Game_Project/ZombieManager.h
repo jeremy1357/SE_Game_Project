@@ -6,6 +6,7 @@
 #include "SoundDelegate.h"
 #include "ParticleManager.h"
 #include <vector>
+#include <chrono>
 using namespace std;
 
 class CharacterManager;
@@ -31,20 +32,21 @@ public:
 		ParticleManager& particleManager);
 	void set_zombie_sound_keys(int min, int max);
 	bool collision_Check(char parameter);
-	void tile_collision();
+	void tile_collision(Zombie& zombie);
 	void reset();
 
 
 	std::vector<Zombie> m_zombies;
 	int wave = 0;
 private:
-	void perform_collisions();
+	void perform_collisions(Zombie& zombie);
 	bool should_spawn_wave();
 	void spawn_Wave(int wave);
-	void collide_with_player(Zombie* zombie);
+	void collide_with_player(Zombie& zombie);
 	void damage_player(Zombie& zombie);
 	glm::vec2 calculate_spawnPosition();
-
+	std::chrono::steady_clock::time_point start;
+	int m_waveStartSoundKey = 0;
 	int m_mapSizex;
 	int m_mapSizey;
 	glm::vec2 m_tileSize = glm::vec2(75.0f, 75.0f);
