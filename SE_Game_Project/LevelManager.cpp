@@ -52,14 +52,15 @@ void LevelManager::init(
 	std::string imageDirectory = projectDirectory + "Resources\\Textures\\";
 
 	GLuint poundTexture		= m_textureCache->get_texture_id(imageDirectory + "Ground_01.png");
-	GLuint grassTexture		= m_textureCache->get_texture_id(imageDirectory + "Dirt_01.png");
+	GLuint dirtTexture		= m_textureCache->get_texture_id(imageDirectory + "dirt.png");
 	GLuint percentTexture	= m_textureCache->get_texture_id(imageDirectory + "Ground_04.png");
+	GLuint equalsTexture = m_textureCache->get_texture_id(imageDirectory + "Ground_05.png");
 	GLuint moneySignTexture = m_textureCache->get_texture_id(imageDirectory + "Dirt_02.png");
 	GLuint atTexture = m_textureCache->get_texture_id(imageDirectory + "dark_crate_five.png");
 	GLuint starTexture = m_textureCache->get_texture_id(imageDirectory + "log2.png");
 	GLuint dTexture = m_textureCache->get_texture_id(imageDirectory + "sand.png");
 	GLuint wTexture = m_textureCache->get_texture_id(imageDirectory + "lava.png");
-	GLuint qTexture = m_textureCache->get_texture_id(imageDirectory + "grass.png");
+	GLuint qTexture = m_textureCache->get_texture_id(imageDirectory + "door.png");
 	GLuint tTexture = m_textureCache->get_texture_id(imageDirectory + "tile.png");
 	GLuint cTexture = m_textureCache->get_texture_id(imageDirectory + "concrete.png");
 	GLuint ampTexture = m_textureCache->get_texture_id(imageDirectory + "wasteland.png");
@@ -75,12 +76,17 @@ void LevelManager::init(
 	GLuint uTexture = m_textureCache->get_texture_id(imageDirectory + "lava_nw_i.png");
 	GLuint mTexture = m_textureCache->get_texture_id(imageDirectory + "lava_se_i.png");
 	GLuint hTexture = m_textureCache->get_texture_id(imageDirectory + "lava_sw_i.png");
-
+	GLuint carrotTexture = m_textureCache->get_texture_id(imageDirectory + "grass.png");
+	GLuint rTexture = m_textureCache->get_texture_id(imageDirectory + "grass_n.png");
+	GLuint eTexture = m_textureCache->get_texture_id(imageDirectory + "grass_ne.png");
+	GLuint fTexture = m_textureCache->get_texture_id(imageDirectory + "grass_nw.png");
+	GLuint yTexture = m_textureCache->get_texture_id(imageDirectory + "grass_ne_i.png");
+	GLuint xTexture = m_textureCache->get_texture_id(imageDirectory + "grass_nw_i.png");
 	//For missing textures
 	GLuint nullTexture = m_textureCache->get_texture_id(imageDirectory + "missing.png");
 
 	m_textureLookup.insert(std::make_pair('#', poundTexture)); // Cobbles
-	m_textureLookup.insert(std::make_pair('-', grassTexture)); // Dirt 1; ironically not grass
+	m_textureLookup.insert(std::make_pair('-', dirtTexture)); // Dirt;
 	m_textureLookup.insert(std::make_pair('%', percentTexture)); // Mossy Cobbles
 	m_textureLookup.insert(std::make_pair('$', moneySignTexture)); // Dirt 2
 	m_textureLookup.insert(std::make_pair('@', atTexture)); // Crate
@@ -102,8 +108,14 @@ void LevelManager::init(
 	m_textureLookup.insert(std::make_pair('u', uTexture)); // Inverted northwest lava
 	m_textureLookup.insert(std::make_pair('m', mTexture)); // Inverted southeast lava
 	m_textureLookup.insert(std::make_pair('h', hTexture)); // Inverted southwest lava
-	m_textureLookup.insert(std::make_pair('=', nullTexture));
-	m_textureLookup.insert(std::make_pair('q', qTexture)); // No texture yet/error texture
+	m_textureLookup.insert(std::make_pair('=', equalsTexture)); // Stone floor
+	m_textureLookup.insert(std::make_pair('q', qTexture)); // Door
+	m_textureLookup.insert(std::make_pair('^', carrotTexture)); // Grass
+	m_textureLookup.insert(std::make_pair('r', rTexture)); // North grass
+	m_textureLookup.insert(std::make_pair('e', eTexture)); // Northeast grass
+	m_textureLookup.insert(std::make_pair('f', fTexture)); // Northwest grass
+	m_textureLookup.insert(std::make_pair('y', yTexture)); // Inverted northeast grass
+	m_textureLookup.insert(std::make_pair('x', xTexture)); // Inverted northwest grass
 
 	m_textureLookup.insert(std::make_pair('~',nullTexture)); // No texture yet/error texture
 	// Manually add in restricted tiles here. These cant me moved on
@@ -112,6 +124,8 @@ void LevelManager::init(
 	m_restrictedTiles.push_back('q');
 	m_restrictedTiles.push_back('&');
 	m_restrictedTiles.push_back('c');
+	m_restrictedTiles.push_back('~');
+	m_restrictedTiles.push_back('\n');
 
 }
 
@@ -198,6 +212,27 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 				case 'h':
 					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('h'));
 					break;
+				case '=':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('='));
+					break;
+				case '^':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('^'));
+					break;
+				case 'r':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('r'));
+					break;
+				case 'e':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('e'));
+					break;
+				case 'f':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('f'));
+					break;
+				case 'y':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('y'));
+					break;
+				case 'x':
+					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('x'));
+					break;
 				default:
 					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('~'));
 					break;
@@ -245,7 +280,7 @@ bool LevelManager::unlock_tile(glm::vec2 point)
 	if (m_mapData.size() > xPos && xPos >= 0) {
 		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
 			if (m_mapData[xPos][yPos] == DOOR) {
-				m_mapData[xPos][yPos] = '@';
+				m_mapData[xPos][yPos] = 't';
 				m_needsRender = true;
 				m_renderer->require_static_redraw();
 				return true;
