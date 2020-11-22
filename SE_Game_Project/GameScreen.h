@@ -22,11 +22,15 @@ public:
 
 
 private:
-	void render_game_screen();
+	void render_shop();
+	void render_inventory();
+	void render_widget1();
+	void render_widget2();
+
+	CharacterManager m_characterManager;
 	SpriteRenderer m_spriteRenderer;
 	TextureCache m_textureCache;
 	LevelManager m_levelManager;
-	CharacterManager m_characterManager;
 	CollisionManager m_collisionManager;
 	bool m_isInventoryFocused = false;
 };

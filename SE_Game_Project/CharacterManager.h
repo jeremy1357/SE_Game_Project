@@ -10,6 +10,7 @@
 #include "Camera.h"
 #include "ParticleManager.h"
 #include "SoundDelegate.h"
+#include "Score.h"
 
 #include <vector>
 
@@ -26,16 +27,7 @@ struct Player {
 	int zombieKills = 0;
 };
 
-struct Score {
-	Score(const std::string& name, int wave, int zombieKills) {
-		this->name = name;
-		this->wave = wave;
-		this->zombieKills = zombieKills;
-	}
-	std::string name;
-	int wave;
-	int zombieKills;
-};
+
 class CharacterManager
 {
 	public:
@@ -52,8 +44,9 @@ class CharacterManager
 			CollisionManager& collisionManager,
 			Camera& camera,
 			SoundDelegate& soundDelegate,
-			const std::string& programDirectory);
-		void update(float playerAngle);
+			const std::string& programDirectory,
+			std::vector<Score>& scores);
+		void update(float playerAngle, bool isImGuiHovered);
 		void tile_collision();
 		bool is_player_alive();
 		void add_item_to_inventory(const std::string& itemName);
@@ -62,19 +55,19 @@ class CharacterManager
 		void attempt_to_sell_item(const std::string& itemName);
 		void set_player_hurt_sound_ranges(int min, int max);
 		void stop_game_over_music();
-
+		void use_consumable(const std::string& itemName);
 		void set_gun_index(const std::string& itemName);
 		float get_sprite_radius() { return m_spriteRadius; }
 		float get_gun_damage() { return m_inventory[m_currentGunIndex].damage; }
 		std::string get_gun_name();
 
 
-		std::vector<Score> m_scores;
 		Player m_player;
 		ZombieManager m_zombieManager;
 		GameEconomy m_economy;
 		ParticleManager m_particleManager;
 		std::vector<Item> m_inventory;
+		std::vector<Score>* m_scores;
 
 	private:
 		struct CollisionPosition {

@@ -6,6 +6,13 @@ ParticleManager::ParticleManager()
 	// Empty
 }
 
+void ParticleManager::reset() {
+	for (auto& it : m_particles) {
+		it.health = 0.0f;
+		it.isActive = false;
+	}
+}
+
 void ParticleManager::particle_init(CollisionManager& collisionManager)
 {
 	m_collisionManager = &collisionManager;
