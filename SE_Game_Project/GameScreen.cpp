@@ -37,6 +37,7 @@ void GameScreen::on_entry()
 
 void GameScreen::on_exit()
 {
+	m_characterManager.stop_game_over_music();
 	m_screenState = ScreenState::INACTIVE;
 }
 
@@ -72,26 +73,21 @@ void GameScreen::on_render()
 	int height = tempHeight / 2;
 	int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(190, 150));
-
+	ImGui::SetNextWindowSize(ImVec2(160, 160));
 	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
 	ImGui::Text("Health: %i", m_characterManager.m_player.health);
 	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
 	ImGui::Text("Wave: %i", m_characterManager.m_zombieManager.wave);
-	//glm::vec2 worldCursorCoordinates = m_screenManager->m_camera.get_world_cursor_position();
-
-
 	if (ImGui::Button("Main Menu")) {
 		m_screenManager->setScreen(ScreenKeys::MENU);
 	}
-	//ImGui::Text("Zombie Wave: );
 	ImGui::End();
 	
 	ImVec2 windowSize;
 	windowSize.y = m_screenManager->m_window.get_height();
 	ImGui::SetNextWindowPos(ImVec2(0, windowSize.y - 35));
-	ImGui::SetNextWindowSize(ImVec2(250, 50));
+	ImGui::SetNextWindowSize(ImVec2(170, 40));
 	ImGui::Begin("Gun", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text(("Gun: " + m_characterManager.get_gun_name()).c_str());
 	ImGui::End();

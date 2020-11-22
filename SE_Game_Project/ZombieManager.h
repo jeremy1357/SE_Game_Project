@@ -32,7 +32,7 @@ public:
 		ParticleManager& particleManager);
 	void set_zombie_sound_keys(int min, int max);
 	bool collision_Check(char parameter);
-	void tile_collision();
+	void tile_collision(Zombie& zombie);
 	void reset();
 
 
@@ -46,7 +46,7 @@ private:
 	void damage_player(Zombie& zombie);
 	glm::vec2 calculate_spawnPosition();
 	std::chrono::steady_clock::time_point start;
-
+	int m_waveStartSoundKey = 0;
 	int m_mapSizex;
 	int m_mapSizey;
 	glm::vec2 m_tileSize = glm::vec2(75.0f, 75.0f);

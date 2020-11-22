@@ -94,7 +94,7 @@ void ScreenManager::update()
 void ScreenManager::render()
 {
 	// This stuff must be done every render. Ignore
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
@@ -197,7 +197,9 @@ void ScreenManager::init()
 	m_soundDelegate.load_audio("aargh5.ogg");
 	m_soundDelegate.load_audio("aargh6.ogg");
 	m_soundDelegate.load_audio("aargh7.ogg");
-
+	
+	m_soundDelegate.load_audio("Start_Sounds_001.wav");
+	m_soundDelegate.load_audio("GAMEOVER.wav");
 
 	m_camera.set_scale(1.2);
 	m_camera.init_camera(m_window.get_width(), m_window.get_height());
