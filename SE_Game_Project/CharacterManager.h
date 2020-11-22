@@ -27,12 +27,14 @@ struct Player {
 };
 
 struct Score {
-	Score(const std::string& name, int wave) {
+	Score(const std::string& name, int wave, int zombieKills) {
 		this->name = name;
 		this->wave = wave;
+		this->zombieKills = zombieKills;
 	}
 	std::string name;
 	int wave;
+	int zombieKills;
 };
 class CharacterManager
 {

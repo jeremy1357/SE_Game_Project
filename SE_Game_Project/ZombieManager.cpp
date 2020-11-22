@@ -74,13 +74,13 @@ void ZombieManager::spawn_Wave(int wave)
 {
 	//m_zombies.clear();
 	int numZombies = 10 * (wave) + 20;
+	std::random_device rd;  //Will be used to obtain a seed for the random number engine
+	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+	std::uniform_real_distribution<float> disX(1.0f, 2.8f);
 
 	for (int i = 0; i < numZombies; i++) 	{
 		m_zombies.push_back(Zombie());
 		m_zombies.back().position = calculate_spawnPosition();   //sets position to newest zombie using calcspawn function
-		std::random_device rd;  //Will be used to obtain a seed for the random number engine
-		std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-		std::uniform_real_distribution<float> disX(1.0f, 2.8f);
 		m_zombies.back().speed = disX(rd);
 		m_zombies.back().isAlive = true;
 	}
@@ -149,6 +149,7 @@ void ZombieManager::update() {
 		}
 		if (it.health <= 0.0f) {
 			it.isAlive = false;
+			m_characterManager->m_player.zombieKills++;
 		}
 		float angleRads = atan2(it.position.y - playerY, it.position.x - playerX);
 		float angleDegrees = angleRads * 180.0f / 3.14157f;

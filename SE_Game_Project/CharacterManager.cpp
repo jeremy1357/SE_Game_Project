@@ -183,7 +183,7 @@ void CharacterManager::update(float playerAngle)
 	if (m_player.health <= 0 && m_player.isAlive)
 	{
 		m_player.isAlive = false;
-		m_scores.push_back(Score(m_player.name, m_zombieManager.wave));
+		m_scores.push_back(Score(m_player.name, m_zombieManager.wave, m_player.zombieKills));
 		if (m_gameoverMusicPlaying == false) {
 			m_soundDelegate->play_effect(m_soundDelegate->get_key("GAMEOVER.wav"), -1);
 			m_gameoverMusicPlaying = false;
