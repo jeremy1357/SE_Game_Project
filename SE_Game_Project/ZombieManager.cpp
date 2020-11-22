@@ -86,17 +86,17 @@ void ZombieManager::spawn_Wave(int wave)
 	}
 }
 
-void ZombieManager::collide_with_player(Zombie* zombie)
+void ZombieManager::collide_with_player(Zombie& zombie)
 {
 	// Get distance from center to center
-	float dist_a_to_b = glm::length(m_characterManager->m_player.position - zombie->position);
+	float dist_a_to_b = glm::length(m_characterManager->m_player.position - zombie.position);
 	if (dist_a_to_b < minDistBetweenSprites) {
-		glm::vec2 normalizedAngle = glm::normalize(m_characterManager->m_player.position - zombie->position);
+		glm::vec2 normalizedAngle = glm::normalize(m_characterManager->m_player.position - zombie.position);
 		float collisionDepth = minDistBetweenSprites - dist_a_to_b;
 		glm::vec2 push = normalizedAngle * collisionDepth;
 
 		m_characterManager->m_player.position += push / 2.0f;
-		zombie->position -= push / 2.0f;
+		zombie.position -= push / 2.0f;
 	}
 
 }
@@ -114,8 +114,6 @@ bool ZombieManager::collision_Check(char parameter)
 bool ZombieManager::should_spawn_wave()
 {
 	std::chrono::steady_clock::time_point local_time_PT = std::chrono::steady_clock::now();
-
-
 	std::chrono::duration<double> elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(local_time_PT - start);
 	if (elapsed_seconds.count() >= 20)
 	{
@@ -157,9 +155,8 @@ void ZombieManager::update() {
 		it.angle = angleDegrees;
 		damage_player(it);
 		tile_collision(it);
-
-
-		collide_with_player(&it);
+		collide_with_player(it);
+		perform_collisions(it);
 
 		// ================================================
 		// PARTICLE COLLISION
@@ -183,7 +180,6 @@ void ZombieManager::update() {
 
 	}
 	
-	perform_collisions();
 
 }
 
@@ -221,6 +217,8 @@ void ZombieManager::reset()
 {
 	wave = 0;
 	m_zombies.clear();
+	start = std::chrono::steady_clock::now();
+
 }
 
 void ZombieManager::set_zombie_sound_keys(int min, int max) {
@@ -264,25 +262,21 @@ void ZombieManager::perform_tile_collision(CollisionPosition *cp) {
 	}
 }
 
-void ZombieManager::perform_collisions() {
+void ZombieManager::perform_collisions(Zombie& zombie) {
 	// This logic is saying that zombie is colliding with zombie j
-	for (int i = 0; i < m_zombies.size(); i++) {
-		if (m_zombies[i].isAlive == false) {
-			continue;
-		}
-		for (int j = 0; j < m_zombies.size(); j++) {
-			if (i != j) {
-				// Get distance from center to center
-				float dist_a_to_b = glm::length(m_zombies[i].position - m_zombies[j].position);
-				if (dist_a_to_b < minDistBetweenSprites) {
-					glm::vec2 normalizedAngle = glm::normalize(m_zombies[i].position - m_zombies[j].position);
-					float collisionDepth = minDistBetweenSprites - dist_a_to_b;
-					glm::vec2 push = normalizedAngle * collisionDepth;
-					m_zombies[i].position += push / 2.0f;
-					m_zombies[j].position -= push / 2.0f;
-				}
+	for (auto& zombie2 : m_zombies) {
+		if (&(zombie2) != &(zombie)) {
+			// Get distance from center to center
+			float dist_a_to_b = glm::length(zombie.position - zombie2.position);
+			if (dist_a_to_b < minDistBetweenSprites) {
+				glm::vec2 normalizedAngle = glm::normalize(zombie.position - zombie2.position);
+				float collisionDepth = minDistBetweenSprites - dist_a_to_b;
+				glm::vec2 push = normalizedAngle * collisionDepth;
+				zombie.position += push / 2.0f;
+				zombie2.position -= push / 2.0f;
 			}
 		}
+		
 	}
 }
 
@@ -292,7 +286,5 @@ void ZombieManager::damage_player(Zombie& zombie)
 
 	if (distance <= minDistBetweenSprites + 10.0f) {
 		m_characterManager->m_player.health -= 0.5f;
-
 	}
-
 }

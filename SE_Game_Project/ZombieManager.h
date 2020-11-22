@@ -39,10 +39,10 @@ public:
 	std::vector<Zombie> m_zombies;
 	int wave = 0;
 private:
-	void perform_collisions();
+	void perform_collisions(Zombie& zombie);
 	bool should_spawn_wave();
 	void spawn_Wave(int wave);
-	void collide_with_player(Zombie* zombie);
+	void collide_with_player(Zombie& zombie);
 	void damage_player(Zombie& zombie);
 	glm::vec2 calculate_spawnPosition();
 	std::chrono::steady_clock::time_point start;

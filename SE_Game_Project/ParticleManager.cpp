@@ -17,6 +17,10 @@ void ParticleManager::update_particle()
 		if (m_particles[i].health > 0.0 && m_particles[i].m_color.a > 0) {
 			if (m_particles[i].m_color.r != 0) {
 				m_particles[i].m_color.a -= 3;
+				m_particles[i].speed -= 0.025f;
+				if (m_particles[i].speed.x < 0.0f) {
+					m_particles[i].speed = glm::vec2(0.0f);
+				}
 			}
 			else {
 				m_particles[i].health -= 0.5f;
@@ -24,7 +28,7 @@ void ParticleManager::update_particle()
 			}
 			m_particles[i].isActive = true;
 
-			glm::vec2 dirVector(cos(m_particles[i].angle * 3.14157 / 180), sin(m_particles[i].angle * 3.14157 / 180));
+				glm::vec2 dirVector(cos(m_particles[i].angle * 3.14157 / 180), sin(m_particles[i].angle * 3.14157 / 180));
 			m_particles[i].position += dirVector * m_particles[i].speed;
 
 			bool check = m_collisionManager->is_point_on_restricted_tile(m_particles[i].position);
@@ -84,7 +88,7 @@ void ParticleManager::blood_particle(glm::vec2 pos, float angle)
 				m_particles[i].isActive = true;
 				m_particles[i].position = pos;
 				m_particles[i].angle = angle * (-1 * rand());
-				m_particles[i].size = glm::vec2(5.0);
+				m_particles[i].size = glm::vec2(4.0f);
 				m_particles[i].speed = glm::vec2(1.0f);
 				m_particles[i].health = 25.0f;
 				m_particles[i].m_color = ColorRGBA32(226, 0, 45, 255);
@@ -98,7 +102,7 @@ void ParticleManager::blood_particle(glm::vec2 pos, float angle)
 				m_particles[i].isActive = true;
 				m_particles[i].position = pos;
 				m_particles[i].angle = angle * (-1 * rand());
-				m_particles[i].size = glm::vec2(5.0);
+				m_particles[i].size = glm::vec2(4.0f);
 				m_particles[i].speed = glm::vec2(1.0f);
 				m_particles[i].health = 25.0f;
 				m_particles[i].m_color = ColorRGBA32(226, 0, 45, 255);
