@@ -8,7 +8,10 @@
 #include "InputManager.h"
 #include "Camera.h"
 #include "SoundDelegate.h"
+#include "Score.h"
 #include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl.h"
 #include <unordered_map>
 #include <GL/glew.h>
 #include <string.h>
@@ -52,12 +55,15 @@ public:
 	Camera m_camera;
 	SoundDelegate m_soundDelegate;
 	std::string m_playerName = "Steve";
+	std::unordered_map<int, Screen*> m_screens;
+	std::vector<Score> m_scores;
+	ImFont* m_bigFont;
+	ImFont* m_smallFont;
 
 	bool m_isProgramRunning = false;
 protected:
 	std::string m_projectDirectory = "";
 	Screen* m_currentScreen = nullptr;
-	std::unordered_map<int, Screen*> m_screens;
 	
 	// TODO: Add the input manager
 };

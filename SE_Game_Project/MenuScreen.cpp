@@ -14,6 +14,12 @@ MenuScreen::MenuScreen(int uniqueScreenID)
 void MenuScreen::on_init()
 {
 	m_menuEffects.init(m_screenManager->get_project_directory());
+	playerName[0] = 'S';
+	playerName[1] = 't';
+	playerName[2] = 'e';
+	playerName[3] = 'v';
+	playerName[4] = 'e';
+
 }
 
 void MenuScreen::on_entry()
@@ -54,8 +60,11 @@ void MenuScreen::on_render()
 	windowSize.x = m_screenManager->m_window.get_width();
 	windowSize.y = m_screenManager->m_window.get_height();
 	ImGui::SetNextWindowSize(windowSize);
-	ImGui::SetWindowFontScale(8.0f);
+	ImGui::PushFont(m_screenManager->m_bigFont);
+
 	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	ImGui::SetWindowFontScale(1.5f);
+
 	style.WindowBorderSize = 1.0f;
 	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
 	style.WindowMenuButtonPosition = ImGuiDir_None;
@@ -117,10 +126,12 @@ void MenuScreen::on_render()
 	if (ImGui::Button("Exit Game", ImVec2(buttonExitGame, 50))) {
 		m_screenManager->m_isProgramRunning = false;
 	}
+	ImGui::SetWindowFontScale(1.0f);
 
 	ImGui::End();
 	glm::vec2 cursorPosition(m_screenManager->m_inputManager.m_mPosX, m_screenManager->m_inputManager.m_mPosY);
 	m_menuEffects.render(m_screenManager->m_camera, cursorPosition);
+	ImGui::PopFont();
 
 }
 

@@ -1,10 +1,8 @@
 #include "CharacterManager.h"
-#include "CharacterManager.h"
 #include "InputManager.h"
 #include "LevelManager.h"
 #include <SDL/SDL.h>
-#include<iostream>
-
+#include <iostream>
 
 CharacterManager::CharacterManager()
 {
@@ -29,8 +27,8 @@ void CharacterManager::start_game(std::string name)
 		bool shouldSearch = true;
 		// Verify name isnt already stored
 		while (shouldSearch) {
-			for (int i = 0; i < m_scores.size(); i++) {
-				if (name == m_scores[i].name) {
+			for (int i = 0; i < m_scores->size(); i++) {
+				if (name == (*m_scores)[i].name) {
 					name += "~";
 				}
 			}
@@ -42,17 +40,21 @@ void CharacterManager::start_game(std::string name)
 		m_player.money		= 500;
 		m_player.position	= PLAYER_START_POINT;
 		m_player.health		= 100;
-		m_player.zombieKills = 0;
+		m_player.zombieKills	= 0;
+		m_player.armor			= 0;
+		m_player.armorIndex		= 0;
+		m_player.armorEquipped = false;
 		m_inventory.clear();
 		m_gameoverMusicPlaying = false;
 		// TODO: Add in restart of particle manager
 		// Add starting items
 		add_item_to_inventory("Pistol");
-		add_item_to_inventory("Shotgun");
 
-		set_gun_index("Shotgun");
+		set_gun_index("Pistol");
+		m_inventory[m_currentGunIndex].isEquipped = true;
 		m_zombieManager.reset();
 		m_levelManager->reset_map_data();
+		m_particleManager.reset();
 	}
 }
 
@@ -84,15 +86,6 @@ void CharacterManager::add_item_to_inventory(const std::string& itemName)
 	}
 }
 
-void CharacterManager::use_consumable_item(const std::string& itemName)
-{
-	for (size_t i = 0; i < m_inventory.size(); i++) {
-		if (m_inventory[i].Name == itemName) {
-
-		}
-	}
-}
-
 void CharacterManager::attempt_to_buy_item(const std::string& itemName)
 {
 	for (auto& it : m_economy.itemList) {
@@ -112,7 +105,7 @@ void CharacterManager::attempt_to_sell_item(const std::string& itemName)
 		if (itemName == it.Name) {
 			m_player.money += it.SellCost;
 			m_inventory.erase(m_inventory.begin() + index);
-			
+			break;
 		}
 		index += 1;
 	}
@@ -129,6 +122,40 @@ void CharacterManager::stop_game_over_music()
 	m_soundDelegate->stop_effect(m_soundDelegate->get_key("GAMEOVER.wav"));
 }
 
+void CharacterManager::use_consumable(const std::string& itemName)
+{
+	for (int i = 0; i < m_inventory.size(); i++) {
+		if (m_inventory[i].Name == itemName) {
+			m_player.health += m_inventory[i].healthRegen;
+			if (m_player.health > 100.0f) {
+				m_player.health = 100.0f;
+			}
+			m_inventory.erase(m_inventory.begin() + i);
+			break;
+		}
+	}
+}
+
+void CharacterManager::toggleEquippableItem(const std::string& itemName)
+{
+	for (auto& it : m_inventory) {
+		if (it.Name == itemName) {
+			if (it.Type == 0) {
+				m_inventory[m_player.armorIndex].isEquipped = false;
+				m_player.armor = it.Armor;
+				it.isEquipped = true;
+				
+			}
+			else if (it.Type == 2) {
+				m_inventory[m_currentGunIndex].isEquipped = false;
+				set_gun_index(itemName);
+				it.isEquipped = true;
+				
+			}
+		}
+	}
+}
+
 void CharacterManager::set_gun_index(const std::string& itemName)
 {
 	for (int i = 0; i < m_inventory.size(); i++) {
@@ -138,6 +165,11 @@ void CharacterManager::set_gun_index(const std::string& itemName)
 		}
 	}
 	m_currentGunIndex = -1;
+}
+
+void CharacterManager::damage_player(float damage)
+{
+	m_player.health -= damage;
 }
 
 std::string CharacterManager::get_gun_name()
@@ -164,7 +196,8 @@ void CharacterManager::init(
 	CollisionManager& collisionManager,
 	Camera& camera,
 	SoundDelegate& soundDelegate,
-	const std::string &programDirectory)
+	const std::string &programDirectory,
+	std::vector<Score>& scores)
 {
 	m_inputManager		= &inputManager;
 	m_levelManager		= &levelManager;
@@ -174,16 +207,16 @@ void CharacterManager::init(
 	blacklistedChar = m_levelManager->get_restricted_tiles();
 	m_economy.init(programDirectory, 20);
 	m_particleManager.particle_init(collisionManager);
-
+	m_scores = &scores;
 	m_zombieManager.init(levelManager, *this, collisionManager, soundDelegate, m_particleManager);
 }
 
-void CharacterManager::update(float playerAngle)
+void CharacterManager::update(float playerAngle, bool isImGuiHovered)
 {
 	if (m_player.health <= 0 && m_player.isAlive)
 	{
 		m_player.isAlive = false;
-		m_scores.push_back(Score(m_player.name, m_zombieManager.wave, m_player.zombieKills));
+		m_scores->push_back(Score(m_player.name, m_zombieManager.wave, m_player.zombieKills));
 		if (m_gameoverMusicPlaying == false) {
 			m_soundDelegate->play_effect(m_soundDelegate->get_key("GAMEOVER.wav"), -1);
 			m_gameoverMusicPlaying = false;
@@ -209,7 +242,7 @@ void CharacterManager::update(float playerAngle)
 		if (m_inputManager->get_key(SDLK_d)) {
 			m_player.position.x += speed;
 		}
-		if (m_inputManager->get_keyPressed(SDLK_r)) {
+		if (m_inputManager->get_keyPressed(SDLK_r) && !isImGuiHovered) {
 			// Unlocking a door costs $200
 			if (m_economy.Insufficient_Funds(m_player.money, 200)) {
 				if (m_levelManager->unlock_tile(m_camera->get_world_cursor_position())) {
@@ -220,7 +253,7 @@ void CharacterManager::update(float playerAngle)
 				}
 			}
 		}
-		if (m_inputManager->get_keyPressed(SDL_BUTTON_LEFT)) {
+		if (m_inputManager->get_keyPressed(SDL_BUTTON_LEFT) && !isImGuiHovered) {
 			if (m_inventory[m_currentGunIndex].bulletsPerShot != 1) {
 				for (int i = 0; i < m_inventory[m_currentGunIndex].bulletsPerShot; i++) {
 					glm::vec2 dirVector(cos(m_player.angle * 3.14157 / 180), sin(m_player.angle * 3.14157 / 180));
@@ -242,9 +275,6 @@ void CharacterManager::update(float playerAngle)
 }
 
 void CharacterManager::tile_collision() {
-
-
-	glm::vec2 worldSize = m_levelManager->get_map_size();
 	CollisionPosition collisionAreas[4];
 	collisionAreas[0].position = m_player.position; //TL
 	collisionAreas[1].position = m_player.position; //TR
@@ -280,7 +310,7 @@ void CharacterManager::perform_tile_collision(CollisionPosition *cp) {
 			glm::vec2 vectorFromTileToPlayer = m_player.position - tileCenter;
 			const float radius = 25.0f;
 			// 75 should not be a hard coded constant. CHANGE 
-			const float distTillCollision = radius + (75.0f / 2); // 75.0f is the window of a tile.
+			const float distTillCollision = radius + (75.0f / 2); // 75.0f is the width of a tile.
 			float x = distTillCollision - abs(vectorFromTileToPlayer.x);
 			float y = distTillCollision - abs(vectorFromTileToPlayer.y);
 

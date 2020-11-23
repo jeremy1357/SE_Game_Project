@@ -47,8 +47,8 @@ void LevelManager::init(
 	}
 	// Create a copy of the map data for when we need to reset the map
 	m_originalMapData = m_mapData;
-	mapSize.x = m_mapData.size();
-	mapSize.y = m_mapData[0].size();
+	mapSize.y = m_mapData.size();
+	mapSize.x = m_mapData[0].size();
 	std::string imageDirectory = projectDirectory + "Resources\\Textures\\";
 
 	GLuint poundTexture		= m_textureCache->get_texture_id(imageDirectory + "Ground_01.png");
@@ -137,6 +137,7 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 			return;
 		}
 		glm::vec2 tileCenter(0.0f, 0.0f);
+
 		for (auto& x : m_mapData) {
 			for (auto& y : x) {
 				switch (y) {
@@ -237,10 +238,11 @@ void LevelManager::render(glm::vec2 playerPosition, glm::vec2 windowDimensions) 
 					m_renderer->add_static_sprite_to_batch(tileCenter, get_texture_ID('~'));
 					break;
 				}
-				tileCenter.y += 1.0f;
+
+				tileCenter.x += 1.0f;
 			}
-			tileCenter.x += 1.0f;
-			tileCenter.y = 0.0f;
+			tileCenter.y += 1.0f;
+			tileCenter.x = 0.0f;
 		}
 	}
 }
@@ -250,8 +252,8 @@ char LevelManager::get_character(glm::vec2 position, bool shouldScale)
 	if (shouldScale) {
 		position /= m_tileDimensions;
 	}
-	int xPos = (int)floor(position.x);
-	int yPos = (int)floor(position.y);
+	int xPos = (int)floor(position.y);
+	int yPos = (int)floor(position.x);
 	if (m_mapData.size() > xPos && xPos >= 0) {
 		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
 			return m_mapData[xPos][yPos];
@@ -275,8 +277,8 @@ bool LevelManager::unlock_tile(glm::vec2 point)
 	point /= m_tileDimensions;
 
 	const char DOOR = 'q';
-	int xPos = (int)floor(point.x);
-	int yPos = (int)floor(point.y);
+	int xPos = (int)floor(point.y);
+	int yPos = (int)floor(point.x);
 	if (m_mapData.size() > xPos && xPos >= 0) {
 		if (m_mapData[xPos].size() > yPos && yPos >= 0) {
 			if (m_mapData[xPos][yPos] == DOOR) {
@@ -300,10 +302,10 @@ void LevelManager::reset_map_data()
 glm::vec2 LevelManager::get_tile_center(glm::vec2 tileToGetCenterOf)
 {
 	glm::vec2 tempTile = tileToGetCenterOf / m_tileDimensions;
-	int xPos = (int)floor(tempTile.x);
-	int yPos = (int)floor(tempTile.y);
-	tileToGetCenterOf.x = xPos * m_tileDimensions.x;
-	tileToGetCenterOf.y = yPos * m_tileDimensions.y;
+	int xPos = (int)floor(tempTile.y);
+	int yPos = (int)floor(tempTile.x);
+	tileToGetCenterOf.y = xPos * m_tileDimensions.x;
+	tileToGetCenterOf.x = yPos * m_tileDimensions.y;
 
 	if (m_mapData.size() > xPos && xPos >= 0) {
 		if (m_mapData[xPos].size() > yPos && yPos >= 0) {

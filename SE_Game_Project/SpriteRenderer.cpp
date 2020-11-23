@@ -22,7 +22,7 @@ const char* SPRITE_FRAGMENT_SHADER = {
 	"uniform sampler2D tex;\n"
 	"void main()\n"
 	"{ \n"
-		"FragColor = texture(tex, -fragmentUV); \n"
+		"FragColor = texture(tex, fragmentUV); \n"
 	"} \n"};
 
 
@@ -76,7 +76,7 @@ void SpriteRenderer::on_init(Camera& camera, TextureCache& textureCache, const s
 	m_lightShader.link_shaders();
 
 	m_lightBatch.textureID = m_textureCache->get_texture_id(m_resourceDirectory + "light.png");
-	m_particleBatch.textureID = m_textureCache->get_texture_id(m_resourceDirectory + "particle.png");
+	m_particleBatch.textureID = m_textureCache->get_texture_id(m_resourceDirectory + "particle.png", false);
 
 	glGenVertexArrays(1, &m_staticVAO);
 	glGenBuffers(1, &m_staticVBO);

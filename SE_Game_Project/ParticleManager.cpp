@@ -6,6 +6,13 @@ ParticleManager::ParticleManager()
 	// Empty
 }
 
+void ParticleManager::reset() {
+	for (auto& it : m_particles) {
+		it.health = 0.0f;
+		it.isActive = false;
+	}
+}
+
 void ParticleManager::particle_init(CollisionManager& collisionManager)
 {
 	m_collisionManager = &collisionManager;
@@ -88,8 +95,8 @@ void ParticleManager::blood_particle(glm::vec2 pos, float angle)
 				m_particles[i].isActive = true;
 				m_particles[i].position = pos;
 				m_particles[i].angle = angle * (-1 * rand());
-				m_particles[i].size = glm::vec2(4.0f);
-				m_particles[i].speed = glm::vec2(1.0f);
+				m_particles[i].size = glm::vec2(5.0f);
+				m_particles[i].speed = glm::vec2(1.7f);
 				m_particles[i].health = 25.0f;
 				m_particles[i].m_color = ColorRGBA32(226, 0, 45, 255);
 				lastUsedParticle = i;
@@ -102,8 +109,8 @@ void ParticleManager::blood_particle(glm::vec2 pos, float angle)
 				m_particles[i].isActive = true;
 				m_particles[i].position = pos;
 				m_particles[i].angle = angle * (-1 * rand());
-				m_particles[i].size = glm::vec2(4.0f);
-				m_particles[i].speed = glm::vec2(1.0f);
+				m_particles[i].size = glm::vec2(5.0f);
+				m_particles[i].speed = glm::vec2(1.7f);
 				m_particles[i].health = 25.0f;
 				m_particles[i].m_color = ColorRGBA32(226, 0, 45, 255);
 				lastUsedParticle = i;

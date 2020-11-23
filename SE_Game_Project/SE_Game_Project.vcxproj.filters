@@ -200,6 +200,9 @@
     <ClInclude Include="ScoringScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\grass.png">

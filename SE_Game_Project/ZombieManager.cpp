@@ -23,16 +23,12 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 	glm::vec2 testPT = glm::vec2 (0.0);
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-	std::uniform_real_distribution<> disX(100.0, 3725.0);
-	std::uniform_real_distribution<> disY(175.0, 7625.0);
+	std::uniform_real_distribution<> disY(100.0f, m_mapSize.y - 100.0f);
+	std::uniform_real_distribution<> disX(100.0f, m_mapSize.x - 100.0f);
 
 	for (int i = 0; i < 10; i++)
 	{
-		//testPT.x = rand() % m_mapSizex*m_tileSize.x;   //1 - 3899
-		//testPT.y = rand() % m_mapSizey*m_tileSize.y;   //
-		
-		testPT.x = disX(gen);   
-		
+		testPT.x = disX(gen);   	
 		testPT.y = disY(gen);   
 
 		char result;
@@ -59,7 +55,7 @@ void ZombieManager::init(LevelManager& levelManager,
 	m_characterManager			= &characterManager;
 	m_collisionManager			= &collisionManager;
 	soundDelegate				= &sound;
-	m_mapSize					= levelManager.get_map_size();
+	m_mapSize					= levelManager.get_map_size() * glm::vec2(75.0f);
 	m_blacklistedChar			= levelManager.get_restricted_tiles();
 	m_tileSize					= levelManager.get_tile_dimensions();
 	minDistBetweenSprites		= m_characterManager->get_sprite_radius() * 2.0f;
@@ -284,7 +280,7 @@ void ZombieManager::damage_player(Zombie& zombie)
 {
 	float distance = glm::length(m_characterManager->m_player.position - zombie.position);
 
-	if (distance <= minDistBetweenSprites + 10.0f) {
-		m_characterManager->m_player.health -= 0.5f;
+	if (distance <= minDistBetweenSprites + 15.0f) {
+		m_characterManager->damage_player(0.3f);
 	}
 }

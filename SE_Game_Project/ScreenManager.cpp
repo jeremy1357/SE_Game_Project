@@ -1,8 +1,6 @@
 #include "ScreenManager.hpp"
 #include <iostream>
-#include "imgui.h"
-#include "imgui_impl_opengl3.h"
-#include "imgui_impl_sdl.h"
+
 #include <windows.h>
 
 void ScreenManager::runProgram()
@@ -150,7 +148,8 @@ void ScreenManager::init()
 
 
 	ImGui::StyleColorsDark();
-	io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 24.0f);
+	m_bigFont = io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 24.0f);
+	m_smallFont = io.Fonts->AddFontDefault();
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowRounding = 5.0f;
 	style.FrameRounding = 10.0f;

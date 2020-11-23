@@ -1,6 +1,6 @@
 #include "GameScreen.h"
 #include "imgui.h"
-
+#include <string>
 
 GameScreen::GameScreen(int uniqueScreenID)
 {
@@ -20,12 +20,14 @@ void GameScreen::on_init()
 					m_screenManager->m_soundDelegate.get_key("zombie9.wav"));
 	m_characterManager.set_player_hurt_sound_ranges(m_screenManager->m_soundDelegate.get_key("aargh0.ogg"),
 					m_screenManager->m_soundDelegate.get_key("aargh7.ogg"));
+	
 	m_characterManager.init(m_screenManager->m_inputManager, 
 		m_levelManager, 
 		m_collisionManager, 
 		m_screenManager->m_camera,
 		m_screenManager->m_soundDelegate,
-		m_screenManager->get_project_directory());
+		m_screenManager->get_project_directory(),
+		m_screenManager->m_scores);
 
 }
 
@@ -64,34 +66,10 @@ void GameScreen::on_render()
 		}
 	}
 	m_spriteRenderer.on_render();
-	
-	//ImGui::SetNextWindowBgAlpha(0.35f);
-	render_game_screen();
-
-	int tempHeight = m_screenManager->m_window.get_height();
-	int tempWidth = m_screenManager->m_window.get_width();
-	int height = tempHeight / 2;
-	int width = tempWidth / 2;
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(160, 160));
-	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
-	ImGui::Text("Health: %i", m_characterManager.m_player.health);
-	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
-	ImGui::Text("Wave: %i", m_characterManager.m_zombieManager.wave);
-	if (ImGui::Button("Main Menu")) {
-		m_screenManager->setScreen(ScreenKeys::MENU);
-	}
-	ImGui::End();
-	
-	ImVec2 windowSize;
-	windowSize.y = m_screenManager->m_window.get_height();
-	ImGui::SetNextWindowPos(ImVec2(0, windowSize.y - 35));
-	ImGui::SetNextWindowSize(ImVec2(170, 40));
-	ImGui::Begin("Gun", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-	ImGui::Text(("Gun: " + m_characterManager.get_gun_name()).c_str());
-	ImGui::End();
-
+	render_inventory();
+	render_shop();
+	render_widget1();
+	render_widget2();
 }
 
 void GameScreen::on_update()
@@ -107,13 +85,19 @@ void GameScreen::on_update()
 		m_screenManager->m_window.get_width(),
 		m_screenManager->m_window.get_height());
 	
-	m_characterManager.update(m_screenManager->m_camera.playerCursorAngle);
+	m_characterManager.update(m_screenManager->m_camera.playerCursorAngle, ImGui::IsWindowHovered(ImGuiFocusedFlags_AnyWindow));
 
 }
 
-void GameScreen::render_game_screen()
+void GameScreen::render_shop()
 {
-	ImGui::Begin("Shop");
+	int tempWidth = m_screenManager->m_window.get_width();
+	int width = tempWidth / 4 + 300;
+	ImGui::SetNextWindowPos(ImVec2(width, 0));
+	ImGui::SetNextWindowSize(ImVec2(430, 300));
+	int id = 0;
+	ImGui::Begin("Shop", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	ImGui::PushFont(m_screenManager->m_smallFont);
 	ImGui::Columns(4, "mixed");
 	ImGui::Separator();
 	ImGui::Text("Name");
@@ -146,26 +130,133 @@ void GameScreen::render_game_screen()
 		switch (it.Type) {
 		case 0:
 			ImGui::Text("Armor");
-			ImGui::Text("Dmg % Block %i", it.Armor);
+			ImGui::Text("Dmg % Block: %i", it.Armor);
 			break;
 		case 1:
 			ImGui::Text("Consumable");
-			ImGui::Text("Health Regen %i", it.healthRegen);
+			ImGui::Text("Health+: %i", it.healthRegen);
 			break;
 		case 2:
 			ImGui::Text("Weapon");
-			ImGui::Text("Damage %i", it.damage);
-			ImGui::Text("Bullets per shot %i", it.bulletsPerShot);
+			ImGui::Text("Damage: %i", it.damage);
+			ImGui::Text("Bullets: %i", it.bulletsPerShot);
 			break;
 		}
 		ImGui::Columns(1);
 		ImGui::Separator();
 	}
-
-	ImGui::Separator();
+	ImGui::PopFont();
 	ImGui::End();
-	ImGuiStyle& style = ImGui::GetStyle();
+}
 
-	//style.Colors[ImGuiCol_Text] = TEXT(0.99f); //Changing color of text
+void GameScreen::render_inventory()
+{
+	int tempWidth = m_screenManager->m_window.get_width();
+	int width = tempWidth / 4.2;
+	ImGui::SetNextWindowPos(ImVec2(width, 0));
+	ImGui::SetNextWindowSize(ImVec2(300, 300));
+	int id = 0;
+	ImGui::Begin("Inventory", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	ImGui::PushFont(m_screenManager->m_smallFont);
+	ImGui::Columns(3, "mixed");
+	ImGui::Separator();
+	ImGui::Text("Name");
+	ImGui::NextColumn();
+	ImGui::Text("Attributes");
+	ImGui::NextColumn();
+	ImGui::Text("Action");
+	ImGui::NextColumn();
+	ImGui::Columns(1);
+	ImGui::Separator();
+	for (auto& it : m_characterManager.m_inventory) {
+		ImGui::Columns(3, "mixed");
+		ImGui::Text(it.Name.c_str());
+		//ImGui::SetColumnWidth(1, 50.0f);
+		ImGui::NextColumn();
+		switch (it.Type) {
+		case 0:
+			ImGui::Text("Armor");
+			ImGui::Text("Dmg % Block: %i", it.Armor);
+			break;
+		case 1:
+			ImGui::Text("Consumable");
+			ImGui::Text("Health +: %i", it.healthRegen);
+			break;
+		case 2:
+			ImGui::Text("Weapon");
+			ImGui::Text("Damage: %i", it.damage);
+			ImGui::Text("Bullets: %i", it.bulletsPerShot);
+			break;
+		}
+		//ImGui::SetColumnWidth(2, 50.0f);
 
+		ImGui::NextColumn();
+		switch (it.Type) {
+		case 1:
+			if (ImGui::Button(("Use##" + std::to_string(id)).c_str())) {
+				m_characterManager.use_consumable(it.Name);
+			}
+			break;
+		case 0:
+			if (it.isEquipped) {
+				if (ImGui::Button(("Unequip##" + std::to_string(id)).c_str())) {
+					m_characterManager.toggleEquippableItem(it.Name);
+				}
+			}
+			else {
+				if (ImGui::Button(("Equip##" + std::to_string(id)).c_str())) {
+					m_characterManager.toggleEquippableItem(it.Name);
+				}
+			}
+		case 2:
+			if (it.isEquipped) {
+				ImGui::Text("Current gun");
+			}
+			else {
+				if (ImGui::Button(("Equip##" + std::to_string(id)).c_str())) {
+					m_characterManager.toggleEquippableItem(it.Name);
+				}
+			}
+
+			break;
+		}
+		//ImGui::SetColumnWidth(3, 50.0f);
+
+		ImGui::Columns(1);
+		ImGui::Separator();
+		id++;
+	}
+	ImGui::PopFont();
+	ImGui::End();
+}
+
+void GameScreen::render_widget1()
+{
+	int tempHeight = m_screenManager->m_window.get_height();
+	int tempWidth = m_screenManager->m_window.get_width();
+	int height = tempHeight / 2;
+	int width = tempWidth / 2;
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImVec2(170, 160));
+	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
+	ImGui::Text("Health: %i", (int)m_characterManager.m_player.health);
+	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
+	ImGui::Text("Wave: %i", m_characterManager.m_zombieManager.wave);
+
+	if (ImGui::Button("Main Menu")) {
+		m_screenManager->setScreen(ScreenKeys::MENU);
+	}
+	ImGui::End();
+}
+
+void GameScreen::render_widget2()
+{
+	ImVec2 windowSize;
+	windowSize.y = m_screenManager->m_window.get_height();
+	ImGui::SetNextWindowPos(ImVec2(0, windowSize.y - 35));
+	ImGui::SetNextWindowSize(ImVec2(170, 40));
+	ImGui::Begin("Gun", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	ImGui::Text(("Gun: " + m_characterManager.get_gun_name()).c_str());
+	ImGui::End();
 }
