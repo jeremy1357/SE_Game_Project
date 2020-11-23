@@ -39,8 +39,8 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 	glm::vec2 testPT = glm::vec2 (0.0);
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-	std::uniform_real_distribution<> disY(tpMin.x, tpMax.x);
-	std::uniform_real_distribution<> disX(tpMin.y, tpMax.y);
+	std::uniform_real_distribution<float> disY(tpMin.x, tpMax.x);
+	std::uniform_real_distribution<float> disX(tpMin.y, tpMax.y);
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -51,13 +51,13 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 		result = m_levelManager->get_character(testPT, true);
 
 		bool posCheck = collision_Check(result);
-		if (glm::length(testPT - playerP) <= 100.0f) posCheck = true;
-		if (posCheck == false)
-		{
-			break;
+		if (glm::length(testPT - playerP) <= 200.0f) posCheck = true;
+		if (posCheck == false) {
+			verifiedPosition = testPT;
+			return testPT;
 		}
 	}
-	return testPT;
+	return verifiedPosition;
 }
 
 
@@ -85,7 +85,7 @@ void ZombieManager::init(LevelManager& levelManager,
 void ZombieManager::spawn_Wave(int wave)
 {
 	//m_zombies.clear();
-	int numZombies = 10 * (wave) + 20;
+	int numZombies = 6 * (wave) + 5;
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
 	std::uniform_real_distribution<float> disX(1.0f, 2.8f);

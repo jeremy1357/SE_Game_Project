@@ -205,7 +205,7 @@ void CharacterManager::set_gun_index(const std::string& itemName)
 void CharacterManager::damage_player(float damage)
 {
 	m_player.health -= damage * ((100.0f - (float)m_player.armor) / 100.0f);
-	if (rand() % 50 < 10) {
+	if (rand() % 450 < 10) {
 		m_soundDelegate->play_effect(rand() % (m_characterSoundHurtMax - m_characterSoundHurtMin) + m_characterSoundHurtMin);
 
 	}

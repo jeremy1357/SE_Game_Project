@@ -2,7 +2,7 @@
 #include <string>
 #include <map>
 #include <SDL/SDL_mixer.h>
-
+#include <vector>
 
 struct AudioFile {
 	AudioFile(const std::string& name, Mix_Chunk* audioData) {
@@ -30,5 +30,6 @@ public:
 private:
 	std::string m_soundPathway;
 	std::map <int, AudioFile> m_audioFiles;
+	std::vector<int> m_usedChannels;
 };
 

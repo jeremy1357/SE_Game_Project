@@ -35,7 +35,7 @@ public:
 	void tile_collision(Zombie& zombie);
 	void reset();
 
-
+	glm::vec2 verifiedPosition;
 	std::vector<Zombie> m_zombies;
 	int wave = 0;
 private:
