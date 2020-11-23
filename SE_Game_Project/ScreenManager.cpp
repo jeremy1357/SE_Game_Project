@@ -150,14 +150,20 @@ void ScreenManager::init()
 	ImGui::StyleColorsDark();
 	m_bigFont = io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 24.0f);
 	m_smallFont = io.Fonts->AddFontDefault();
+	m_megaFont = io.Fonts->AddFontFromFileTTF(std::string(m_projectDirectory + "\\Resources\\Fonts\\Goldman-Bold.ttf").c_str(), 28.0f);
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowRounding = 5.0f;
-	style.FrameRounding = 10.0f;
-	style.ScrollbarRounding = 0;
-	style.ChildRounding = 5.0f;
-	// Setup Dear ImGui style
-	//ImGui::StyleColorsClassic();
+	style.FrameRounding = 5.0f;
+	ImGui::StyleColorsClassic();
 
+	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.0, 0.0, 0.0, 1.0);
+	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0, 0.0, 0.0, 1.0);
+	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.0, 0.0, 0.0, 1.0);
+
+	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0, 0.0, 0.0, 1.0);
+	//style.ScrollbarRounding = 0;
+	//style.ChildRounding = 5.0f;
+	// Setup Dear ImGui style
 	// Load Fonts
 	// - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
 	// - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.

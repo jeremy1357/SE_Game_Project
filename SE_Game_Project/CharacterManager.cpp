@@ -42,7 +42,7 @@ void CharacterManager::start_game(std::string name)
 		m_player.health		= 100;
 		m_player.zombieKills	= 0;
 		m_player.armor			= 0;
-		m_player.armorIndex		= 0;
+		m_player.armorIndex		= -1; // Should default to -1
 		m_player.armorEquipped = false;
 		m_inventory.clear();
 		m_gameoverMusicPlaying = false;
@@ -138,12 +138,23 @@ void CharacterManager::use_consumable(const std::string& itemName)
 
 void CharacterManager::toggleEquippableItem(const std::string& itemName)
 {
+	int i = 0;
 	for (auto& it : m_inventory) {
 		if (it.Name == itemName) {
 			if (it.Type == 0) {
-				m_inventory[m_player.armorIndex].isEquipped = false;
-				m_player.armor = it.Armor;
-				it.isEquipped = true;
+				if (m_player.armorIndex != -1) {
+					m_inventory[m_player.armorIndex].isEquipped = false;
+				}
+				if (m_player.armorIndex == -1) {
+					m_player.armorIndex = i;
+					m_player.armor = it.Armor;
+					it.isEquipped = true;
+				}
+				else {
+					it.isEquipped = false;
+					m_player.armor = 0;
+					m_player.armorIndex = -1; // Reset back to -1
+				}
 				
 			}
 			else if (it.Type == 2) {
@@ -153,6 +164,7 @@ void CharacterManager::toggleEquippableItem(const std::string& itemName)
 				
 			}
 		}
+		i += 1;
 	}
 }
 
@@ -169,7 +181,7 @@ void CharacterManager::set_gun_index(const std::string& itemName)
 
 void CharacterManager::damage_player(float damage)
 {
-	m_player.health -= damage;
+	m_player.health -= damage * ((100.0f - (float)m_player.armor) / 100.0f);
 }
 
 std::string CharacterManager::get_gun_name()

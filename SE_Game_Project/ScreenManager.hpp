@@ -59,6 +59,7 @@ public:
 	std::vector<Score> m_scores;
 	ImFont* m_bigFont;
 	ImFont* m_smallFont;
+	ImFont* m_megaFont;
 
 	bool m_isProgramRunning = false;
 protected:

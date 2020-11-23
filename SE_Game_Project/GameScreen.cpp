@@ -70,6 +70,21 @@ void GameScreen::on_render()
 	render_shop();
 	render_widget1();
 	render_widget2();
+	if (!m_characterManager.m_player.isAlive) {
+		
+		int tempHeight = m_screenManager->m_window.get_height();
+		int tempWidth = m_screenManager->m_window.get_width();
+		int height = tempHeight / 2;
+		int width = tempWidth / 2;
+		ImGui::SetNextWindowPos(ImVec2(width - 300, height));
+		ImGui::SetNextWindowSize(ImVec2(600, 100));
+		ImGui::Begin("DEATH", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+		ImGui::SetWindowFontScale(3.0f);
+		ImGui::Text("YOU ARE DEAD!");
+		ImGui::SetWindowFontScale(1.0f);
+
+		ImGui::End();
+	}
 }
 
 void GameScreen::on_update()
@@ -208,6 +223,7 @@ void GameScreen::render_inventory()
 					m_characterManager.toggleEquippableItem(it.Name);
 				}
 			}
+			break;
 		case 2:
 			if (it.isEquipped) {
 				ImGui::Text("Current gun");
@@ -232,16 +248,17 @@ void GameScreen::render_inventory()
 
 void GameScreen::render_widget1()
 {
-	int tempHeight = m_screenManager->m_window.get_height();
-	int tempWidth = m_screenManager->m_window.get_width();
-	int height = tempHeight / 2;
-	int width = tempWidth / 2;
+	//int tempHeight = m_screenManager->m_window.get_height();
+	//int tempWidth = m_screenManager->m_window.get_width();
+	//int height = tempHeight / 2;
+	//int width = tempWidth / 2;
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(170, 160));
+	ImGui::SetNextWindowSize(ImVec2(170, 190));
 	ImGui::Begin("Zombie Onslaught", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	ImGui::Text("FPS: %i", (int)m_screenManager->m_timer.m_fps);
 	ImGui::Text("Health: %i", (int)m_characterManager.m_player.health);
 	ImGui::Text("Money: $%i", m_characterManager.m_player.money);
+	ImGui::Text("Armor: %i", m_characterManager.m_player.armor);
 	ImGui::Text("Wave: %i", m_characterManager.m_zombieManager.wave);
 
 	if (ImGui::Button("Main Menu")) {

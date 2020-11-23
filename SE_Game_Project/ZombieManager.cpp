@@ -20,13 +20,14 @@ ZombieManager::~ZombieManager()
 
 glm::vec2 ZombieManager::calculate_spawnPosition()
 {
+	glm::vec2 playerP = m_characterManager->m_player.position;
 	glm::vec2 testPT = glm::vec2 (0.0);
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-	std::uniform_real_distribution<> disY(100.0f, m_mapSize.y - 100.0f);
-	std::uniform_real_distribution<> disX(100.0f, m_mapSize.x - 100.0f);
+	std::uniform_real_distribution<> disY(playerP.x - 300.0f, playerP.x + 300.0f);
+	std::uniform_real_distribution<> disX(playerP.y - 300.0f, playerP.y + 300.0f);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		testPT.x = disX(gen);   	
 		testPT.y = disY(gen);   
@@ -35,7 +36,7 @@ glm::vec2 ZombieManager::calculate_spawnPosition()
 		result = m_levelManager->get_character(testPT, true);
 
 		bool posCheck = collision_Check(result);
-
+		if (glm::length(testPT - playerP) <= 100.0f) posCheck = true;
 		if (posCheck == false)
 		{
 			break;
@@ -175,8 +176,6 @@ void ZombieManager::update() {
 		}
 
 	}
-	
-
 }
 
 void ZombieManager::tile_collision(Zombie& zombie) {
