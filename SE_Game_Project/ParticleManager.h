@@ -3,7 +3,7 @@
 #include"ColorRGBA32.h"
 #include"CollisionManager.h"
 
-#define MAX_PARTICLE_COUNT 100
+#define MAX_PARTICLE_COUNT 150
 
 struct Particle
 {

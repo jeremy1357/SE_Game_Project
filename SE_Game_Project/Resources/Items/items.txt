@@ -1,7 +1,8 @@
-2 Rifle   240  5   0   100 1  0
+2 Rifle   240  5   0   75  1  0
 1 Beer    10   5   0   0   0  15
 1 Beans   20   2   0   0   0  30
 0 Shield  130  1   8   0   0  0
-2 Pistol  10   1   0   5   1  0
+2 Pistol  10   1   0   14  1  0
 2 Shotgun 350  6   0   15  4  0
 0 Kevlar  400  120 100 0   0  0
+2 Bow     5    1   0   8   1  0

@@ -205,7 +205,10 @@ void ScreenManager::init()
 	
 	m_soundDelegate.load_audio("Start_Sounds_001.wav");
 	m_soundDelegate.load_audio("GAMEOVER.wav");
-
+	m_soundDelegate.load_audio("rifle.wav");
+	m_soundDelegate.load_audio("pistol.wav");
+	m_soundDelegate.load_audio("bow.wav");
+	
 	m_camera.set_scale(1.2);
 	m_camera.init_camera(m_window.get_width(), m_window.get_height());
 }

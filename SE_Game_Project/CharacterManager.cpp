@@ -49,9 +49,9 @@ void CharacterManager::start_game(std::string name)
 		m_gameoverMusicPlaying = false;
 		// TODO: Add in restart of particle manager
 		// Add starting items
-		add_item_to_inventory("Pistol");
+		add_item_to_inventory("Bow");
 
-		set_gun_index("Pistol");
+		set_gun_index("Bow");
 		m_inventory[m_currentGunIndex].isEquipped = true;
 		m_zombieManager.reset();
 		m_levelManager->reset_map_data();
@@ -181,6 +181,21 @@ void CharacterManager::set_gun_index(const std::string& itemName)
 	for (int i = 0; i < m_inventory.size(); i++) {
 		if (m_inventory[i].Name == itemName && m_inventory[i].Type == 2) {
 			m_currentGunIndex = i;
+			if (itemName == "Shotgun") {
+				gunAudioKey = shotgunKey;
+			}
+			else if (itemName == "Pistol") {
+				gunAudioKey = pistolKey;
+
+			}
+			else if (itemName == "Bow") {
+				gunAudioKey = bowKey;
+
+			}
+			else if (itemName == "Rifle") {
+				gunAudioKey = rifleKey;
+
+			}
 			return;
 		}
 	}
@@ -233,6 +248,12 @@ void CharacterManager::init(
 	m_particleManager.particle_init(collisionManager);
 	m_scores = &scores;
 	m_zombieManager.init(levelManager, *this, collisionManager, soundDelegate, m_particleManager);
+
+	pistolKey	= m_soundDelegate->get_key("pistol.wav");
+	rifleKey	= m_soundDelegate->get_key("rifle.wav");
+	bowKey		= m_soundDelegate->get_key("bow.wav");
+	shotgunKey  = m_soundDelegate->get_key("shotgun.wav");
+
 }
 
 void CharacterManager::update(float playerAngle, bool isImGuiHovered)
@@ -291,7 +312,7 @@ void CharacterManager::update(float playerAngle, bool isImGuiHovered)
 				glm::vec2 bulletPos = m_player.position + dirVector * 10.0f;
 				m_particleManager.update_AddParticle(bulletPos, m_player.angle, ColorRGBA32(0, 0, 0, 255));
 			}
-			m_soundDelegate->play_effect(0);
+			m_soundDelegate->play_effect(gunAudioKey);
 		}
 		char playerTile = m_levelManager->get_character(m_player.position, true);
 		if (playerTile == 'w') {

@@ -73,6 +73,11 @@ class CharacterManager
 		ParticleManager m_particleManager;
 		std::vector<Item> m_inventory;
 		std::vector<Score>* m_scores;
+		int pistolKey = 0;
+		int shotgunKey = 1;
+		int rifleKey = 2;
+		int bowKey = 3;
+		int gunAudioKey = 0;
 
 	private:
 		struct CollisionPosition {
