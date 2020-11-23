@@ -77,7 +77,7 @@ void GameScreen::on_render()
 		int height = tempHeight / 2;
 		int width = tempWidth / 2;
 		ImGui::SetNextWindowPos(ImVec2(width - 300, height));
-		ImGui::SetNextWindowSize(ImVec2(600, 100));
+		ImGui::SetNextWindowSize(ImVec2(550, 100));
 		ImGui::Begin("DEATH", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::SetWindowFontScale(3.0f);
 		ImGui::Text("YOU ARE DEAD!");

@@ -21,16 +21,31 @@ ZombieManager::~ZombieManager()
 glm::vec2 ZombieManager::calculate_spawnPosition()
 {
 	glm::vec2 playerP = m_characterManager->m_player.position;
+	glm::vec2 tpMin = playerP - glm::vec2(1000.0f);
+	glm::vec2 tpMax = playerP + glm::vec2(1000.0f);
+
+	if (tpMin.x < 0.0f) {
+		tpMin.x = 0.0f;
+	}
+	if (tpMin.y < 0.0f) {
+		tpMin.y = 0.0f;
+	}
+	if (tpMax.x > m_mapSize.x) {
+		tpMax.x = m_mapSize.x;
+	}
+	if (tpMax.y > m_mapSize.y) {
+		tpMax.y = m_mapSize.y;
+	}
 	glm::vec2 testPT = glm::vec2 (0.0);
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-	std::uniform_real_distribution<> disY(playerP.x - 300.0f, playerP.x + 300.0f);
-	std::uniform_real_distribution<> disX(playerP.y - 300.0f, playerP.y + 300.0f);
+	std::uniform_real_distribution<> disY(tpMin.x, tpMax.x);
+	std::uniform_real_distribution<> disX(tpMin.y, tpMax.y);
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		testPT.x = disX(gen);   	
-		testPT.y = disY(gen);   
+		testPT.x = disY(gen);   	
+		testPT.y = disX(gen);   
 
 		char result;
 		result = m_levelManager->get_character(testPT, true);

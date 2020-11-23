@@ -26,6 +26,7 @@ public:
 	void play_music(int key);
 	void stop_music(int key);
 	int get_key(const std::string& name);
+
 private:
 	std::string m_soundPathway;
 	std::map <int, AudioFile> m_audioFiles;

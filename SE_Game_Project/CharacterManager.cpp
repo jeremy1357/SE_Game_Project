@@ -3,6 +3,7 @@
 #include "LevelManager.h"
 #include <SDL/SDL.h>
 #include <iostream>
+#include <SDL/SDL_mixer.h>
 
 CharacterManager::CharacterManager()
 {
@@ -131,6 +132,13 @@ void CharacterManager::use_consumable(const std::string& itemName)
 				m_player.health = 100.0f;
 			}
 			m_inventory.erase(m_inventory.begin() + i);
+			if (m_currentGunIndex > i) {
+				m_currentGunIndex -= 1;
+			}
+			if (m_player.armorIndex > i) {
+				m_player.armorIndex -= 1;
+			}
+			m_player.armorIndex -= 1;
 			break;
 		}
 	}
@@ -142,7 +150,7 @@ void CharacterManager::toggleEquippableItem(const std::string& itemName)
 	for (auto& it : m_inventory) {
 		if (it.Name == itemName) {
 			if (it.Type == 0) {
-				if (m_player.armorIndex != -1) {
+				if (m_player.armorIndex > -1) {
 					m_inventory[m_player.armorIndex].isEquipped = false;
 				}
 				if (m_player.armorIndex == -1) {
@@ -182,6 +190,10 @@ void CharacterManager::set_gun_index(const std::string& itemName)
 void CharacterManager::damage_player(float damage)
 {
 	m_player.health -= damage * ((100.0f - (float)m_player.armor) / 100.0f);
+	if (rand() % 50 < 10) {
+		m_soundDelegate->play_effect(rand() % (m_characterSoundHurtMax - m_characterSoundHurtMin) + m_characterSoundHurtMin);
+
+	}
 }
 
 std::string CharacterManager::get_gun_name()
@@ -230,6 +242,7 @@ void CharacterManager::update(float playerAngle, bool isImGuiHovered)
 		m_player.isAlive = false;
 		m_scores->push_back(Score(m_player.name, m_zombieManager.wave, m_player.zombieKills));
 		if (m_gameoverMusicPlaying == false) {
+			Mix_HaltChannel(-1);
 			m_soundDelegate->play_effect(m_soundDelegate->get_key("GAMEOVER.wav"), -1);
 			m_gameoverMusicPlaying = false;
 		}
@@ -279,8 +292,10 @@ void CharacterManager::update(float playerAngle, bool isImGuiHovered)
 				m_particleManager.update_AddParticle(bulletPos, m_player.angle, ColorRGBA32(0, 0, 0, 255));
 			}
 			m_soundDelegate->play_effect(0);
-
-
+		}
+		char playerTile = m_levelManager->get_character(m_player.position, true);
+		if (playerTile == 'w') {
+			damage_player(0.2f);
 		}
 		tile_collision();
 	}
