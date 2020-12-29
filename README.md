@@ -1,6 +1,9 @@
-# SE_Game_Project
-# Read this before doing anything!
-# Verify Visual Studio is configured properly! See below!
+# Zombie Onslaught
+## Picture of Final Product
+![Alt text](/"Zombie Onslaught Picture".png?raw=true?raw=true "")
+
+# Read this before doing anything! 
+##Verify Visual Studio is configured properly! See below!
 
 ## Rundown: 
 To gain access to the external hardware a PC has attached, we will use SDL. I already added SDL to the project, and you can see the include file in the main.cpp. This will allow us to read the keyboard and mouse and output to the speakers. To get access to the code you CANNOT just simply download the folder from the GitHub. You must follow the steps below. When you guys commit, give meaningful commit messages so we can track changes. Additionally, we are compiling the code in 64-bit so select x64 at the top in Visual Studio. The dependencies are in 64-bit as well. Viewing the directory of the project you may have notice a folder named “deps.” This directory contains all the external dependencies our project requires to run like OpenGL and SDL. You do not need to change anything in here. 
