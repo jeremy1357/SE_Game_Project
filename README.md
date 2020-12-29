@@ -1,6 +1,6 @@
 # Zombie Onslaught
 ## Picture of Final Product
-![Alt text](/"Zombie Onslaught Picture.png"?raw=true?raw=true "")
+![Alt text](/Zombie Onslaught Picture.png"?raw=true?raw=true "")
 
 # Read this before doing anything! 
 ##Verify Visual Studio is configured properly! See below!
